@@ -6,6 +6,8 @@ Youtube Video in German
 
 [![Go to Youtube Video](https://img.youtube.com/vi/Vln2Wjr82cE/0.jpg)](https://www.youtube.com/watch?v=Vln2Wjr82cE "Go to Youtube Video")
 
+![Features](https://raw.githubusercontent.com/wolkstein/GitSynth127/master/img/uebersicht.jpg)
+
 PyQt based Midi Gui for Gitsynth127
 
 
