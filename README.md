@@ -1,6 +1,12 @@
 # GitSynth127
 Teensy3 based Monophonic Guitar Synthesizer with subtractive synthesis
 
+# Features
+* Monophonic guitar -pitch and -envelope tracking
+* Usb Audio Interface
+* Usb Midi interface
+
+
 Youtube Video in German
 
 
