@@ -1072,7 +1072,10 @@ void loop() {
     // amp envelope
     if (mySettings.gitarUseEnvelopeADSR && !FrozenNote) {
       if (dcAmpli > EnvelopLongSustainVelecety && dcAmpli > 0.05) {
-        VCAenvelopeGenerator.amplitude(0.0, 3);
+        if(!reachEnvelopLongSustainVelecetyLevel && milli >= myGuitarNote.attackTime + 10){
+          //Serial.printf("env GO, %d\n",milli);
+          VCAenvelopeGenerator.amplitude(0.0, 0.03);
+        }
         reachEnvelopLongSustainVelecetyLevel = true;
         EnvelopLongSustainVelecety = dcAmpli;
         myGuitarNote.midiVelocety = dcAmpli;
@@ -1098,9 +1101,12 @@ void loop() {
 
     // ############ Filter envelope ###################
     if (mySettings.gitarUseFilterADSR && !FrozenNote) {
-      if (dcAmpli - 0.1 > FilterLongSustainVelecety && dcAmpli > 0.05) { // schaltschwelle 0.1 ist ein test
+      if (dcAmpli /*- 0.1*/ > FilterLongSustainVelecety && dcAmpli > 0.05) { // schaltschwelle 0.1 ist ein test
         //Serial.println(milli);
-        filter1envelopeGenerator.amplitude(0.0, 3);
+        if(!reachFilterLongSustainVelecetyLevel && milli >= myFilterNote.delayTime + 10){
+          //Serial.printf("Filter GO, %d\n",milli);
+          filter1envelopeGenerator.amplitude(0.0, 0.1);
+        }
         reachFilterLongSustainVelecetyLevel = true;
         FilterLongSustainVelecety = dcAmpli;
         if (mySettings.gitarUseFilterADSRstaticVelocity >= 0.01) myFilterNote.filterVelocety = mySettings.gitarUseFilterADSRstaticVelocity;

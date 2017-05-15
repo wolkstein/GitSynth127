@@ -2174,6 +2174,7 @@ void updateMidiNote(unsigned long milli){
   if(myMidiNote.adsrState == 1 ){
     if(DEB_MIDI_NOTE_ENVELOPE) Serial.printf("Update Midi: Note On ATTACK next state is hold \\\\ \n");
     myMidiNote.adsrState = 2;
+    VCAenvelopeGenerator.amplitude(0.0,1);// eperimental
     VCAenvelopeGenerator.amplitude(myMidiNote.midiVelocety, mySettings.midi_attack);
     //filter1envelopeGenerator.amplitude(myMidiNote.midiVelocety, mySettings.midi_attack);
   }
@@ -2236,7 +2237,7 @@ void updateFilterNote(unsigned long milli){
     if(DEB_FILTER_NOTE_ENVELOPE) Serial.printf("Update FIlter ADSR: Note On DELAY next state is attack || filter velocity: %f at time: %d\n", myFilterNote.filterVelocety,milli);
     if(!myFilterNote.isGuitar) myFilterNote.adsrState = 2; 
     //filter1envelopeGenerator.amplitude(0.0, 30); // zu kleine rampe erzeugt pop geräusch 
-    filter1envelopeGenerator.amplitude(0.0); // scheinbar habe ich zuvor die einstellungen nicht richtig interpretiert, keine pop gerausche bei richtiger attack einstellung, und eine langer release zeit beinflusst nicht mehr den erneuten attack
+    //filter1envelopeGenerator.amplitude(0.0, 0.1); // scheinbar habe ich zuvor die einstellungen nicht richtig interpretiert, keine pop gerausche bei richtiger attack einstellung, und eine langer release zeit beinflusst nicht mehr den erneuten attack
   }  
   
   if(myFilterNote.adsrState == 2 && milli > myFilterNote.delayTime + mySettings.filter_delay ){
