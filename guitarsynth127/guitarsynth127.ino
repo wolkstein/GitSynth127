@@ -90,6 +90,25 @@
 #include "AKWF_SOUND_FONTS.h"
 #include "lfo_shapes.h"
 
+
+// new v3 notefreq coefficients
+int16_t fir_44117_HZ_coefficients[22] =
+{
+    0, 3, 6, -11, -71, 21,
+    352, -15, -1202, -6, 5011, 8209,
+    5011, -6, -1202, -15, 352, 21,
+    -71, -11, 6, 3
+};
+
+int16_t fir_22059_HZ_coefficients[20] =
+{
+    0, 1, -6, -54, 18, 326,
+    -14, -1178, -6, 5001, 8209, 5001,
+    -6, -1178, -14, 326, 18, -54,
+    -6, 1
+};
+// end coefficients
+
 bool ToggleSwitchIsToggled = false;
 bool FbtIsPressed = false;
 bool FrozenNote = false;
@@ -1074,7 +1093,10 @@ void loop() {
       if (dcAmpli > EnvelopLongSustainVelecety && dcAmpli > 0.05) {
         if(!reachEnvelopLongSustainVelecetyLevel && milli >= myGuitarNote.attackTime + 10){
           //Serial.printf("env GO, %d\n",milli);
-          VCAenvelopeGenerator.amplitude(0.0, 0.03);
+          if(mySettings.midi_attack >100)
+            VCAenvelopeGenerator.amplitude(0.0, 0.0);
+          else
+            VCAenvelopeGenerator.amplitude(0.0, 0.03);
         }
         reachEnvelopLongSustainVelecetyLevel = true;
         EnvelopLongSustainVelecety = dcAmpli;
@@ -1105,7 +1127,7 @@ void loop() {
         //Serial.println(milli);
         if(!reachFilterLongSustainVelecetyLevel && milli >= myFilterNote.delayTime + 10){
           //Serial.printf("Filter GO, %d\n",milli);
-          filter1envelopeGenerator.amplitude(0.0, 0.1);
+          filter1envelopeGenerator.amplitude(0.0, 0.0);
         }
         reachFilterLongSustainVelecetyLevel = true;
         FilterLongSustainVelecety = dcAmpli;
@@ -1701,7 +1723,11 @@ void setSettings(bool fromsetup) {
   //myMasterClock.begin(60.0);
 
   //################# frequenc tracking ##############
-  if (fromsetup) notefreq.begin(.15);
+  // original teensy audio notefreq lib
+  //if (fromsetup) notefreq.begin(.15);
+  // new v3 library from patric fuffy
+  if (fromsetup) notefreq.begin(.15, fir_22059_HZ_coefficients, sizeof(fir_22059_HZ_coefficients), 2);
+  //if (fromsetup) notefreq.begin(.15, fir_44117_HZ_coefficients, sizeof(fir_44117_HZ_coefficients), 2);
   //##################### Mixers Matrix ###################
 
   // ### UsbMixerLinks Und Rechts ###

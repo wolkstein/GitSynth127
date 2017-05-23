@@ -214,7 +214,7 @@ struct allSettings
   bool       freeDataBool2;
   bool       freeDataBool3;
   bool       freeDataBool4;
-  float     freeDataFloat1;
+  float     freeDataFloat1; // invert phase
   float     freeDataFloat2;  
   float     freeDataFloat3;
   float     freeDataFloat4;
@@ -416,7 +416,7 @@ allSettings mySettings = {
                           false, //  bool       freeDataBool2;
                           false, //  bool       freeDataBool3;
                           false, //  bool       freeDataBool4;
-                           0.0f, //  float     freeDataFloat1;
+                           -1.0f, //  float     freeDataFloat1;
                            0.0f, //  float     freeDataFloat2;  
                            0.0f, //  float     freeDataFloat3;
                            0.0f, //  float     freeDataFloat4;
