@@ -1725,7 +1725,7 @@ void setSettings(bool fromsetup) {
   //################# frequenc tracking ##############
   // original teensy audio notefreq lib
   //if (fromsetup) notefreq.begin(.15);
-  // new v3 library from patric fuffy
+  // new v3 library from colin duffy
   if (fromsetup) notefreq.begin(.15, fir_22059_HZ_coefficients, sizeof(fir_22059_HZ_coefficients), 2);
   //if (fromsetup) notefreq.begin(.15, fir_44117_HZ_coefficients, sizeof(fir_44117_HZ_coefficients), 2);
   //##################### Mixers Matrix ###################
