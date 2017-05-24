@@ -221,7 +221,7 @@ void mapExpressionPedal( byte control, int value, int16_t raw, int16_t floorvalu
     case 1: // pitch up
       // 0 is center pitch
 
-      loghelperValFloat = (float)8192 / 127.0f;
+      loghelperValFloat = 8192.0f / 127.0f;
       
       loghelperValInt = map(raw, floorvalue, ceilvalue, int(ceil(float(mySettings.freeDataInt3) * loghelperValFloat)), int(ceil(float(mySettings.freeDataInt4 + 127) * loghelperValFloat)));
       
@@ -234,7 +234,7 @@ void mapExpressionPedal( byte control, int value, int16_t raw, int16_t floorvalu
     
     case 2: // pitch down
       // 0 is center pitch
-      loghelperValFloat = (float)8192 / 127.0f;
+      loghelperValFloat = 8192.0f / 127.0f;
       
       loghelperValInt = map(raw, floorvalue, ceilvalue, 0 - int(ceil(float(mySettings.freeDataInt3) * loghelperValFloat)), 0 - int(ceil(float(mySettings.freeDataInt4 + 127) * loghelperValFloat)));
       
