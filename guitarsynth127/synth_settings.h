@@ -1,6 +1,43 @@
+/*
+ * System and preset settings
+ */
+
+
+
+uint16_t EEPROM_MAIN_SYSTEM_INFO_START = 0;
+uint16_t EEPROM_MAIN_SYSTEM_SETTINGS_START = 20;
+
+struct MainSystemInfo
+{
+  uint32_t revision;
+  uint16_t initeeprom; 
+};
+
+MainSystemInfo myMainSystemInfo = {
+  250517, // check this against eeprom revision change
+  7777 // if this is not in eeprom we will write all settings in the eeprom (first time)
+};
+
+uint32_t MainSystemRevision = 250517; // change this if SystemSettings are changed
+
+struct SystemSettings
+{
+  uint16_t Expression_Max;
+  uint16_t Expression_Min;
+//  bool switchLivePresets;
+//  int8_t LivePresets[30]; // 0 lookup table für die Live Presets
+//  bool LivePresetInUse[30]; // 0 schaltet die lookups frei und weiter  
+};
+
+SystemSettings mySystemSettings = {
+        740, // Expression_Max
+        50,  // Expression_Min
+};
+
+
 
 int myMenuWindow = 0; //presets
-int menuWindowSize = 132; // count of entrys -1 in "allSettings" 
+int menuWindowSize = 134; // count of entrys -1 in "allSettings" 
 
 float osc1hz = 0.0f; 
 float osc2hz = 0.0f;
@@ -428,7 +465,7 @@ allSettings mySettings = {
                           };
                           
 //             10 sektion 1, 29 synths,crusher, control matrix,midi envelope, osc mastervolumen, presetname
-bool hidingSettings[16+29+3+40+12+3+1+23+3+7] = {
+bool hidingSettings[16+29+3+40+12+3+1+23+3+7+2] = {
                              true, //presets               | on
                              true, // Filter1 Freq         | on
                              true, // Filter1 Reso         | on
@@ -544,6 +581,8 @@ bool hidingSettings[16+29+3+40+12+3+1+23+3+7] = {
                              true,
 
                              true, // midichannel hier
+                             true,
+                             true,
                              true,
                              true,
                              true,

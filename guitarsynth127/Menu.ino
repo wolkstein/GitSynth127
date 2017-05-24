@@ -2173,6 +2173,39 @@ void selectMenuItemAndPrintLcd(int updown) {
       
      break;
 
+     case 133: // System EXP Pedal Min
+     
+      my_I_incrementer = updown;
+      if (checkIntValuesValide(my_I_incrementer, 0, 1000, mySystemSettings.Expression_Min + my_I_incrementer)){
+        
+        mySystemSettings.Expression_Min += my_I_incrementer;
+      }
+      
+      
+      lcd.print("SYSTEM EXP-P MIN");
+      lcd.setCursor(0, 1);
+ 
+         
+      lcd.printf("%d ", mySystemSettings.Expression_Min);
+      menuExtrButton = false;   
+     break; 
+     
+     case 134: // System EXP Pedal Max
+     
+      my_I_incrementer = updown;
+      if (checkIntValuesValide(my_I_incrementer, 0, 1000, mySystemSettings.Expression_Max + my_I_incrementer)){
+        
+        mySystemSettings.Expression_Max += my_I_incrementer;
+      }
+      
+      
+      lcd.print("SYSTEM EXP-P MAX");
+      lcd.setCursor(0, 1);
+ 
+         
+      lcd.printf("%d ", mySystemSettings.Expression_Max);
+      menuExtrButton = false;   
+     break; 
      
    }
   return;

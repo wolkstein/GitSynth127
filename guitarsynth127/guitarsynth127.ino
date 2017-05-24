@@ -70,10 +70,13 @@
 #define DEB_LFO false
 #define DEB_TAPTEMPO false
 #define DEBUG_EXPRESSION_PEDAL false
+#define DEBUG_EXPRESSION_PEDAL_RAW false
 #define DEB_SEQUENZER false
 #define DEB_ANALOG_READ false
 #define DEB_FUNCTION_BTN false
 #define DEB_TOGGLE_SWITCH false
+#define DEB_EXTRA_PITCH false
+#define DEB_EEPROM false
 
 #include <SerialFlash.h>
 #include <Audio.h>
@@ -361,9 +364,6 @@ unsigned long getSequencerSequenceMillis = 0;
 uint16_t ExPedalValueFiltered =0;
 uint16_t PotiValueFiltered =0;
 
-uint16_t ExPedalValue_MIN = 412;
-uint16_t ExPedalValue_MAX = 612;
-
 
 
 void setup() {
@@ -431,20 +431,35 @@ void setup() {
     PotiValueFiltered = (float(analogRead(PotiRead)) * (1.0 - 0.99)) + (float(PotiValueFiltered) *  0.99);
   }
 
-  //eeprom test
-  /*
-    mySettings.presetName[0] = 'f';
-    mySettings.presetName[1] = 'P';
-    mySettings.presetName[2] = 'u';
-    mySettings.presetName[9] = 'T';
+  //eeprom test, init and migration if revision change
+    if(DEB_EEPROM){
+      Serial.println("EEpromTest");
+      Serial.println(sizeof(myMainSystemInfo)); // get size of struct  sizeof(mySettings);
+      Serial.println(sizeof(mySystemSettings)); // get size of struct  sizeof(mySettings);
+      Serial.println(EEPROM.length());
+    }
 
-    Serial.println("puskode");
-    Serial.println(sizeof(mySettings)); // get size of struct  sizeof(mySettings);
-    Serial.println(EEPROM.length());
-    //EEPROM.put(0, mySettings);
-    //EEPROM.get( 0, mySettings);
-    //delay(10000);
-  */
+    EEPROM.get( EEPROM_MAIN_SYSTEM_INFO_START, myMainSystemInfo);
+    if(myMainSystemInfo.initeeprom != 7777){
+      if(DEB_EEPROM) Serial.println("init eeprom first time");
+      myMainSystemInfo.revision = MainSystemRevision;
+      myMainSystemInfo.initeeprom = 7777;
+      EEPROM.put(EEPROM_MAIN_SYSTEM_INFO_START, myMainSystemInfo);
+      EEPROM.put(EEPROM_MAIN_SYSTEM_SETTINGS_START, mySystemSettings);
+    }
+    if(myMainSystemInfo.revision != MainSystemRevision){
+      if(DEB_EEPROM) Serial.println("need eeprom update, eeprom rev has changed");
+      // here code to migrate the System settings if needed
+      
+    }
+    
+    EEPROM.get( EEPROM_MAIN_SYSTEM_SETTINGS_START, mySystemSettings);
+    if(DEB_EEPROM){
+      Serial.printf("EEprom revision: %d\n", myMainSystemInfo.revision);
+      Serial.printf("System Settings ExpMax: %d\n", mySystemSettings.Expression_Max);
+      Serial.printf("System Settings ExpMin: %d\n", mySystemSettings.Expression_Min);
+    }
+  
 
 
 
@@ -585,18 +600,16 @@ void loop() {
 
     potioldtime = milli;
   }
-  
+
   if (mySettings.expressionPedalFunction > 0 && milli > expressionpedaloldtime + 20){
     ExPedalValue = analogRead(ExPedalRead);
 
     ExPedalValueFiltered = (float(ExPedalValue) * (1.0 - 0.8)) + (float(ExPedalValueFiltered) *  0.8);
 
-    if(ExPedalValue < ExPedalValue_MIN) ExPedalValue_MIN = ExPedalValue;
-    if(ExPedalValue > ExPedalValue_MAX) ExPedalValue_MAX = ExPedalValue;
     
     if(myMenuWindow == 127){
       if(ExPedalValueFiltered != oldExPedalValue){
-        if(DEB_ANALOG_READ) Serial.printf("EXP-PEDAL: %d, filter: %d, MIN: %d, MAX: %d \n", ExPedalValue, ExPedalValueFiltered,ExPedalValue_MIN,ExPedalValue_MAX);
+        if(DEB_ANALOG_READ) Serial.printf("EXP-PEDAL: %d, filter: %d\n", ExPedalValue, ExPedalValueFiltered);
         if(ToggleSwitchIsToggled) setExpressionPedal(ExPedalValue);
         oldExPedalValue = ExPedalValueFiltered;      
       }
@@ -865,9 +878,12 @@ void loop() {
     //if(DEB_LFO) Serial.printf("Time: %d | settings val: %f | RAW MOD LFO: %f| FREQ-Dev: %f\n",milli,mySettings.mod_lfo_T1_OSC1_FREQ_intensety,local_MOD_LFO_val,MOD_lfo_OSC1_extrapitch);
 
 
+    
+    if(DEB_EXTRA_PITCH){
+      Serial.printf("OSC1 extra Pitch: %f,OSC2 extra Pitch: %f,SubOSC1 extra Pitch: %f,SubOSC1 extra Pitch: %f\n", MOD_lfo_OSC1_extrapitch, MOD_lfo_OSC2_extrapitch, MOD_lfo_SUB1_extrapitch, MOD_lfo_SUB2_extrapitch);
+    }
 
-
-
+    
     // ############ mod lfo pulse width
 
     //osc1
@@ -994,7 +1010,18 @@ void loop() {
   if (cpeak > 32700) must_lower_analyse_gain = true;
   
   if (notefreq.available() && cpeak > mySettings.pitchDetectTreshold && myMidiNote.adsrState == 0 && !FrozenNote) { // wir folgen der gitarre
+ 
+    // -8191  0 8191
+    // center values for exact pitching
+    if (myMidiNote.midiPitch < -8191) myMidiNote.midiPitch = -8191;
+    if (myMidiNote.midiPitch > 8191) myMidiNote.midiPitch = 8191;
 
+    // 24 = 2400 cent
+    // 1 = 100 cent
+    int pitchstepsincent = map(myMidiNote.midiPitch, -8191, 8191, -mySettings.midi_pichbandrange * 100, mySettings.midi_pichbandrange * 100);
+    int myextraoctacve = pitchstepsincent / 1200;
+    int myextranote =  (pitchstepsincent - myextraoctacve * 1200) / 100;
+    int myextracent =  ((pitchstepsincent - (myextraoctacve * 1200)) - myextranote * 100) / 8.3;
   
 //    if(FrozenNote) note = note;
 //    else note = notefreq.read();
@@ -1013,11 +1040,11 @@ void loop() {
     if (DEB_PITCH_DETECTION) Serial.printf("%d ,Corner passed with: %d | Gain to high: %d| Freq: %f | Quali: %f |\n", milli, cpeak, must_lower_analyse_gain, note, prob );
 
     //long ttt=micros();
-    osc1hz = get_frequency(note, mySettings.osc1_octave, mySettings.osc1_note + SequencerExtraNote, mySettings.osc1_detune) * MOD_lfo_OSC1_extrapitch;
+    osc1hz = get_frequency(note, mySettings.osc1_octave + myextraoctacve, mySettings.osc1_note + myextranote + SequencerExtraNote, mySettings.osc1_detune + myextracent) * MOD_lfo_OSC1_extrapitch;
     //Serial.println(osc1hz);
-    osc2hz = get_frequency(note, mySettings.osc2_octave, mySettings.osc2_note + SequencerExtraNote, mySettings.osc2_detune) * MOD_lfo_OSC2_extrapitch;
-    subosc1hz = get_frequency(note, mySettings.sub_osc1_octave, mySettings.sub_osc1_note + SequencerExtraNote, mySettings.sub_osc1_detune) * MOD_lfo_SUB1_extrapitch;
-    subosc2hz = get_frequency(note, mySettings.sub_osc2_octave, mySettings.sub_osc2_note + SequencerExtraNote, mySettings.sub_osc2_detune) * MOD_lfo_SUB2_extrapitch;
+    osc2hz = get_frequency(note, mySettings.osc2_octave + myextraoctacve, mySettings.osc2_note + myextranote + SequencerExtraNote, mySettings.osc2_detune + myextracent) * MOD_lfo_OSC2_extrapitch;
+    subosc1hz = get_frequency(note, mySettings.sub_osc1_octave + myextraoctacve, mySettings.sub_osc1_note + myextranote + SequencerExtraNote, mySettings.sub_osc1_detune + myextracent) * MOD_lfo_SUB1_extrapitch;
+    subosc2hz = get_frequency(note, mySettings.sub_osc2_octave + myextraoctacve, mySettings.sub_osc2_note + myextranote + SequencerExtraNote, mySettings.sub_osc2_detune + myextracent) * MOD_lfo_SUB2_extrapitch;
 
     //Serial.println(micros()-ttt);
 
@@ -1034,12 +1061,25 @@ void loop() {
   else
   {  // Frozen note
     if(FrozenNote){
-          //long ttt=micros();
-      osc1hz = get_frequency(note, mySettings.osc1_octave, mySettings.osc1_note + SequencerExtraNote, mySettings.osc1_detune) * MOD_lfo_OSC1_extrapitch;
+      //long ttt=micros();
+      
+      // -8191  0 8191
+      // center values for exact pitching
+      if (myMidiNote.midiPitch < -8191) myMidiNote.midiPitch = -8191;
+      if (myMidiNote.midiPitch > 8191) myMidiNote.midiPitch = 8191;
+  
+      // 24 = 2400 cent
+      // 1 = 100 cent
+      int pitchstepsincent = map(myMidiNote.midiPitch, -8191, 8191, -mySettings.midi_pichbandrange * 100, mySettings.midi_pichbandrange * 100);
+      int myextraoctacve = pitchstepsincent / 1200;
+      int myextranote =  (pitchstepsincent - myextraoctacve * 1200) / 100;
+      int myextracent =  ((pitchstepsincent - (myextraoctacve * 1200)) - myextranote * 100) / 8.3;
+        
+      osc1hz = get_frequency(note, mySettings.osc1_octave + myextraoctacve, mySettings.osc1_note + myextranote + SequencerExtraNote, mySettings.osc1_detune + myextracent) * MOD_lfo_OSC1_extrapitch;
       //Serial.println(osc1hz);
-      osc2hz = get_frequency(note, mySettings.osc2_octave, mySettings.osc2_note + SequencerExtraNote, mySettings.osc2_detune) * MOD_lfo_OSC2_extrapitch;
-      subosc1hz = get_frequency(note, mySettings.sub_osc1_octave, mySettings.sub_osc1_note + SequencerExtraNote, mySettings.sub_osc1_detune) * MOD_lfo_SUB1_extrapitch;
-      subosc2hz = get_frequency(note, mySettings.sub_osc2_octave, mySettings.sub_osc2_note + SequencerExtraNote, mySettings.sub_osc2_detune) * MOD_lfo_SUB2_extrapitch;
+      osc2hz = get_frequency(note, mySettings.osc2_octave + myextraoctacve, mySettings.osc2_note + myextranote + SequencerExtraNote, mySettings.osc2_detune + myextracent) * MOD_lfo_OSC2_extrapitch;
+      subosc1hz = get_frequency(note, mySettings.sub_osc1_octave + myextraoctacve, mySettings.sub_osc1_note + myextranote + SequencerExtraNote, mySettings.sub_osc1_detune + myextracent) * MOD_lfo_SUB1_extrapitch;
+      subosc2hz = get_frequency(note, mySettings.sub_osc2_octave + myextraoctacve, mySettings.sub_osc2_note + myextranote + SequencerExtraNote, mySettings.sub_osc2_detune + myextracent) * MOD_lfo_SUB2_extrapitch;
 
       Osc1.frequency(osc1hz);
       Osc2.frequency(osc2hz);
@@ -1243,10 +1283,18 @@ void loop() {
       if (!menuExtrButton) {
         //Serial.println("Kann note spielen");
         //Serial.println(myMidiNote.adsrState);
-        // erst nach 4 sekunden betriebszeit erlaubt
-        if (milli > 4000) {
-          if (myMidiNote.adsrState == 0) StartStopMidiNote( true, milli, 100, 50, 0);
-          else StopAnyPlayingNote();
+        // erst nach 8 sekunden betriebszeit erlaubt
+        if (milli > 8000) {
+          if(myMenuWindow == 133 || myMenuWindow == 134){
+            if(DEB_EEPROM) Serial.println("write eeprom settings");
+            EEPROM.put(EEPROM_MAIN_SYSTEM_SETTINGS_START, mySystemSettings);
+            lcd.setCursor(0, 1);
+            lcd.printf("Save System");          
+          }
+          else{
+            if (myMidiNote.adsrState == 0) StartStopMidiNote( true, milli, 100, 50, 0);
+            else StopAnyPlayingNote();
+          }
         }
       }
       countAt2 = millis();
@@ -1408,6 +1456,8 @@ void loop() {
      Langsamste Rundenzeit: 252us | Schnellste Rundenzeit: 9us | Durchschnitt Zeit: 9us |CPU: Osc1=1,2  Notfreq=0,0  all=4.88,6.93    Memory: 1,4
           runtergetaktet bei 96 mhz Zeitmessung: 341111ms | Runden: 9021 | Langsamste Rundenzeit: 2222us | Schnellste Rundenzeit: 16us | Durchschnitt Zeit: 55us |CPU: Filter Processor: 4, 66.23, Max: 71.44 | Memory: 16, Max: 37
     CYCLE LFO runtergetaktet bei 96 mhz Zeitmessung: 232859ms | Runden: 7854 | Langsamste Rundenzeit: 2136us | Schnellste Rundenzeit: 17us | Durchschnitt Zeit: 63us |CPU: Filter Processor: 4, 69.13, Max: 73.64 | Memory: 19, Max: 37
+
+     Time: 42811ms | R: 13979 | Slow T: 1574us | Fast T: 17us | avr T: 35us |CPU: F1 Load: 4, 52.09, Max: 53.92 | Mem: 8, Max: 20, Ex-Ped: 157, Pot: 0
 
 
      teensy 3.6
@@ -1688,15 +1738,22 @@ void checksystemonmidiclock() {
 
 
 void showSystemBpmOnLCD(unsigned long milli) {
-  if (milli >= oldShowBpmmillis + 1000 && myMenuWindow == 0) {
-    lcd.setCursor(7, 0);
-    if (systemOnMidiClock && starblink) {
-      lcd.printf(" | %4.1f*", mySystemBpm);
+  if (milli >= oldShowBpmmillis + 1000) {
+    if(myMenuWindow == 0){
+      lcd.setCursor(7, 0);
+      if (systemOnMidiClock && starblink) {
+        lcd.printf(" | %4.1f*", mySystemBpm);
+      }
+      else
+      {
+        lcd.printf(" | %4.1f ", mySystemBpm);
+      }
     }
-    else
-    {
-      lcd.printf(" | %4.1f ", mySystemBpm);
+    if(myMenuWindow == 133 || myMenuWindow == 134){
+      lcd.setCursor(5, 1);
+      lcd.printf(" | %d ", analogRead(ExPedalRead));
     }
+    
     starblink = !starblink;
     oldShowBpmmillis = milli;
   }

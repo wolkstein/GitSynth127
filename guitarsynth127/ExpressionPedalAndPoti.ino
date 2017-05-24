@@ -162,9 +162,15 @@ const byte expressionFunctionsLookUp[21] =
 
 
 void setExpressionPedal(uint16_t value){// analog read value 0 - 1024
+
+  if(value < mySystemSettings.Expression_Min) value = mySystemSettings.Expression_Min;
+  if(value > mySystemSettings.Expression_Max) value = mySystemSettings.Expression_Max;
+  
+  if(DEBUG_EXPRESSION_PEDAL_RAW) Serial.printf("ExpressionPedal Raw: %d\n", value);
+  
   if(mySettings.expressionPedalFunction > 20 ) mySettings.expressionPedalFunction = 20; // später anpassen
   byte expressionFunction = expressionFunctionsLookUp[mySettings.expressionPedalFunction];
-  int expressionValue = map(value, ExPedalValue_MAX - 100,ExPedalValue_MIN + 100, mySettings.freeDataInt3, mySettings.freeDataInt4 + 127);// freeDataInt4 + 127 wegen der default 0 einstellung.
+  int expressionValue = map(value, mySystemSettings.Expression_Max ,mySystemSettings.Expression_Min + 100, mySettings.freeDataInt3, mySettings.freeDataInt4 + 127);// freeDataInt4 + 127 wegen der default 0 einstellung.
   if(mySettings.freeDataInt3 <= mySettings.freeDataInt4 + 127){
     if(expressionValue < mySettings.freeDataInt3) expressionValue = mySettings.freeDataInt3;
     if(expressionValue > mySettings.freeDataInt4 + 127) expressionValue = mySettings.freeDataInt4 + 127;
@@ -176,18 +182,18 @@ void setExpressionPedal(uint16_t value){// analog read value 0 - 1024
   }
   
   //Serial.println(expressionValue);
-  mapExpressionPedal(expressionFunction, expressionValue);
+  mapExpressionPedal(expressionFunction, expressionValue, value);
 }
 
 void setAnalogPoti(uint16_t value){// analog read value 0 - 1024
   if(mySettings.freeDataInt2 > 20 ) mySettings.freeDataInt2 = 20; // später anpassen
   byte potiFunction = expressionFunctionsLookUp[mySettings.freeDataInt2];
   int potiValue = map(value, 0,1023, 0,127);
-  mapExpressionPedal(potiFunction, potiValue);
+  mapExpressionPedal(potiFunction, potiValue, value);
 }
 
 // expression pedal kann mehr als 0-127 values. anpassen
-void mapExpressionPedal( byte control, int value){
+void mapExpressionPedal( byte control, int value, uint16_t raw){
 
    int loghelperValInt=0;
    float loghelperValFloat=0.0f;
