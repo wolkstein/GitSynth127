@@ -150,14 +150,17 @@
     "F-ADSR Hold   ", 86
     "F-ADSR Decay  ", 87
     "F-ADSR Sustain", 88
-    "F-ADSR Release"  89                 
+    "F-ADSR Release"  89
+    "Pitch Up      ",
+    "Pitch down    "                    
 };
  */
-const byte expressionFunctionsLookUp[21] = 
+ 
+const byte expressionFunctionsLookUp[23] = // first element hold 0 -> expression pedal disabled.
 {
    0, 21, 22, 23, 24, 25, 26, 28, 76, 79,
   80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
-  3
+  3, 1, 2
 };
 
 
@@ -166,7 +169,7 @@ void setExpressionPedal(uint16_t value){// analog read value 0 - 1024
   if(value < mySystemSettings.Expression_Min) value = mySystemSettings.Expression_Min;
   if(value > mySystemSettings.Expression_Max) value = mySystemSettings.Expression_Max;
   
-  if(mySettings.expressionPedalFunction > 20 ) mySettings.expressionPedalFunction = 20; // später anpassen
+  if(mySettings.expressionPedalFunction > 22 ) mySettings.expressionPedalFunction = 22; // später anpassen
   byte expressionFunction = expressionFunctionsLookUp[mySettings.expressionPedalFunction];
   int expressionValue = map(value, mySystemSettings.Expression_Max, mySystemSettings.Expression_Min, mySettings.freeDataInt3, mySettings.freeDataInt4 + 127);// freeDataInt4 + 127 wegen der default 0 einstellung.
   if(mySettings.freeDataInt3 <= mySettings.freeDataInt4 + 127){
@@ -180,19 +183,26 @@ void setExpressionPedal(uint16_t value){// analog read value 0 - 1024
   }
   
   //Serial.println(expressionValue);
-  if(DEBUG_EXPRESSION_PEDAL_RAW) Serial.printf("ExprPedal Raw: %d, Calculated: %d, Min: %d, Max: %d\n", value, expressionValue, mySettings.freeDataInt3, mySettings.freeDataInt4 + 127);
-  mapExpressionPedal(expressionFunction, expressionValue, value);
+  int16_t rawRange = mySystemSettings.Expression_Max - mySystemSettings.Expression_Min;
+  float divider = (float)rawRange / 127.0f;
+  int16_t floorvalue = int16_t(floor((float)mySettings.freeDataInt3 * divider));
+  int16_t ceilvalue = int16_t(ceil((float)(mySettings.freeDataInt4 + 127) * divider));
+  int16_t calculatedRawValue = map(value,mySystemSettings.Expression_Max, mySystemSettings.Expression_Min,floorvalue,ceilvalue);
+  
+  if(DEBUG_EXPRESSION_PEDAL_RAW) Serial.printf("ExprPedal Raw: %d, Calculated: %d, Min: %d, Max: %d | Raw Range: %d, Raw Divider: %f, Calculated Raw Min: %d, Calculated Raw Max: %d, Calculated Raw: %d\n",
+    value, expressionValue, mySettings.freeDataInt3, mySettings.freeDataInt4 + 127,rawRange, divider,floorvalue,ceilvalue,calculatedRawValue);
+  mapExpressionPedal(expressionFunction, expressionValue, calculatedRawValue, floorvalue, ceilvalue);
 }
 
 void setAnalogPoti(uint16_t value){// analog read value 0 - 1024
   if(mySettings.freeDataInt2 > 20 ) mySettings.freeDataInt2 = 20; // später anpassen
   byte potiFunction = expressionFunctionsLookUp[mySettings.freeDataInt2];
   int potiValue = map(value, 0,1023, 0,127);
-  mapExpressionPedal(potiFunction, potiValue, value);
+  mapExpressionPedal(potiFunction, potiValue, value, 0,1023);
 }
 
 // expression pedal kann mehr als 0-127 values. anpassen
-void mapExpressionPedal( byte control, int value, uint16_t raw){
+void mapExpressionPedal( byte control, int value, int16_t raw, int16_t floorvalue, int16_t ceilvalue){
 
    int loghelperValInt=0;
    float loghelperValFloat=0.0f;
@@ -208,6 +218,33 @@ void mapExpressionPedal( byte control, int value, uint16_t raw){
 //      }     
 //    break;
 
+    case 1: // pitch up
+      // 0 is center pitch
+
+      loghelperValFloat = (float)8192 / 127.0f;
+      
+      loghelperValInt = map(raw, floorvalue, ceilvalue, int(ceil(float(mySettings.freeDataInt3) * loghelperValFloat)), int(ceil(float(mySettings.freeDataInt4 + 127) * loghelperValFloat)));
+      
+      myMidiNote.midiPitch = loghelperValInt;
+      if(DEBUG_EXPRESSION_PEDAL){
+        Serial.println("MapExpressionPedal: Pitch Up function");
+        Serial.printf("Pitchvalue %d:\n", loghelperValInt);
+      }
+    break;
+    
+    case 2: // pitch down
+      // 0 is center pitch
+      loghelperValFloat = (float)8192 / 127.0f;
+      
+      loghelperValInt = map(raw, floorvalue, ceilvalue, 0 - int(ceil(float(mySettings.freeDataInt3) * loghelperValFloat)), 0 - int(ceil(float(mySettings.freeDataInt4 + 127) * loghelperValFloat)));
+      
+      myMidiNote.midiPitch = loghelperValInt;
+      if(DEBUG_EXPRESSION_PEDAL){
+        Serial.println("MapExpressionPedal: Pitch Down function");
+        Serial.printf("Pitchvalue %d:\n", loghelperValInt);
+      }
+    break;
+    
     case 3:
         loghelperValInt=map(int(value),0,127,0,15);
         mySettings.freeDataInt1 = loghelperValInt;

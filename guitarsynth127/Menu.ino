@@ -2066,7 +2066,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      case 127: // Expression Pedal Function
      
       my_I_incrementer = updown;
-      if(checkIntValuesValide(my_I_incrementer, 0, 20, mySettings.expressionPedalFunction + my_I_incrementer))
+      if(checkIntValuesValide(my_I_incrementer, 0, 22, mySettings.expressionPedalFunction + my_I_incrementer))
         mySettings.expressionPedalFunction += my_I_incrementer;
      
       lcd.print("ExpPedal Func");
@@ -2100,12 +2100,12 @@ void selectMenuItemAndPrintLcd(int updown) {
      case 130: // Poti Function
      
       my_I_incrementer = updown;
-      if(checkIntValuesValide(my_I_incrementer, 0, 20, mySettings.freeDataInt2 + my_I_incrementer))
+      if(checkIntValuesValide(my_I_incrementer, 0, 22, mySettings.freeDataInt2 + my_I_incrementer))
         mySettings.freeDataInt2 += my_I_incrementer;
      
       lcd.print("Poti Func");
       lcd.setCursor(0, 1);
-      lcd.print(expPedalFunctionLookup[mySettings.freeDataInt2]);// !!mySettings.expressionPedalFunction enthält bisher nur 20 einträge 
+      lcd.print(expPedalFunctionLookup[mySettings.freeDataInt2]);// !!mySettings.expressionPedalFunction enthält bisher nur 22 einträge 
       menuExtrButton = false;   
      break;
      

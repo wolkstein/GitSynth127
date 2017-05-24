@@ -70,7 +70,7 @@
 #define DEB_LFO false
 #define DEB_TAPTEMPO false
 #define DEBUG_EXPRESSION_PEDAL false
-#define DEBUG_EXPRESSION_PEDAL_RAW true
+#define DEBUG_EXPRESSION_PEDAL_RAW false
 #define DEB_SEQUENZER false
 #define DEB_ANALOG_READ false
 #define DEB_FUNCTION_BTN false
