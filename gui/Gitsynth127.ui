@@ -6497,7 +6497,12 @@
       </item>
       <item>
        <property name="text">
-        <string>usw.</string>
+        <string>Pitch Up</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Pitch Down</string>
        </property>
       </item>
      </widget>
@@ -6692,7 +6697,12 @@
       </item>
       <item>
        <property name="text">
-        <string>usw.</string>
+        <string>Pitch Up</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Pitch Down</string>
        </property>
       </item>
      </widget>
