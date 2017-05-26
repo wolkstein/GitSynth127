@@ -251,10 +251,10 @@ struct allSettings
   bool       freeDataBool2;
   bool       freeDataBool3;
   bool       freeDataBool4;
-  float     freeDataFloat1; // invert phase
-  float     freeDataFloat2;  
-  float     freeDataFloat3;
-  float     freeDataFloat4;
+  float     freeDataFloat1; // filter lowpass freq. default 8000hz
+  float     freeDataFloat2; // filter lowpass resonance default 0.7 
+  float     freeDataFloat3; // filter highpass freq. default 80hz
+  float     freeDataFloat4; // filter highpass resonance default 0.7 
   int32_t     freeDataInt1; // input gain 0 - 15
   int32_t     freeDataInt2; // Poti Function
   int32_t     freeDataInt3; // Exp Pedal Min-Mapping
@@ -453,10 +453,10 @@ allSettings mySettings = {
                           false, //  bool       freeDataBool2;
                           false, //  bool       freeDataBool3;
                           false, //  bool       freeDataBool4;
-                           -1.0f, //  float     freeDataFloat1;
-                           0.0f, //  float     freeDataFloat2;  
-                           0.0f, //  float     freeDataFloat3;
-                           0.0f, //  float     freeDataFloat4;
+                        8000.0f, //  float     freeDataFloat1;
+                           0.7f, //  float     freeDataFloat2;  
+                          80.0f, //  float     freeDataFloat3;
+                           0.7f, //  float     freeDataFloat4;
                               5, //  int32_t     freeDataInt1;
                               0, // int32_t     freeDataInt2; poti function
                               0, // int32_t     freeDataInt3;

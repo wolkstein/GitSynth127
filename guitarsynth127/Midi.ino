@@ -144,15 +144,23 @@ void OnPitchChange(byte channel, int pitch){
   myMidiNote.midiPitch = pitch - 8192; 
 }
 
-
-
 void OnControlChange(byte channel, byte control, byte value){
-   if(!channeltest(channel) || GuiaskForPreset) return; 
+   if(!CCchanneltest(channel) || GuiaskForPreset) return;
+   
+   if(mySettings.midiChannel + 1 == channel){
+    if(DEBUG_MIDI_INPUT) Serial.println("Midi CC message one Channel higher than selected. We switch to cc midi handler two");
+    CCmidiHandlerTwo(control, value);
+    return;
+   }
+
+  
    if(DEBUG_MIDI_INPUT){
     Serial.printf("Receive Midi CC: %d | VAL: %d | CHANNEL: %d ||",control, value, channel );
    }
+   
    int loghelperValInt=0;
    float loghelperValFloat=0.0f;
+
    switch(control){
 
     case 0: // Expression Pedal Function
@@ -2069,12 +2077,91 @@ void OnControlChange(byte channel, byte control, byte value){
    // ################################ END of CC input #########################
 }
 
+
+void CCmidiHandlerTwo(byte control, byte value){
+   if(DEBUG_MIDI_INPUT) Serial.printf("CC MIDI HANDLER TWO Receive Midi CC: %d | VAL: %d || ",control, value );
+   
+   int loghelperValInt=0;
+   float loghelperValFloat=0.0f;  
+   
+   switch(control){
+ 
+    case 1: // set lowpass filter freq
+        
+        loghelperValInt=map(int(value),0,127,0,1000);
+        loghelperValFloat=float(loghelperValInt)/1000.0;
+        
+        loghelperValFloat= (pow(loghelperValFloat,5)*20000)+10.0;
+        
+        mySettings.freeDataFloat1 =int(loghelperValFloat);  
+          
+        lowpass.frequency(mySettings.freeDataFloat1);
+        if(DEBUG_MIDI_INPUT){
+          Serial.printf("Lowpass Filter Cutoff Frequency changing now to %fHz | raw %f \n", mySettings.freeDataFloat1,loghelperValFloat);
+        }
+           
+    break;
+   
+    case 2: // lowpass filter resonance
+        
+        loghelperValFloat=float(value)*100.0;
+        loghelperValInt=map(int(loghelperValFloat),0,12700,710,25000);       
+        mySettings.freeDataFloat2 =  float(loghelperValInt/1000.0);
+        lowpass.resonance(mySettings.freeDataFloat2);
+        if(DEBUG_MIDI_INPUT){
+          Serial.printf("Lowpass Filter Resonance changing now to %f | and back to midi:%d \n",mySettings.freeDataFloat2, map(int(mySettings.freeDataFloat2 * 1000.0)+5,710,25000,0,127));
+        }
+            
+    break;
+
+    case 3: // set highpass filter freq
+        
+        loghelperValInt=map(int(value),0,127,0,1000);
+        loghelperValFloat=float(loghelperValInt)/1000.0;
+        
+        loghelperValFloat= (pow(loghelperValFloat,5)*20000)+10.0;
+        
+        mySettings.freeDataFloat3 =int(loghelperValFloat);  
+          
+        highpass.frequency(mySettings.freeDataFloat3);
+        if(DEBUG_MIDI_INPUT){
+          Serial.printf("Highpass Filter Cutoff Frequency changing now to %fHz | raw %f \n", mySettings.freeDataFloat3,loghelperValFloat);
+        }
+           
+    break;
+   
+    case 4: // highpass filter resonance
+        
+        loghelperValFloat=float(value)*100.0;
+        loghelperValInt=map(int(loghelperValFloat),0,12700,710,25000);       
+        mySettings.freeDataFloat4 =  float(loghelperValInt/1000.0);
+        highpass.resonance(mySettings.freeDataFloat4);
+        if(DEBUG_MIDI_INPUT){
+          Serial.printf("High Filter Resonance changing now to %f | and back to midi:%d \n",mySettings.freeDataFloat4, map(int(mySettings.freeDataFloat4 * 1000.0)+5,710,25000,0,127));
+        }
+            
+    break;
+    
+       // ###############################  DEFAULT #################################
+    default:
+       if(DEBUG_MIDI_INPUT){
+        Serial.printf("CC %d currently not implemented\n",control );
+       }      
+   }
+}
+
 bool channeltest(byte channel){
   if(channel == mySettings.midiChannel) return true;
   else return false;
 }
 
-
+// 127 controller are not enough to control gitsynth127 we need 2 channels
+// i deside to implement selected channel and selected channel + 1 are valid channels
+// now we can control 127 * 2 controller
+bool CCchanneltest(byte channel){
+  if(channel == mySettings.midiChannel || channel == mySettings.midiChannel + 1) return true; 
+  else return false;
+}
 
 // ################################## compute adsr and midi notes to hz
 void StopAnyPlayingNote(){

@@ -61,7 +61,7 @@
 #define DEB_MENUE false
 #define DEB_PEAKS false
 #define DEB_ENVELOPE_FOLLOWER false
-#define DEBUG_MIDI_INPUT false
+#define DEBUG_MIDI_INPUT true
 #define DEBUG_MIDI_REQUEST_SETTINGS false
 #define DEB_MIDI_NOTE_ENVELOPE false
 #define DEB_MIDIGUITAR_NOTE_ENVELOPE false
@@ -1778,6 +1778,21 @@ void setSettings(bool fromsetup) {
 
   // test masterclock war zu ungenau!
   //myMasterClock.begin(60.0);
+
+
+   // Configure higpass and lowpass
+
+   // data migration my existing presets on sd card
+//   mySettings.freeDataFloat1 = 8000.0f;
+//   mySettings.freeDataFloat2 = 0.7f;
+//   mySettings.freeDataFloat3 = 80.0f;
+//   mySettings.freeDataFloat4 = 0.7f;
+ 
+   lowpass.frequency(mySettings.freeDataFloat1);
+   lowpass.resonance(mySettings.freeDataFloat2);
+   highpass.frequency(mySettings.freeDataFloat3);
+   highpass.resonance(mySettings.freeDataFloat4);
+
 
   //################# frequenc tracking ##############
   // original teensy audio notefreq lib

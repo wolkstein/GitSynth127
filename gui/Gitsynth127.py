@@ -5,7 +5,7 @@ import sys
 import time
 import rtmidi
 import math
-from rtmidi.midiconstants import BANK_SELECT_LSB, BANK_SELECT_MSB, CHANNEL_PRESSURE, CONTROLLER_CHANGE, NOTE_ON, NOTE_OFF, PROGRAM_CHANGE
+from rtmidi.midiconstants import * ##BANK_SELECT_LSB, BANK_SELECT_MSB, CHANNEL_PRESSURE, CONTROLLER_CHANGE, NOTE_ON, NOTE_OFF, PROGRAM_CHANGE
 from rtmidi.midiutil import *
 
 from PyQt4.QtGui import *
@@ -19,6 +19,7 @@ global gInIsConnected
 global gOutIsConnected
 global gMyMidiOutputPort
 global gMyMidiInputPort
+
 
 ################## Midi Input Thread ######################
 class midiInputThread(QtCore.QThread):
@@ -167,7 +168,22 @@ class midiInputThread(QtCore.QThread):
                         if message[1] == 3:
                             myMidiNotecheck3 = True
 
+                ############ CC channel 2 #######################
+                if message[0] == 177: # message is cc on channel 1, 176 = ch 1 - 191 = cc on ch 16
+                    #print("Channel Two")
+                    if message[1] == 1: # lowpass freq
+                        self.main_app.dial_highcut_filter.setValue(message[2])
 
+                    if message[1] == 2: # lowpass reso
+                        self.main_app.dial_hcq.setValue(message[2])
+
+                    if message[1] == 3: # lowpass freq
+                        self.main_app.dial_lowcutfilter.setValue(message[2])
+
+                    if message[1] == 4: # lowpass reso
+                        self.main_app.dial_lcq.setValue(message[2])
+
+                ############ CC channel 1 ########################
                 if message[0] == 176: # message is cc on channel 1, 176 = ch 1 - 191 = cc on ch 16
                     #print(msg)
 
@@ -696,6 +712,13 @@ class MyForm(QtGui.QMainWindow):
         self.ui.horizontalSlider_Filter_Mixer.valueChanged.connect(self.setFilter1to2Blend)
         self.ui.checkBoxF1_F2crossOver.stateChanged.connect(self.setFilter1to2Crossover)
 
+        # highcut
+        self.ui.dial_highcut_filter.valueChanged.connect(self.dailHighCutFreqEvent)
+        self.ui.dial_hcq.valueChanged.connect(self.dailHcqEvent)
+        # lowcut
+        self.ui.dial_lowcutfilter.valueChanged.connect(self.dailLowCutFreqEvent)
+        self.ui.dial_lcq.valueChanged.connect(self.dailLcqEvent)
+
         #Guitar Sensing
         self.ui.verticalSliderGitarSensingAttack.valueChanged.connect(self.setGuitarSensattack)
         self.ui.dial_23GitSensRelease.valueChanged.connect(self.setGuitarSensRelease)
@@ -1016,6 +1039,54 @@ class MyForm(QtGui.QMainWindow):
         myVal = self.ui.dial_OSCS_Main_Mixer.value()
         control = [CONTROLLER_CHANGE, 20, myVal] # filter 1 frequency
         midiOut.send_message(control)
+
+
+        ################ Filter HighCut ###########
+        #def dailHighCutFreqEvent(self):
+        #print("pups")
+        myVal = self.ui.dial_highcut_filter.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 1, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt( myVal,0,127,0,1000 )
+        loghelperValFloat=float(loghelperValInt)/1000.0
+        loghelperValFloat= (math.pow(loghelperValFloat,5)*20000)+10.0
+        self.ui.label_value_highcut.setText("%.0f" % loghelperValFloat)
+
+        #def dailHcqEvent(self):
+        #print("pups2")
+        myVal = self.ui.dial_hcq.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 2, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt( myVal*100,0,12700,710,25000 )
+        loghelperValFloat = loghelperValInt/1000.0
+
+        self.ui.label_value_hcq.setText("%.2f" % loghelperValFloat)
+
+        ################ Filter LowCut ###########
+        #def dailLowCutFreqEvent(self):
+        #print("pups3")
+        myVal = self.ui.dial_lowcutfilter.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 3, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt( myVal,0,127,0,1000 )
+        loghelperValFloat=float(loghelperValInt)/1000.0
+        loghelperValFloat= (math.pow(loghelperValFloat,5)*20000)+10.0
+        self.ui.label_value_lowcut.setText("%.0f" % loghelperValFloat)
+
+        #def dailLcqEvent(self):
+        #print("pups4")
+        myVal = self.ui.dial_lcq.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 4, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt( myVal*100,0,12700,710,25000 )
+        loghelperValFloat = loghelperValInt/1000.0
+
+        self.ui.label_value_lcq.setText("%.2f" % loghelperValFloat)
+
 
         ################ FILTER 1 #################
         # Filter 1 Frequency (CC 21)
@@ -2169,6 +2240,53 @@ class MyForm(QtGui.QMainWindow):
         myVal = self.ui.dial_OSCS_Main_Mixer.value()
         control = [CONTROLLER_CHANGE, 20, myVal] # filter 1 frequency
         midiOut.send_message(control)
+
+
+    ################ Filter HighCut ###########
+    def dailHighCutFreqEvent(self):
+        #print("pups")
+        myVal = self.ui.dial_highcut_filter.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 1, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt( myVal,0,127,0,1000 )
+        loghelperValFloat=float(loghelperValInt)/1000.0
+        loghelperValFloat= (math.pow(loghelperValFloat,5)*20000)+10.0
+        self.ui.label_value_highcut.setText("%.0f" % loghelperValFloat)
+
+    def dailHcqEvent(self):
+        #print("pups2")
+        myVal = self.ui.dial_hcq.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 2, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt( myVal*100,0,12700,710,25000 )
+        loghelperValFloat = loghelperValInt/1000.0
+
+        self.ui.label_value_hcq.setText("%.2f" % loghelperValFloat)
+
+    ################ Filter LowCut ###########
+    def dailLowCutFreqEvent(self):
+        #print("pups3")
+        myVal = self.ui.dial_lowcutfilter.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 3, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt( myVal,0,127,0,1000 )
+        loghelperValFloat=float(loghelperValInt)/1000.0
+        loghelperValFloat= (math.pow(loghelperValFloat,5)*20000)+10.0
+        self.ui.label_value_lowcut.setText("%.0f" % loghelperValFloat)
+
+    def dailLcqEvent(self):
+        #print("pups4")
+        myVal = self.ui.dial_lcq.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 4, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt( myVal*100,0,12700,710,25000 )
+        loghelperValFloat = loghelperValInt/1000.0
+
+        self.ui.label_value_lcq.setText("%.2f" % loghelperValFloat)
 
     ################ FILTER 1 #################
     # Filter 1 Frequency (CC 21)

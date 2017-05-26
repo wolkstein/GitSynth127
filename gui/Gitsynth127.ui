@@ -66,8 +66,8 @@
       <property name="geometry">
        <rect>
         <x>60</x>
-        <y>200</y>
-        <width>151</width>
+        <y>210</y>
+        <width>131</width>
         <height>20</height>
        </rect>
       </property>
@@ -84,598 +84,11 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
-     <widget class="QFrame" name="frame">
-      <property name="geometry">
-       <rect>
-        <x>0</x>
-        <y>10</y>
-        <width>181</width>
-        <height>171</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QLabel" name="label">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>0</y>
-         <width>51</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Filter 1</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>50</y>
-         <width>41</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>CutOff</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_3">
-       <property name="geometry">
-        <rect>
-         <x>70</x>
-         <y>50</y>
-         <width>31</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Reso</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_4">
-       <property name="geometry">
-        <rect>
-         <x>130</x>
-         <y>50</y>
-         <width>41</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Octave</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>70</y>
-         <width>181</width>
-         <height>61</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout">
-        <item>
-         <widget class="QDial" name="dial_f1_f">
-          <property name="mouseTracking">
-           <bool>true</bool>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;CutOff Frequency Filter 1&lt;/span&gt;&lt;/p&gt;&lt;p&gt;* If D-F-F (Dynamic Filter Freqency) is enabled , this dail change the CutOff frequency around the Target OSC Frequency.&lt;/p&gt;&lt;p&gt;The D-F-F value goes from -60 to 60, which mean VALUE x curren target OSC Frequency.  And the  target OSC Frequency is dependent to the Note which is playing. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="maximum">
-           <number>127</number>
-          </property>
-          <property name="sliderPosition">
-           <number>75</number>
-          </property>
-          <property name="notchesVisible">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QDial" name="dial_f1_r">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="maximum">
-           <number>127</number>
-          </property>
-          <property name="value">
-           <number>56</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QDial" name="dial_f1_o">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="maximum">
-           <number>127</number>
-          </property>
-          <property name="sliderPosition">
-           <number>56</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="layoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>130</y>
-         <width>181</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="QLCDNumber" name="lcdNumber">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="digitCount">
-           <number>5</number>
-          </property>
-          <property name="segmentStyle">
-           <enum>QLCDNumber::Flat</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLCDNumber" name="lcdNumber_2">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="digitCount">
-           <number>4</number>
-          </property>
-          <property name="segmentStyle">
-           <enum>QLCDNumber::Flat</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_2">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLCDNumber" name="lcdNumber_3">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="digitCount">
-           <number>4</number>
-          </property>
-          <property name="segmentStyle">
-           <enum>QLCDNumber::Flat</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QLabel" name="label_9">
-       <property name="geometry">
-        <rect>
-         <x>120</x>
-         <y>10</y>
-         <width>59</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>LowPass</string>
-       </property>
-      </widget>
-      <widget class="QComboBox" name="comboBox_activeTrackingFilter1">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>20</y>
-         <width>81</width>
-         <height>28</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Filter 1 D-F-F&lt;/span&gt;&lt;span style=&quot; font-size:12pt; vertical-align:super;&quot;&gt;*&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; Target&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Choose the target which will dynamicly controll the Filter 1 CutOff frequency.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;If D-F-F is set to an OSC Target, this target OSC control the Cutoff frequency at this Filter. The CutOff Dail can already used to control the offset of the CuttOff Frequency.  See Tooltip CutOff wheel.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; vertical-align:super;&quot;&gt;* &lt;/span&gt;D-F-F (Dynamic Filter Freqency)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>D-F-F Off</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>OSC1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>OSC2</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SUB OSC1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SUB OSC2</string>
-        </property>
-       </item>
-      </widget>
-     </widget>
-     <widget class="QFrame" name="frame_2">
-      <property name="geometry">
-       <rect>
-        <x>190</x>
-        <y>10</y>
-        <width>181</width>
-        <height>171</height>
-       </rect>
-      </property>
-      <property name="autoFillBackground">
-       <bool>false</bool>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <widget class="QLabel" name="label_5">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>0</y>
-         <width>51</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Filter 2</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_6">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>50</y>
-         <width>41</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>CutOff</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_7">
-       <property name="geometry">
-        <rect>
-         <x>80</x>
-         <y>50</y>
-         <width>31</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Reso</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_8">
-       <property name="geometry">
-        <rect>
-         <x>130</x>
-         <y>50</y>
-         <width>41</width>
-         <height>18</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <property name="text">
-        <string>Octave</string>
-       </property>
-      </widget>
-      <widget class="QWidget" name="layoutWidget_2">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>70</y>
-         <width>181</width>
-         <height>61</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QDial" name="dial_f2_f">
-          <property name="mouseTracking">
-           <bool>false</bool>
-          </property>
-          <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;CutOff Frequency Filter 2&lt;/span&gt;&lt;/p&gt;&lt;p&gt;* If D-F-F (Dynamic Filter Freqency) is enabled , this dail change the CutOff frequency around the Target OSC Frequency.&lt;/p&gt;&lt;p&gt;The D-F-F value goes from -60 to 60, which mean VALUE x curren target OSC Frequency.  And the  target OSC Frequency is dependent to the Note which is playing. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="maximum">
-           <number>127</number>
-          </property>
-          <property name="sliderPosition">
-           <number>75</number>
-          </property>
-          <property name="notchesVisible">
-           <bool>false</bool>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QDial" name="dial_f2_r">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="maximum">
-           <number>127</number>
-          </property>
-          <property name="sliderPosition">
-           <number>56</number>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QDial" name="dial_f2_o">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="maximum">
-           <number>127</number>
-          </property>
-          <property name="value">
-           <number>56</number>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="layoutWidget_3">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>130</y>
-         <width>181</width>
-         <height>41</height>
-        </rect>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <layout class="QHBoxLayout" name="horizontalLayout_4">
-        <item>
-         <widget class="QLCDNumber" name="lcdNumber_4">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="digitCount">
-           <number>5</number>
-          </property>
-          <property name="segmentStyle">
-           <enum>QLCDNumber::Flat</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_3">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLCDNumber" name="lcdNumber_5">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="digitCount">
-           <number>4</number>
-          </property>
-          <property name="segmentStyle">
-           <enum>QLCDNumber::Flat</enum>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_4">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLCDNumber" name="lcdNumber_6">
-          <property name="autoFillBackground">
-           <bool>false</bool>
-          </property>
-          <property name="digitCount">
-           <number>4</number>
-          </property>
-          <property name="segmentStyle">
-           <enum>QLCDNumber::Flat</enum>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QComboBox" name="comboBox_f2_type">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>10</y>
-         <width>81</width>
-         <height>28</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Filter 2 Filterfunction&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;LowPass&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;BandPass&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;HighPass&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="autoFillBackground">
-        <bool>false</bool>
-       </property>
-       <item>
-        <property name="text">
-         <string>LowPass</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>BandPass</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>HighPass</string>
-        </property>
-       </item>
-      </widget>
-      <widget class="QComboBox" name="comboBox_activeTrackingFilter2">
-       <property name="geometry">
-        <rect>
-         <x>0</x>
-         <y>20</y>
-         <width>81</width>
-         <height>28</height>
-        </rect>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Filter 2 D-F-F&lt;/span&gt;&lt;span style=&quot; font-size:12pt; vertical-align:super;&quot;&gt;*&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; Target&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Choose the target which will dynamicly controll the Filter 1 CutOff frequency.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;If D-F-F is set to an OSC Target, this target OSC control the Cutoff frequency at this Filter. The CutOff Dail can already used to control the offset of the CuttOff Frequency.  See Tooltip CutOff wheel.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; vertical-align:super;&quot;&gt;* &lt;/span&gt;D-F-F (Dynamic Filter Freqency)&lt;span style=&quot; font-size:12pt;&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <item>
-        <property name="text">
-         <string>D-F-F Off</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>OSC1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>OSC2</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SUB OSC1</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>SUB OSC2</string>
-        </property>
-       </item>
-      </widget>
-     </widget>
      <widget class="QLabel" name="label_10">
       <property name="geometry">
        <rect>
-        <x>120</x>
-        <y>180</y>
+        <x>100</x>
+        <y>190</y>
         <width>61</width>
         <height>20</height>
        </rect>
@@ -691,7 +104,7 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>190</y>
+        <y>200</y>
         <width>61</width>
         <height>41</height>
        </rect>
@@ -709,8 +122,8 @@
      <widget class="QLCDNumber" name="lcdNumber_8">
       <property name="geometry">
        <rect>
-        <x>210</x>
-        <y>190</y>
+        <x>190</x>
+        <y>200</y>
         <width>61</width>
         <height>41</height>
        </rect>
@@ -757,14 +170,17 @@
      <widget class="QLabel" name="label_47">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>190</y>
+        <x>270</x>
+        <y>197</y>
         <width>91</width>
-        <height>18</height>
+        <height>21</height>
        </rect>
       </property>
       <property name="text">
        <string>Envelope F-Cut</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignHCenter|Qt::AlignTop</set>
       </property>
      </widget>
      <widget class="QDial" name="dialAttackEnvelopeFilterCut">
@@ -794,6 +210,753 @@
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QTabWidget" name="tabWidget_2">
+      <property name="geometry">
+       <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>231</width>
+        <height>191</height>
+       </rect>
+      </property>
+      <property name="currentIndex">
+       <number>0</number>
+      </property>
+      <widget class="QWidget" name="tab_3">
+       <attribute name="title">
+        <string>Filter 1</string>
+       </attribute>
+       <widget class="QLabel" name="label_9">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>0</y>
+          <width>59</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>LowPass</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QComboBox" name="comboBox_activeTrackingFilter1">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>81</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Filter 1 D-F-F&lt;/span&gt;&lt;span style=&quot; font-size:12pt; vertical-align:super;&quot;&gt;*&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; Target&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Choose the target which will dynamicly controll the Filter 1 CutOff frequency.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;If D-F-F is set to an OSC Target, this target OSC control the Cutoff frequency at this Filter. The CutOff Dail can already used to control the offset of the CuttOff Frequency.  See Tooltip CutOff wheel.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; vertical-align:super;&quot;&gt;* &lt;/span&gt;D-F-F (Dynamic Filter Freqency)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>D-F-F Off</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>OSC1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>OSC2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SUB OSC1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SUB OSC2</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>110</y>
+          <width>221</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLCDNumber" name="lcdNumber">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="digitCount">
+            <number>5</number>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Flat</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLCDNumber" name="lcdNumber_2">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="digitCount">
+            <number>4</number>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Flat</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_2">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLCDNumber" name="lcdNumber_3">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="digitCount">
+            <number>4</number>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Flat</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>50</y>
+          <width>221</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QDial" name="dial_f1_f">
+           <property name="mouseTracking">
+            <bool>true</bool>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;CutOff Frequency Filter 1&lt;/span&gt;&lt;/p&gt;&lt;p&gt;* If D-F-F (Dynamic Filter Freqency) is enabled , this dail change the CutOff frequency around the Target OSC Frequency.&lt;/p&gt;&lt;p&gt;The D-F-F value goes from -60 to 60, which mean VALUE x curren target OSC Frequency.  And the  target OSC Frequency is dependent to the Note which is playing. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+           <property name="sliderPosition">
+            <number>75</number>
+           </property>
+           <property name="notchesVisible">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDial" name="dial_f1_r">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+           <property name="value">
+            <number>56</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDial" name="dial_f1_o">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+           <property name="sliderPosition">
+            <number>56</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QLabel" name="label_2">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>41</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>CutOff</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_3">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>30</y>
+          <width>31</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Reso</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_4">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>30</y>
+          <width>41</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Octave</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+      <widget class="QWidget" name="tab_4">
+       <attribute name="title">
+        <string>Filter 2</string>
+       </attribute>
+       <widget class="QComboBox" name="comboBox_activeTrackingFilter2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>81</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Filter 2 D-F-F&lt;/span&gt;&lt;span style=&quot; font-size:12pt; vertical-align:super;&quot;&gt;*&lt;/span&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt; Target&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;Choose the target which will dynamicly controll the Filter 1 CutOff frequency.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;If D-F-F is set to an OSC Target, this target OSC control the Cutoff frequency at this Filter. The CutOff Dail can already used to control the offset of the CuttOff Frequency.  See Tooltip CutOff wheel.&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; vertical-align:super;&quot;&gt;* &lt;/span&gt;D-F-F (Dynamic Filter Freqency)&lt;span style=&quot; font-size:12pt;&quot;/&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <item>
+         <property name="text">
+          <string>D-F-F Off</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>OSC1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>OSC2</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SUB OSC1</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>SUB OSC2</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QComboBox" name="comboBox_f2_type">
+        <property name="geometry">
+         <rect>
+          <x>120</x>
+          <y>0</y>
+          <width>81</width>
+          <height>28</height>
+         </rect>
+        </property>
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;justify&quot;&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;Filter 2 Filterfunction&lt;/span&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;&lt;br/&gt;&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;LowPass&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;BandPass&lt;/p&gt;&lt;p align=&quot;justify&quot;&gt;HighPass&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <item>
+         <property name="text">
+          <string>LowPass</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>BandPass</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>HighPass</string>
+         </property>
+        </item>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>50</y>
+          <width>221</width>
+          <height>61</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <item>
+          <widget class="QDial" name="dial_f2_f">
+           <property name="mouseTracking">
+            <bool>false</bool>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:12pt;&quot;&gt;CutOff Frequency Filter 2&lt;/span&gt;&lt;/p&gt;&lt;p&gt;* If D-F-F (Dynamic Filter Freqency) is enabled , this dail change the CutOff frequency around the Target OSC Frequency.&lt;/p&gt;&lt;p&gt;The D-F-F value goes from -60 to 60, which mean VALUE x curren target OSC Frequency.  And the  target OSC Frequency is dependent to the Note which is playing. &lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+           <property name="sliderPosition">
+            <number>75</number>
+           </property>
+           <property name="notchesVisible">
+            <bool>false</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDial" name="dial_f2_r">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+           <property name="sliderPosition">
+            <number>56</number>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QDial" name="dial_f2_o">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="maximum">
+            <number>127</number>
+           </property>
+           <property name="value">
+            <number>56</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QWidget" name="layoutWidget_3">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>110</y>
+          <width>221</width>
+          <height>41</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout_4">
+         <item>
+          <widget class="QLCDNumber" name="lcdNumber_4">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="digitCount">
+            <number>5</number>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Flat</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLCDNumber" name="lcdNumber_5">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="digitCount">
+            <number>4</number>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Flat</enum>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_4">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item>
+          <widget class="QLCDNumber" name="lcdNumber_6">
+           <property name="autoFillBackground">
+            <bool>false</bool>
+           </property>
+           <property name="digitCount">
+            <number>4</number>
+           </property>
+           <property name="segmentStyle">
+            <enum>QLCDNumber::Flat</enum>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+       <widget class="QLabel" name="label_6">
+        <property name="geometry">
+         <rect>
+          <x>20</x>
+          <y>30</y>
+          <width>41</width>
+          <height>20</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>CutOff</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_7">
+        <property name="geometry">
+         <rect>
+          <x>100</x>
+          <y>30</y>
+          <width>31</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Reso</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+       <widget class="QLabel" name="label_8">
+        <property name="geometry">
+         <rect>
+          <x>170</x>
+          <y>30</y>
+          <width>41</width>
+          <height>18</height>
+         </rect>
+        </property>
+        <property name="autoFillBackground">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Octave</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+     <widget class="QDial" name="dial_lowcutfilter">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>43</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>127</number>
+      </property>
+      <property name="invertedAppearance">
+       <bool>false</bool>
+      </property>
+      <property name="invertedControls">
+       <bool>false</bool>
+      </property>
+     </widget>
+     <widget class="QDial" name="dial_lcq">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>120</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>127</number>
+      </property>
+      <property name="value">
+       <number>127</number>
+      </property>
+     </widget>
+     <widget class="QDial" name="dial_highcut_filter">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>43</y>
+        <width>51</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>127</number>
+      </property>
+     </widget>
+     <widget class="QDial" name="dial_hcq">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>120</y>
+        <width>41</width>
+        <height>41</height>
+       </rect>
+      </property>
+      <property name="maximum">
+       <number>127</number>
+      </property>
+      <property name="value">
+       <number>127</number>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>20</y>
+        <width>51</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>LowCut</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_5">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>20</y>
+        <width>59</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>HighCut</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_62">
+      <property name="geometry">
+       <rect>
+        <x>260</x>
+        <y>110</y>
+        <width>31</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Lc Q</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_63">
+      <property name="geometry">
+       <rect>
+        <x>330</x>
+        <y>110</y>
+        <width>31</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Hc Q</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_value_lowcut">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>90</y>
+        <width>41</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>100</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_value_highcut">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>90</y>
+        <width>41</width>
+        <height>18</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>100</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_value_lcq">
+      <property name="geometry">
+       <rect>
+        <x>250</x>
+        <y>160</y>
+        <width>41</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+      </property>
+     </widget>
+     <widget class="QLabel" name="label_value_hcq">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>160</y>
+        <width>41</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>1</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
       </property>
      </widget>
     </widget>

@@ -595,6 +595,25 @@ void Midi_Request_Settings(byte note){
     if( mySettings.MasterclockToFreqLFO) midiValueLocal = 1; 
     usbMIDI.sendControlChange(127, midiValueLocal, mySettings.midiChannel);
 
+ 
+    // ######################## channel + 1 sends ########################
+   
+    // 1: lowpass frequency CC 1 channel +1
+    midiValueLocal = map( int(powf(((mySettings.freeDataFloat1 - 10)/20000.0), 0.2)*1000.0)+5 ,0 , 1000, 0, 127); // frequency conversation    
+    usbMIDI.sendControlChange(1, midiValueLocal, mySettings.midiChannel + 1);
+    
+    // 2: lowpass resonance CC 2 channel + 1
+    midiValueLocal = map(int(mySettings.freeDataFloat2 * 1000.0)+5,710,25000,0,127); // frequency conversation
+    usbMIDI.sendControlChange(2, midiValueLocal, mySettings.midiChannel + 1);
+
+    // 3: highpass frequency CC 3 channel + 1
+    midiValueLocal = map( int(powf(((mySettings.freeDataFloat3 - 10)/20000.0), 0.2)*1000.0)+5 ,0 , 1000, 0, 127); // frequency conversation
+    usbMIDI.sendControlChange(3, midiValueLocal, mySettings.midiChannel + 1);
+    
+    // 4: highpass resonance CC 2 channel + 1
+    midiValueLocal = map(int(mySettings.freeDataFloat4 * 1000.0)+5,710,25000,0,127); // frequency conversation
+    usbMIDI.sendControlChange(4, midiValueLocal, mySettings.midiChannel + 1); 
+
     
     for(int i = 0; i<32;i++){
       usbMIDI.sendNoteOn(125, 1, mySettings.midiChannel);

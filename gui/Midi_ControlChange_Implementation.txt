@@ -1,130 +1,135 @@
-CC, Regler, Midi range
+Cannel, CC, Regler, Midi range
 
-0, Expression Pedal Function CTR, 0-127
-1, Poti Function CTR, 0- 127
-2, Function Footswitch CTR, 0-127
-3, Analog Circuit Instrument Gain, 0-127
-4, Mixer Instrument Input To Synth Frequency - and Envelope - tracking, 0-127
-5, Mixer Usb Input 1 To Synth Frequency - and Envelope - tracking, 0-127
-6, Mixer Synth To Output 1, 0-127
-7, Mixer Synth To Output 2, 0-127
-8, Mixer Synth To Usb Output 1, 0-127
-9, Mixer Synth To Usb Output 2, 0-127
-10, Mixer Instrument To Usb-OutPut 1, 0-127
-11, Mixer Instrument To Usb-OutPut 2, 0-127
-12, Mixer Usb Input 1 To Output 1, 0-127
-13, Mixer Usb Input 1 To Output 2, 0-127
-14, Mixer Usb Input 2 To Output 1, 0-127
-15, Mixer Usb Input 2 To Output 2, 0-127
-16, Filter 1 Dynamic Filter Frequency Target, 0 - 4
-17, Filter 2 Dynamic Filter Frequency Target, 0 - 4
-18, Filter Lfo Cycles, 0-127
-19, Mod Lfo cycles, 0-127
-20, OSC Main Volumen, 0-127
-21, Filter 1 Freq, 0-127
-22, Filter 1 Resonance, 0-127
-23, Filter 1 Octave74, 0-127
-24, Filter 2 Freq, 0-127
-25, Filter 2 Resonance, 0-127
-26, Filter 2 Octave, 0-127
-27, Filter 2 Type, 1-3
-28, Filter 1<->2 Blend, 0-127
-29, Filter 1<->2 Crossover Mod, 0-1
-30, Guitar Envelope Sensing Attack, 0-127
-31, Guitar Envelope Sensing release, 0-127
-32, Guitar Sense Note Off Corner, 0-127
-33, Guitar Sense Pitch detection treshold, 0-127
-34, Guitar Sense Pitch detection Quality, 0-127
-35, OSC1 Volumen, 0-127
-36, OSC1 WaveForm, 0-15
-37, OSC1 PulseWidth, 0-127
-38, OSC1 Octave, 0-8
-39, OSC1 Note, 0-24
-40, OSC1 CENTS, 0-24
-41, OSC1 Phase, 0-127
-42, OSC2 Volumen, 0-127
-43, OSC2 WaveForm, 0-5
-44, OSC2 PulseWidth, 0-127
-45, OSC2 Octave, 0-8
-46, OSC2 Note, 0-24
-47, OSC2 CENTS, 0-24
-48, OSC2 Phase, 0-127
-49, Sub-OSC1 Volumen, 0-127
-50, Sub-OSC1 WaveForm, 0-5
-51, Sub-OSC1 PulseWidth, 0-127
-52, Sub-OSC1 Octave, 0-8
-53, Sub-OSC1 Note, 0-24
-54, Sub-OSC1 CENTS, 0-24
-55, Sub-OSC1 Phase, 0-127
-56, Sub-OSC2 Volumen, 0-127
-57, Sub-OSC2 WaveForm, 0-5
-58, Sub-OSC2 PulseWidth, 0-127
-59, Sub-OSC2 Octave, 0-8
-60, Sub-OSC2 Note, 0-24
-61, Sub-OSC2 CENTS, 0-24
-62, Sub-OSC2 Phase, 0-127
-63, Noise Level, 0-127
-64, Bit crusher Volumen, 0-127
-65, Bit Crusher Bits, 0-15
-66, Bit crusher Sample Rate, 0-6
-67, Filter-LFO WaveForm, 0-5
-68, Filter-LFO PulseWide, 0-127
-69, Filter-LFO BPM, 0-127
-70, Filter-LFO BPM Multip., 0-20
-71, Filter-LFO Phase, 0-127
-72, Filter-LFO Sync To Attack, 0-1
-73, Filter-LFO Depth, 0-127
-74, Filter-LFO envelope Attack to Frequency ++, 0-127
-75, Filter-LFO envelope Attack to Depth, 0-127
-76, Envelope Attack to Filter Cutoff, 0-127
-77, Guitar Use Filter DAHDSR, 0-1
-78, Guitar use Envelope AHDSR, 0-1
-79, Envelope AHDSR-Attack, 0-127
-80, Envelope AHDSR-Hold, 0-127
-81, Envelope AHDSR-Decay, 0-127
-82, Envelope AHDSR-Sustain, 0-100
-83, Envelope AHDSR-Release, 0-127
-84, Filter AHDSR-Delay, 0-127
-85, Filter AHDSR-Attack, 0-127
-86, Filter AHDSR-Hold, 0-127
-87, Filter AHDSR-Decay, 0-127
-88, Filter AHDSR-Sustain, 0-100
-89, Filter AHDSR-Release, 0-127
-90, Modulation LFO Waveform, 0-127
-91, Modulation Lfo Pulsewidth, 0-127
-92, Modulation Lfo BPM, 0-127
-93, Modulation Lfo BPM Multip., 0-20
-94, Modulation Lfo Phase, 0-127
-95, Modulation Lfo Sync To Attack, 0-1
-96, Modulation Lfo envelope Attack to Frequency ++, 0-127
-97, Modulation Lfo envelope Attack to Depth, 0-127
-98, Guitar use Static Filter Envelope, 0-127
-99, Modulation Lfo Frequency Target OSC1, 0-127
-100, Modulation Lfo Frequency Target OSC2, 0-127
-101, Modulation Lfo Frequency Target Sub OSC1, 0-127
-102, Modulation Lfo Frequency Target Sub OSC2, 0-127
-103, Modulation Lfo Frequency Target 1-4 Sync, 0-1
-104, Modulation Lfo Pulsewidth Target 1-4 Sync, 0-1
-105, Modulation Lfo Pulsewidth Target OSC1, 0-127
-106, Modulation Lfo Pulsewidth Target OSC2, 0-127
-107, Modulation Lfo Pulsewidth Target Sub OSC1, 0-127
-108, Modulation Lfo Pulsewidth Target Sub OSC2, 0-127
-109, Volumen LFO Waveform, 0-127
-110, Volumen Lfo Pulsewidth, 0-127
-111, Volumen Lfo BPM, 0-127
-112, Volumen Lfo BPM Multip., 0-20
-113, Volumen Lfo Phase, 0-127
-114, Volumen Lfo Sync To Attack, 0-1
-115, Volumen Lfo envelope Attack to Frequency ++, 0-127
-116, Volumen Lfo envelope Attack to Depth, 0-127
-117, Volumen Lfo Target 1-4 Sync, 0-1
-118, Volumen Lfo Target OSC1, 0-127
-119, Volumen Lfo Target OSC2, 0-127
-120, Volumen Lfo Target Sub OSC1, 0-127
-121, Volumen Lfo Target Sub OSC2, 0-127
-122, Midi Pitchband Range, 0-23
-123, Auto Peak Correction, 0-1
-124, Master Clock To all Lfos, 0-1
-125, Master Clock To MOD Lfo, 0-1
-126, Master Clock To VOL Lfo, 0-1
-127, Master Clock To Freq LFO, 0-1
+Selected, 0, Expression Pedal Function CTR, 0-127
+Selected, 1, Poti Function CTR, 0- 127
+Selected, 2, Function Footswitch CTR, 0-127
+Selected, 3, Analog Circuit Instrument Gain, 0-127
+Selected, 4, Mixer Instrument Input To Synth Frequency - and Envelope - tracking, 0-127
+Selected, 5, Mixer Usb Input 1 To Synth Frequency - and Envelope - tracking, 0-127
+Selected, 6, Mixer Synth To Output 1, 0-127
+Selected, 7, Mixer Synth To Output 2, 0-127
+Selected, 8, Mixer Synth To Usb Output 1, 0-127
+Selected, 9, Mixer Synth To Usb Output 2, 0-127
+Selected, 10, Mixer Instrument To Usb-OutPut 1, 0-127
+Selected, 11, Mixer Instrument To Usb-OutPut 2, 0-127
+Selected, 12, Mixer Usb Input 1 To Output 1, 0-127
+Selected, 13, Mixer Usb Input 1 To Output 2, 0-127
+Selected, 14, Mixer Usb Input 2 To Output 1, 0-127
+Selected, 15, Mixer Usb Input 2 To Output 2, 0-127
+Selected, 16, Filter 1 Dynamic Filter Frequency Target, 0 - 4
+Selected, 17, Filter 2 Dynamic Filter Frequency Target, 0 - 4
+Selected, 18, Filter Lfo Cycles, 0-127
+Selected, 19, Mod Lfo cycles, 0-127
+Selected, 20, OSC Main Volumen, 0-127
+Selected, 21, Filter 1 Freq, 0-127
+Selected, 22, Filter 1 Resonance, 0-127
+Selected, 23, Filter 1 Octave74, 0-127
+Selected, 24, Filter 2 Freq, 0-127
+Selected, 25, Filter 2 Resonance, 0-127
+Selected, 26, Filter 2 Octave, 0-127
+Selected, 27, Filter 2 Type, 1-3
+Selected, 28, Filter 1<->2 Blend, 0-127
+Selected, 29, Filter 1<->2 Crossover Mod, 0-1
+Selected, 30, Guitar Envelope Sensing Attack, 0-127
+Selected, 31, Guitar Envelope Sensing release, 0-127
+Selected, 32, Guitar Sense Note Off Corner, 0-127
+Selected, 33, Guitar Sense Pitch detection treshold, 0-127
+Selected, 34, Guitar Sense Pitch detection Quality, 0-127
+Selected, 35, OSC1 Volumen, 0-127
+Selected, 36, OSC1 WaveForm, 0-15
+Selected, 37, OSC1 PulseWidth, 0-127
+Selected, 38, OSC1 Octave, 0-8
+Selected, 39, OSC1 Note, 0-24
+Selected, 40, OSC1 CENTS, 0-24
+Selected, 41, OSC1 Phase, 0-127
+Selected, 42, OSC2 Volumen, 0-127
+Selected, 43, OSC2 WaveForm, 0-5
+Selected, 44, OSC2 PulseWidth, 0-127
+Selected, 45, OSC2 Octave, 0-8
+Selected, 46, OSC2 Note, 0-24
+Selected, 47, OSC2 CENTS, 0-24
+Selected, 48, OSC2 Phase, 0-127
+Selected, 49, Sub-OSC1 Volumen, 0-127
+Selected, 50, Sub-OSC1 WaveForm, 0-5
+Selected, 51, Sub-OSC1 PulseWidth, 0-127
+Selected, 52, Sub-OSC1 Octave, 0-8
+Selected, 53, Sub-OSC1 Note, 0-24
+Selected, 54, Sub-OSC1 CENTS, 0-24
+Selected, 55, Sub-OSC1 Phase, 0-127
+Selected, 56, Sub-OSC2 Volumen, 0-127
+Selected, 57, Sub-OSC2 WaveForm, 0-5
+Selected, 58, Sub-OSC2 PulseWidth, 0-127
+Selected, 59, Sub-OSC2 Octave, 0-8
+Selected, 60, Sub-OSC2 Note, 0-24
+Selected, 61, Sub-OSC2 CENTS, 0-24
+Selected, 62, Sub-OSC2 Phase, 0-127
+Selected, 63, Noise Level, 0-127
+Selected, 64, Bit crusher Volumen, 0-127
+Selected, 65, Bit Crusher Bits, 0-15
+Selected, 66, Bit crusher Sample Rate, 0-6
+Selected, 67, Filter-LFO WaveForm, 0-5
+Selected, 68, Filter-LFO PulseWide, 0-127
+Selected, 69, Filter-LFO BPM, 0-127
+Selected, 70, Filter-LFO BPM Multip., 0-20
+Selected, 71, Filter-LFO Phase, 0-127
+Selected, 72, Filter-LFO Sync To Attack, 0-1
+Selected, 73, Filter-LFO Depth, 0-127
+Selected, 74, Filter-LFO envelope Attack to Frequency ++, 0-127
+Selected, 75, Filter-LFO envelope Attack to Depth, 0-127
+Selected, 76, Envelope Attack to Filter Cutoff, 0-127
+Selected, 77, Guitar Use Filter DAHDSR, 0-1
+Selected, 78, Guitar use Envelope AHDSR, 0-1
+Selected, 79, Envelope AHDSR-Attack, 0-127
+Selected, 80, Envelope AHDSR-Hold, 0-127
+Selected, 81, Envelope AHDSR-Decay, 0-127
+Selected, 82, Envelope AHDSR-Sustain, 0-100
+Selected, 83, Envelope AHDSR-Release, 0-127
+Selected, 84, Filter AHDSR-Delay, 0-127
+Selected, 85, Filter AHDSR-Attack, 0-127
+Selected, 86, Filter AHDSR-Hold, 0-127
+Selected, 87, Filter AHDSR-Decay, 0-127
+Selected, 88, Filter AHDSR-Sustain, 0-100
+Selected, 89, Filter AHDSR-Release, 0-127
+Selected, 90, Modulation LFO Waveform, 0-127
+Selected, 91, Modulation Lfo Pulsewidth, 0-127
+Selected, 92, Modulation Lfo BPM, 0-127
+Selected, 93, Modulation Lfo BPM Multip., 0-20
+Selected, 94, Modulation Lfo Phase, 0-127
+Selected, 95, Modulation Lfo Sync To Attack, 0-1
+Selected, 96, Modulation Lfo envelope Attack to Frequency ++, 0-127
+Selected, 97, Modulation Lfo envelope Attack to Depth, 0-127
+Selected, 98, Guitar use Static Filter Envelope, 0-127
+Selected, 99, Modulation Lfo Frequency Target OSC1, 0-127
+Selected, 100, Modulation Lfo Frequency Target OSC2, 0-127
+Selected, 101, Modulation Lfo Frequency Target Sub OSC1, 0-127
+Selected, 102, Modulation Lfo Frequency Target Sub OSC2, 0-127
+Selected, 103, Modulation Lfo Frequency Target 1-4 Sync, 0-1
+Selected, 104, Modulation Lfo Pulsewidth Target 1-4 Sync, 0-1
+Selected, 105, Modulation Lfo Pulsewidth Target OSC1, 0-127
+Selected, 106, Modulation Lfo Pulsewidth Target OSC2, 0-127
+Selected, 107, Modulation Lfo Pulsewidth Target Sub OSC1, 0-127
+Selected, 108, Modulation Lfo Pulsewidth Target Sub OSC2, 0-127
+Selected, 109, Volumen LFO Waveform, 0-127
+Selected, 110, Volumen Lfo Pulsewidth, 0-127
+Selected, 111, Volumen Lfo BPM, 0-127
+Selected, 112, Volumen Lfo BPM Multip., 0-20
+Selected, 113, Volumen Lfo Phase, 0-127
+Selected, 114, Volumen Lfo Sync To Attack, 0-1
+Selected, 115, Volumen Lfo envelope Attack to Frequency ++, 0-127
+Selected, 116, Volumen Lfo envelope Attack to Depth, 0-127
+Selected, 117, Volumen Lfo Target 1-4 Sync, 0-1
+Selected, 118, Volumen Lfo Target OSC1, 0-127
+Selected, 119, Volumen Lfo Target OSC2, 0-127
+Selected, 120, Volumen Lfo Target Sub OSC1, 0-127
+Selected, 121, Volumen Lfo Target Sub OSC2, 0-127
+Selected, 122, Midi Pitchband Range, 0-23
+Selected, 123, Auto Peak Correction, 0-1
+Selected, 124, Master Clock To all Lfos, 0-1
+Selected, 125, Master Clock To MOD Lfo, 0-1
+Selected, 126, Master Clock To VOL Lfo, 0-1
+Selected, 127, Master Clock To Freq LFO, 0-1
+
+Selected + 1, 1, Lowpass Filter Freqency, 0-127
+Selected + 1, 2, Lowpass Filter Resonance, 0-127
+Selected + 1, 3, Highpass Filter Freqency, 0-127
+Selected + 1, 4, Highpass Filter Resonance, 0-127
