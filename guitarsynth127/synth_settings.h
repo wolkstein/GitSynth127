@@ -454,9 +454,9 @@ allSettings mySettings = {
                           false, //  bool       freeDataBool3;
                           false, //  bool       freeDataBool4;
                         8000.0f, //  float     freeDataFloat1;
-                           0.7f, //  float     freeDataFloat2;  
+                           0.71f, //  float     freeDataFloat2;  
                           80.0f, //  float     freeDataFloat3;
-                           0.7f, //  float     freeDataFloat4;
+                           0.71f, //  float     freeDataFloat4;
                               5, //  int32_t     freeDataInt1;
                               0, // int32_t     freeDataInt2; poti function
                               0, // int32_t     freeDataInt3;
