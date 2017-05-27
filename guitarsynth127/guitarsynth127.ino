@@ -1285,7 +1285,7 @@ void loop() {
         //Serial.println(myMidiNote.adsrState);
         // erst nach 8 sekunden betriebszeit erlaubt
         if (milli > 8000) {
-          if(myMenuWindow == 133 || myMenuWindow == 134){
+          if(myMenuWindow == 137 || myMenuWindow == 138){
             if(DEB_EEPROM) Serial.println("write eeprom settings");
             EEPROM.put(EEPROM_MAIN_SYSTEM_SETTINGS_START, mySystemSettings);
             lcd.setCursor(0, 1);
@@ -1749,7 +1749,7 @@ void showSystemBpmOnLCD(unsigned long milli) {
         lcd.printf(" | %4.1f ", mySystemBpm);
       }
     }
-    if(myMenuWindow == 133 || myMenuWindow == 134){
+    if(myMenuWindow == 137 || myMenuWindow == 138){
       lcd.setCursor(5, 1);
       lcd.printf(" | %d ", analogRead(ExPedalRead));
     }

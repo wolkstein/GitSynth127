@@ -37,7 +37,7 @@ SystemSettings mySystemSettings = {
 
 
 int myMenuWindow = 0; //presets
-int menuWindowSize = 134; // count of entrys -1 in "allSettings" 
+int menuWindowSize = 138; // count of entrys -1 in "allSettings" 
 
 float osc1hz = 0.0f; 
 float osc2hz = 0.0f;
@@ -465,7 +465,11 @@ allSettings mySettings = {
                           };
                           
 //             10 sektion 1, 29 synths,crusher, control matrix,midi envelope, osc mastervolumen, presetname
-bool hidingSettings[16+29+3+40+12+3+1+23+3+7+2] = {
+bool hidingSettings[20+29+3+40+12+3+1+23+3+7+2] = {
+                             true,
+                             true,
+                             true,
+                             true,
                              true, //presets               | on
                              true, // Filter1 Freq         | on
                              true, // Filter1 Reso         | on

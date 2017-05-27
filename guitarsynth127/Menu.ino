@@ -48,7 +48,70 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;  break;
 
 
-     case 1: // filter1 freq
+     case 1: // highcut filter freq
+
+      my_I_incrementer = updown * 50; // 50 steps
+      if(mySettings.freeDataFloat1 < 250) my_I_incrementer =  updown *10;
+      if(mySettings.freeDataFloat1 > 1000) my_I_incrementer =  updown *100;
+      if(checkIntValuesValide(my_I_incrementer, C_FILTER_FREQ_MIN+10, C_FILTER_FREQ_MAX, (int)mySettings.freeDataFloat1 + my_I_incrementer))
+        mySettings.freeDataFloat1 += my_I_incrementer;
+        
+      if(updown!=0) lowpass.frequency(mySettings.freeDataFloat1);
+      
+
+      lcd.print("HighCut Cutoff");
+      lcd.setCursor(0, 1);
+      lcd.print(mySettings.freeDataFloat1);
+      lcd.print("Hz");     
+      menuExtrButton = false;
+      
+     break;
+      
+     case 2: // highCut Q
+      my_F_incrementer = float(updown/100.0);//0.01 steps
+      mySettings.freeDataFloat2 = getFloatValuesValide(my_F_incrementer, C_FILTER_Q_MIN, C_FILTER_Q_MAX, mySettings.freeDataFloat2);
+       
+      if(updown!=0) lowpass.resonance(mySettings.freeDataFloat2);
+      lcd.print("HighCut Reso.");
+      lcd.setCursor(0, 1);
+      lcd.print(mySettings.freeDataFloat2);
+      //lcd.print("");
+      menuExtrButton = false;
+     break;
+
+
+     case 3: // highcut filter freq
+
+      my_I_incrementer = updown * 50; // 50 steps
+      if(mySettings.freeDataFloat3 < 250) my_I_incrementer =  updown *10;
+      if(mySettings.freeDataFloat3 > 1000) my_I_incrementer =  updown *100;
+      if(checkIntValuesValide(my_I_incrementer, C_FILTER_FREQ_MIN+10, C_FILTER_FREQ_MAX, (int)mySettings.freeDataFloat3 + my_I_incrementer))
+        mySettings.freeDataFloat3 += my_I_incrementer;
+        
+      if(updown!=0) highpass.frequency(mySettings.freeDataFloat3);
+      
+
+      lcd.print("LowCut Cutoff");
+      lcd.setCursor(0, 1);
+      lcd.print(mySettings.freeDataFloat3);
+      lcd.print("Hz");     
+      menuExtrButton = false;
+      
+     break;
+      
+     case 4: // LowCut Q
+      my_F_incrementer = float(updown/100.0);//0.01 steps
+      mySettings.freeDataFloat4 = getFloatValuesValide(my_F_incrementer, C_FILTER_Q_MIN, C_FILTER_Q_MAX, mySettings.freeDataFloat4);
+       
+      if(updown!=0) highpass.resonance(mySettings.freeDataFloat4);
+      lcd.print("LowCut Reso.");
+      lcd.setCursor(0, 1);
+      lcd.print(mySettings.freeDataFloat4);
+      //lcd.print("");
+      menuExtrButton = false;
+     break;
+
+     case 4 + 1: // filter1 freq
       if(mySettings.Filter1_Active_Frequenz_Tracking_Target>0){
         my_I_incrementer = updown;
         
@@ -86,7 +149,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
       
-     case 2: // filter1 Q
+     case 4 + 2: // filter1 Q
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.filter1Reso = getFloatValuesValide(my_F_incrementer, C_FILTER_Q_MIN, C_FILTER_Q_MAX, mySettings.filter1Reso);
        
@@ -97,7 +160,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       //lcd.print("");
       menuExtrButton = false;  break;
  
-     case 3: // filter1 Octave 
+     case 4 + 3: // filter1 Octave 
       my_F_incrementer = float(updown/20.0);//0.05 steps
       mySettings.filter1Octave = getFloatValuesValide( my_F_incrementer, C_FILTER_OCT_MIN, C_FILTER_OCT_MAX, mySettings.filter1Octave);
  
@@ -108,7 +171,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Octaves");
       menuExtrButton = false;  break;
       
-     case 4: // filter_1_2_blend; // 1 Modees  -1 <--> 1  -1 = full filter1 1 = full filter 2, 0 both
+     case 4 + 4: // filter_1_2_blend; // 1 Modees  -1 <--> 1  -1 = full filter1 1 = full filter 2, 0 both
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.filter_1_2_blend = getFloatValuesValide(my_F_incrementer, -0.5, 0.5, mySettings.filter_1_2_blend);
       
@@ -135,7 +198,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.printf("F1 %d<->%d F2",int(myKopfKnackerLeft*100.0), int(myKopfKnackerRight*100.0) );
       menuExtrButton = false;  break;
       
-     case 5: // f1_f2_crossover_Modulation
+     case 4 + 5: // f1_f2_crossover_Modulation
       if(updown > 0) mySettings.f1_f2_crossover_Modulation = -1.0;
       if(updown < 0) mySettings.f1_f2_crossover_Modulation = 1.0;
 
@@ -148,7 +211,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       if(mySettings.f1_f2_crossover_Modulation == -1.0) lcd.print("F1 != F2");
       menuExtrButton = false;  break;
 
-     case 6: // Filter2 Mode:  1,  1 = Lowpass, 2 = Bandpass, 3 = Highpass
+     case 4 + 6: // Filter2 Mode:  1,  1 = Lowpass, 2 = Bandpass, 3 = Highpass
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 1, 3, mySettings.filter2Mode + my_I_incrementer))
         mySettings.filter2Mode += my_I_incrementer;
@@ -164,7 +227,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      
       // filter 2
 
-     case 7: // filter2 freq
+     case 4 + 7: // filter2 freq
        if(mySettings.Filter2_Active_Frequenz_Tracking_Target>0){
         my_I_incrementer = updown;
         
@@ -197,7 +260,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
       
-     case 8: // filter2 Q
+     case 4 + 8: // filter2 Q
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.filter2Reso = getFloatValuesValide(my_F_incrementer, C_FILTER_Q_MIN, C_FILTER_Q_MAX, mySettings.filter2Reso);
        
@@ -208,7 +271,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       //lcd.print("");
       menuExtrButton = false;  break;
  
-     case 9: // filter2 Octave 
+     case 4 + 9: // filter2 Octave 
       my_F_incrementer = float(updown/20.0);//0.05 steps
       mySettings.filter2Octave = getFloatValuesValide( my_F_incrementer, C_FILTER_OCT_MIN, C_FILTER_OCT_MAX, mySettings.filter2Octave);
  
@@ -223,7 +286,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 // filter ende
 
 
-    case 10: // off
+    case 4 + 10: // off
       mySettings.sensingTreshold += updown *10;
       myAttackDetector.setTresAndFall(mySettings.sensingTreshold, mySettings.sensingFall);
       lcd.print("Gitsens Treshold");
@@ -232,7 +295,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       //lcd.print("");
       menuExtrButton = false;  break;
 
-    case 11: // Guitar Sensing Attack on
+    case 4 + 11: // Guitar Sensing Attack on
       my_I_incrementer = updown;
       if(mySettings.sensingAttack>30) my_I_incrementer = updown*5;
       if(mySettings.sensingAttack>80) my_I_incrementer = updown*10;
@@ -246,7 +309,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print("ms");
       menuExtrButton = false;  break;
       
-     case 12: // Guitar Sensing Fall on
+     case 4 + 12: // Guitar Sensing Fall on
       my_I_incrementer = updown * 5;
       if(checkIntValuesValide(my_I_incrementer, G_E_SENS_FALL_MIN, G_E_SENS_FALL_MAX, mySettings.sensingFall + my_I_incrementer))
         mySettings.sensingFall += my_I_incrementer;
@@ -259,7 +322,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print("%");
       menuExtrButton = false;  break;
       
-     case 13: // off
+     case 4 + 13: // off
       mySettings.sensingBounce += updown;
       myAttackDetector.setBounceTime(mySettings.sensingBounce);
       lcd.print("Gitsens Bonce T.");
@@ -268,7 +331,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       //lcd.print("    ");
       menuExtrButton = false;  break;
 
-     case 14: // off
+     case 4 + 14: // off
       my_I_incrementer = updown * 10; // 10 steps
       if(checkIntValuesValide(my_I_incrementer, 0, 8000, mySettings.sensingNoteOffCorner + my_I_incrementer))
         mySettings.sensingNoteOffCorner += my_I_incrementer;
@@ -281,7 +344,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       //lcd.print("    ");
       menuExtrButton = false;  break;
 
-     case 15: // on PITCH detect tershold
+     case 4 + 15: // on PITCH detect tershold
       my_I_incrementer = updown * 10; // 10 steps
       if(checkIntValuesValide(my_I_incrementer, G_P_D_TRESHOLD_MIN, G_P_D_TRESHOLD_MAX, mySettings.pitchDetectTreshold + my_I_incrementer))
         mySettings.pitchDetectTreshold += my_I_incrementer;
@@ -296,7 +359,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       //lcd.print("    ");
       menuExtrButton = false;  break;
 
-     case 16: // on PITCH detect quality
+     case 4 + 16: // on PITCH detect quality
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.pitchDetectQuality = getFloatValuesValide(my_F_incrementer, G_P_D_QUALITY_MIN, G_P_D_QUALITY_MAX, mySettings.pitchDetectQuality);
       
@@ -307,7 +370,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;  break;
 
 // SYNTHS
-     case 17: // OSC1 level
+     case 4 + 17: // OSC1 level
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.osc1_level = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.osc1_level);   
       
@@ -321,7 +384,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
       
-     case 18: // OSC1 waveform
+     case 4 + 18: // OSC1 waveform
       my_I_incrementer = updown; // 10 steps
       if(checkIntValuesValide(my_I_incrementer, 0, 15, mySettings.osc1_waveform + my_I_incrementer))
         mySettings.osc1_waveform += my_I_incrementer;
@@ -338,7 +401,7 @@ void selectMenuItemAndPrintLcd(int updown) {
         //lcd.print("    ");
       menuExtrButton = false;  break;
       
-     case 19: // OSC1 pulsewidth
+     case 4 + 19: // OSC1 pulsewidth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.osc1_pulseWidth = getFloatValuesValide(my_F_incrementer, 0.01, 1.0, mySettings.osc1_pulseWidth);
       
@@ -357,7 +420,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       }
       menuExtrButton = false;  break;
       
-     case 20: // OSC1 octave
+     case 4 + 20: // OSC1 octave
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -3, 5, mySettings.osc1_octave + my_I_incrementer))
         mySettings.osc1_octave += my_I_incrementer;
@@ -368,7 +431,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Octaves");
       menuExtrButton = false;  break;
 
-     case 21: // OSC1 note
+     case 4 + 21: // OSC1 note
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -12, 12, mySettings.osc1_note + my_I_incrementer))
         mySettings.osc1_note += my_I_incrementer;
@@ -379,7 +442,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Notes");
       menuExtrButton = false;  break;
 
-     case 22: // OSC1 detune
+     case 4 + 22: // OSC1 detune
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -12, 12, mySettings.osc1_detune + my_I_incrementer))
         mySettings.osc1_detune+= my_I_incrementer;
@@ -390,7 +453,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" x 4,99 Cents");
       menuExtrButton = false;  break;
 
-     case 23: // OSC1 Phase
+     case 4 + 23: // OSC1 Phase
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 360, mySettings.osc1_phase + my_I_incrementer))
         mySettings.osc1_phase+= my_I_incrementer;
@@ -404,7 +467,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
 
      // osc2 #####################################################
-     case 24: // OSC2 level
+     case 4 + 24: // OSC2 level
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.osc2_level = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.osc2_level);
 
@@ -418,7 +481,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
       
-     case 25: // OSC2 waveform
+     case 4 + 25: // OSC2 waveform
       my_I_incrementer = updown; // 10 steps
       if(checkIntValuesValide(my_I_incrementer, 0, 5, mySettings.osc2_waveform + my_I_incrementer))
         mySettings.osc2_waveform += my_I_incrementer;
@@ -436,7 +499,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
       
-     case 26: // OSC2 pulsewidth
+     case 4 + 26: // OSC2 pulsewidth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.osc2_pulseWidth = getFloatValuesValide(my_F_incrementer, 0.1, 1.0, mySettings.osc2_pulseWidth);
       
@@ -455,7 +518,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       
       menuExtrButton = false;  break;
       
-     case 27: // OSC2 octave
+     case 4 + 27: // OSC2 octave
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -3, 5, mySettings.osc2_octave + my_I_incrementer))
         mySettings.osc2_octave += my_I_incrementer;
@@ -466,7 +529,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Octaves");
       menuExtrButton = false;  break;
 
-     case 28: // OSC2 note
+     case 4 + 28: // OSC2 note
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -12, 12, mySettings.osc2_note + my_I_incrementer))
         mySettings.osc2_note += my_I_incrementer;
@@ -477,7 +540,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Notes");
       menuExtrButton = false;  break;
 
-     case 29: // OSC1 note
+     case 4 + 29: // OSC1 note
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -12, 12, mySettings.osc2_detune + my_I_incrementer))
         mySettings.osc2_detune+= my_I_incrementer;
@@ -488,7 +551,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" x 4,99 Cents");
       menuExtrButton = false;  break;
 
-     case 30: // OSC1 Phase
+     case 4 + 30: // OSC1 Phase
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 360, mySettings.osc2_phase + my_I_incrementer))
         mySettings.osc2_phase+= my_I_incrementer;
@@ -504,7 +567,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
       // Sub OSC1
 
-     case 31: // SubOSC1 level
+     case 4 + 31: // SubOSC1 level
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.sub_osc1_level = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.sub_osc1_level);
       
@@ -518,7 +581,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
       
-     case 32: // SubOSC1 waveform
+     case 4 + 32: // SubOSC1 waveform
       my_I_incrementer = updown; // 10 steps
       if(checkIntValuesValide(my_I_incrementer, 0, 5, mySettings.sub_osc1_waveform + my_I_incrementer))
         mySettings.sub_osc1_waveform += my_I_incrementer;
@@ -535,7 +598,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
       
-     case 33: // SubOSC1 pulsewidth
+     case 4 + 33: // SubOSC1 pulsewidth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.sub_osc1_pulseWidth = getFloatValuesValide(my_F_incrementer, 0.1, 1.0, mySettings.sub_osc1_pulseWidth);
       
@@ -553,7 +616,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       }
       menuExtrButton = false;  break;
       
-     case 34: // SubOSC1 octave
+     case 4 + 34: // SubOSC1 octave
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -3, 5, mySettings.sub_osc1_octave + my_I_incrementer))
         mySettings.sub_osc1_octave += my_I_incrementer;
@@ -564,7 +627,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Octaves");
       menuExtrButton = false;  break;
 
-     case 35: // SubOSC1 note
+     case 4 + 35: // SubOSC1 note
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -12, 12, mySettings.sub_osc1_note + my_I_incrementer))
         mySettings.sub_osc1_note += my_I_incrementer;
@@ -575,7 +638,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Notes");
       menuExtrButton = false;  break;
 
-     case 36: // SubOSC1 note
+     case 4 + 36: // SubOSC1 note
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -12, 12, mySettings.sub_osc1_detune + my_I_incrementer))
         mySettings.sub_osc1_detune+= my_I_incrementer;
@@ -586,7 +649,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" x 4,99 Cents");
       menuExtrButton = false;  break;
  
-     case 37: // SubOSC1 Phase
+     case 4 + 37: // SubOSC1 Phase
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 360, mySettings.sub_osc1_phase + my_I_incrementer))
         mySettings.sub_osc1_phase+= my_I_incrementer;
@@ -601,7 +664,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
       // Sub OSC2
 
-     case 38: // SubOSC2 level
+     case 4 + 38: // SubOSC2 level
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.sub_osc2_level = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.sub_osc2_level);
       
@@ -615,7 +678,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
      
-     case 39: // SubOSC2 waveform
+     case 4 + 39: // SubOSC2 waveform
       my_I_incrementer = updown; // 10 steps
       if(checkIntValuesValide(my_I_incrementer, 0, 5, mySettings.sub_osc2_waveform + my_I_incrementer))
         mySettings.sub_osc2_waveform += my_I_incrementer;
@@ -632,7 +695,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
       
-     case 40: // SubOSC2 pulsewidth
+     case 4 + 40: // SubOSC2 pulsewidth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.sub_osc2_pulseWidth = getFloatValuesValide(my_F_incrementer, 0.1, 1.0, mySettings.sub_osc2_pulseWidth);
       
@@ -650,7 +713,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       }
       menuExtrButton = false;  break;
       
-     case 41: // SubOSC2 octave
+     case 4 + 41: // SubOSC2 octave
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -3, 5, mySettings.sub_osc2_octave + my_I_incrementer))
         mySettings.sub_osc2_octave += my_I_incrementer;
@@ -661,7 +724,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Octaves");
       menuExtrButton = false;  break;
 
-     case 42: // SubOSC2 note
+     case 4 + 42: // SubOSC2 note
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -12, 12, mySettings.sub_osc2_note + my_I_incrementer))
         mySettings.sub_osc2_note += my_I_incrementer;
@@ -672,7 +735,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Notes");
       menuExtrButton = false;  break;
 
-     case 43: // SubOSC2 cent
+     case 4 + 43: // SubOSC2 cent
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -12, 12, mySettings.sub_osc2_detune + my_I_incrementer))
         mySettings.sub_osc2_detune+= my_I_incrementer;
@@ -683,7 +746,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" x 4,99 Cents");
       menuExtrButton = false;  break;
  
-     case 44: // SubOSC2 Phase
+     case 4 + 44: // SubOSC2 Phase
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 360, mySettings.sub_osc2_phase + my_I_incrementer))
         mySettings.sub_osc2_phase+= my_I_incrementer;
@@ -695,7 +758,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Deg.");
       menuExtrButton = false;  break;
      
-     case 45: // Noise level
+     case 4 + 45: // Noise level
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.noise_level = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.noise_level);
       
@@ -710,7 +773,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
      //  Bitcrusher
 
-     case 46: // Bitcrusher Volumen
+     case 4 + 46: // Bitcrusher Volumen
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.Crusher_Volumen = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.Crusher_Volumen);
       
@@ -724,7 +787,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
       
-     case 47: // Bitcrusher Bits
+     case 4 + 47: // Bitcrusher Bits
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 1, 16, mySettings.Crusher_Bits + my_I_incrementer))
         mySettings.Crusher_Bits+= my_I_incrementer;
@@ -736,7 +799,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Bits");
       menuExtrButton = false;  break; 
           
-     case 48: // Bitcrusher Samplerate
+     case 4 + 48: // Bitcrusher Samplerate
      
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 6, mySettings.Crusher_SampleRate + my_I_incrementer))
@@ -754,7 +817,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      // Control Matrix ##############################      
      
      // MOD LFO
-    case 49: // MOD LFO waveform
+    case 4 + 49: // MOD LFO waveform
       my_I_incrementer = updown; // 10 steps
       if(checkIntValuesValide(my_I_incrementer, 0, 11, mySettings.mod_lfo_waveform + my_I_incrementer))
         mySettings.mod_lfo_waveform += my_I_incrementer;
@@ -767,7 +830,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       //lcd.print("    ");
       menuExtrButton = false;  break;
       
-     case 50: // MOD LFO pulsewidth
+     case 4 + 50: // MOD LFO pulsewidth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.mod_lfo_pulseWidth = getFloatValuesValide(my_F_incrementer, 0.1, 1.0, mySettings.mod_lfo_pulseWidth);
       
@@ -785,7 +848,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       }
       menuExtrButton = false;  break;
       
-     case 51: // Mod Lfo Bpm
+     case 4 + 51: // Mod Lfo Bpm
       my_F_incrementer = float(updown/10.0);//0.1 steps
 
       if(mySettings.MasterClockToLfos || mySettings.MasterClockToMODLfo){
@@ -805,7 +868,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
 
-     case 52: // Mod Lfo Bpm multip
+     case 4 + 52: // Mod Lfo Bpm multip
       my_I_incrementer = updown;//
       if(checkIntValuesValide(my_I_incrementer, 0, 20, mySettings.mod_lfo_freq_bpm_multi + my_I_incrementer))
         mySettings.mod_lfo_freq_bpm_multi += my_I_incrementer;
@@ -819,7 +882,7 @@ void selectMenuItemAndPrintLcd(int updown) {
         lcd.printf("%4.1f %s",mySettings.mod_lfo_bpm, beatMultiNamesLookup[mySettings.mod_lfo_freq_bpm_multi]);
       menuExtrButton = false;  break;
 
-     case 53: // Mod LFO Phase
+     case 4 + 53: // Mod LFO Phase
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 360, mySettings.mod_lfo_phase + my_I_incrementer))
         mySettings.mod_lfo_phase+= my_I_incrementer;
@@ -831,7 +894,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Deg.");
       menuExtrButton = false;  break;
 
-     case 54: // MOD lfo Intensity T1 - T4 Sync
+     case 4 + 54: // MOD lfo Intensity T1 - T4 Sync
       lcd.print("MX M-LFO F1-F4 S");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -846,7 +909,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break; 
 
-     case 55:
+     case 4 + 55:
       my_F_incrementer = float(updown/600.0);
       
       mySettings.mod_lfo_T1_OSC1_FREQ_intensety = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.mod_lfo_T1_OSC1_FREQ_intensety);
@@ -876,7 +939,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       }
       menuExtrButton = false;  break;
 
-     case 56: // MOD LFO OSC2
+     case 4 + 56: // MOD LFO OSC2
       my_F_incrementer = float(updown/600.0);
       
       mySettings.mod_lfo_T2_OSC2_FREQ_intensety = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.mod_lfo_T2_OSC2_FREQ_intensety);
@@ -908,7 +971,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
 
 
-     case 57: // SUB1
+     case 4 + 57: // SUB1
       my_F_incrementer = float(updown/600.0);
       
       mySettings.mod_lfo_T3_SUB1_FREQ_intensety = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.mod_lfo_T3_SUB1_FREQ_intensety);
@@ -938,7 +1001,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       }
       menuExtrButton = false;  break;
 
-     case 58: // MOD LFO SUB2
+     case 4 + 58: // MOD LFO SUB2
       my_F_incrementer = float(updown/600.0);
       
       mySettings.mod_lfo_T4_SUB2_FREQ_intensety = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.mod_lfo_T4_SUB2_FREQ_intensety);
@@ -972,7 +1035,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
      /// Mod LFO PULSE
      
-     case 59: // MOD lfo Pulse Intensity T1 - T4 Sync
+     case 4 + 59: // MOD lfo Pulse Intensity T1 - T4 Sync
       lcd.print("MX M-LFO P1-P4 S");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -986,7 +1049,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       else lcd.print("Off");
       menuExtrButton = false;  break; 
 
-     case 60: // Mod Lfo Depth T1 OSC1
+     case 4 + 60: // Mod Lfo Depth T1 OSC1
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.mod_lfo_T1_OSC1_PULSE_intensety = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.mod_lfo_T1_OSC1_PULSE_intensety);
 
@@ -1005,7 +1068,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
 
-     case 61: // Vol Lfo Depth T2 OSC2
+     case 4 + 61: // Vol Lfo Depth T2 OSC2
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.mod_lfo_T2_OSC2_PULSE_intensety = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.mod_lfo_T2_OSC2_PULSE_intensety);
 
@@ -1023,7 +1086,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       else lcd.print("Off");
       menuExtrButton = false;  break;
       
-     case 62: // Mod Lfo Depth T3 SUB1
+     case 4 + 62: // Mod Lfo Depth T3 SUB1
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.mod_lfo_T3_SUB1_PULSE_intensety = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.mod_lfo_T3_SUB1_PULSE_intensety);
 
@@ -1040,7 +1103,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       else lcd.print("Off");
       menuExtrButton = false;  break;
       
-     case 63: // Mod Lfo Depth T4 SUB2
+     case 4 + 63: // Mod Lfo Depth T4 SUB2
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.mod_lfo_T4_SUB2_PULSE_intensety = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.mod_lfo_T4_SUB2_PULSE_intensety);
 
@@ -1060,7 +1123,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
      
       // auch noch für mod lfo
-     case 64: // Mod lfo sync to attack
+     case 4 + 64: // Mod lfo sync to attack
       lcd.print("MX M-LFO Syn2At");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1075,7 +1138,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;     
 
-     case 65:// Attack envelop to MODLFO Depth
+     case 4 + 65:// Attack envelop to MODLFO Depth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.mod_lfo_follow_envelope_attack = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.mod_lfo_follow_envelope_attack);
           
@@ -1086,7 +1149,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break; 
      
-     case 66:// Attack envelop to VolLFO Frequency
+     case 4 + 66:// Attack envelop to VolLFO Frequency
       my_F_incrementer = float(updown/10.0);//0.01 steps
       mySettings.envelopeFollowerAttackToMODLFOFrequenzy = getFloatValuesValide(my_F_incrementer, 0.0, 10.0, mySettings.envelopeFollowerAttackToMODLFOFrequenzy);
           
@@ -1101,7 +1164,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
 
       // Vol_LFO ####################################################
-     case 67: // Vol LFO waveform
+     case 4 + 67: // Vol LFO waveform
       my_I_incrementer = updown; // 10 steps
       if(checkIntValuesValide(my_I_incrementer, 0, 11, mySettings.vol_lfo_waveform + my_I_incrementer))
         mySettings.vol_lfo_waveform += my_I_incrementer;
@@ -1115,7 +1178,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       //lcd.print("    ");
       menuExtrButton = false;  break;
       
-     case 68: // Vol LFO pulsewidth
+     case 4 + 68: // Vol LFO pulsewidth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.vol_lfo_pulseWidth = getFloatValuesValide(my_F_incrementer, 0.1, 1.0, mySettings.vol_lfo_pulseWidth);
       
@@ -1133,7 +1196,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       }
       menuExtrButton = false;  break;
       
-     case 69: // Vol Lfo Bpm
+     case 4 + 69: // Vol Lfo Bpm
       my_F_incrementer = float(updown/10.0);//0.1 steps
       if(mySettings.MasterClockToLfos || mySettings.MasterClockToVOLLfo){
         lcd.print("MX V-LFO BPM ");
@@ -1150,7 +1213,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" BPM");
       menuExtrButton = false;  break;
 
-     case 70: // Vol Lfo Bpm multip
+     case 4 + 70: // Vol Lfo Bpm multip
       my_I_incrementer = updown;//
       if(checkIntValuesValide(my_I_incrementer, 0, 20, mySettings.vol_lfo_freq_bpm_multi + my_I_incrementer))
         mySettings.vol_lfo_freq_bpm_multi += my_I_incrementer;
@@ -1164,7 +1227,7 @@ void selectMenuItemAndPrintLcd(int updown) {
         lcd.printf("%4.1f %s",mySettings.vol_lfo_bpm, beatMultiNamesLookup[mySettings.vol_lfo_freq_bpm_multi]);
       menuExtrButton = false;  break;
 
-     case 71: // Vol LFO Phase
+     case 4 + 71: // Vol LFO Phase
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 360, mySettings.vol_lfo_phase + my_I_incrementer))
         mySettings.vol_lfo_phase+= my_I_incrementer;
@@ -1176,7 +1239,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" Deg.");
       menuExtrButton = false;  break;
 
-     case 72: // Vol lfo Intensity T1 - T4 Sync
+     case 4 + 72: // Vol lfo Intensity T1 - T4 Sync
       lcd.print("MX V-LFO T1-T4 S");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1190,7 +1253,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       else lcd.print("Off");
       menuExtrButton = false;  break; 
 
-     case 73: // Vol Lfo Depth T1 OSC1
+     case 4 + 73: // Vol Lfo Depth T1 OSC1
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.vol_lfo_T1_OSC1_intensety = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.vol_lfo_T1_OSC1_intensety);
 
@@ -1207,7 +1270,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       else lcd.print("OFF");
       menuExtrButton = false;  break;
 
-     case 74: // Vol Lfo Depth T2 OSC2
+     case 4 + 74: // Vol Lfo Depth T2 OSC2
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.vol_lfo_T2_OSC2_intensety = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.vol_lfo_T2_OSC2_intensety);
 
@@ -1224,7 +1287,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       else lcd.print("Off");
       menuExtrButton = false;  break;
       
-     case 75: // Vol Lfo Depth T3 SUBS
+     case 4 + 75: // Vol Lfo Depth T3 SUBS
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.vol_lfo_T3_SUBS_intensety = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.vol_lfo_T3_SUBS_intensety);
 
@@ -1241,7 +1304,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       else lcd.print("Off");
       menuExtrButton = false;  break;
       
-     case 76: // Vol Lfo Depth T4 NOISE
+     case 4 + 76: // Vol Lfo Depth T4 NOISE
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.vol_lfo_T4_NOISE_intensety = getFloatValuesValide(my_F_incrementer, 0.0, 1.0, mySettings.vol_lfo_T4_NOISE_intensety);
 
@@ -1258,7 +1321,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       else lcd.print("Off");
       menuExtrButton = false;  break;
       
-     case 77: // Vol lfo sync to attack
+     case 4 + 77: // Vol lfo sync to attack
       lcd.print("MX V-LFO Syn2At");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1272,7 +1335,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       else lcd.print("Off");
       menuExtrButton = false;  break;     
 
-     case 78:// Attack envelop to VolLFO Depth
+     case 4 + 78:// Attack envelop to VolLFO Depth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.vol_lfo_follow_envelope_attack = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.vol_lfo_follow_envelope_attack);
           
@@ -1283,7 +1346,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break; 
      
-     case 79:// Attack envelop to VolLFO Frequency
+     case 4 + 79:// Attack envelop to VolLFO Frequency
       my_F_incrementer = float(updown/10.0);//0.01 steps
       mySettings.envelopeFollowerAttackToVOLLFOFrequenzy = getFloatValuesValide(my_F_incrementer, 0.0, 10.0, mySettings.envelopeFollowerAttackToVOLLFOFrequenzy);
           
@@ -1297,7 +1360,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
      // ##############################################################################################################
      // FilterLFO
-     case 80: // Filter LFO waveform
+     case 4 + 80: // Filter LFO waveform
       my_I_incrementer = updown; // 10 steps
       if(checkIntValuesValide(my_I_incrementer, 0, 11, mySettings.filter_lfo_waveform + my_I_incrementer))
         mySettings.filter_lfo_waveform += my_I_incrementer;
@@ -1312,7 +1375,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
   
       
-     case 81: // Filter LFO pulsewidth
+     case 4 + 81: // Filter LFO pulsewidth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.filter_lfo_pulseWidth = getFloatValuesValide(my_F_incrementer, 0.1, 1.0, mySettings.filter_lfo_pulseWidth);
       
@@ -1331,7 +1394,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
       
-     case 82: // Filter Lfo Bpm
+     case 4 + 82: // Filter Lfo Bpm
       my_F_incrementer = float(updown/10.0);//0.1 steps
       if(mySettings.MasterClockToLfos || mySettings.MasterclockToFreqLFO){
         lcd.print("MX F-LFO BPM ");
@@ -1349,7 +1412,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
 
-     case 83: // Filter Lfo Bpm multip
+     case 4 + 83: // Filter Lfo Bpm multip
       my_I_incrementer = updown;//
       if(checkIntValuesValide(my_I_incrementer, 0, 20, mySettings.filter_lfo_freq_bpm_multi + my_I_incrementer))
         mySettings.filter_lfo_freq_bpm_multi += my_I_incrementer;
@@ -1364,7 +1427,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
 
-     case 84: // Filter LFO Phase
+     case 4 + 84: // Filter LFO Phase
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 360, mySettings.filter_lfo_phase + my_I_incrementer))
         mySettings.filter_lfo_phase+= my_I_incrementer;
@@ -1378,7 +1441,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
 
     
-     case 85: // Filter lfo sync to attack
+     case 4 + 85: // Filter lfo sync to attack
       lcd.print("MX F-LFO Syn2At");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1393,7 +1456,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break; 
 
-     case 86: // Filter Lfo Depth
+     case 4 + 86: // Filter Lfo Depth
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.filter_lfo_intensety = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.filter_lfo_intensety);
       
@@ -1407,7 +1470,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
       
      // Attack envelop to FilterLFO Frequency
-     case 87:
+     case 4 + 87:
       my_F_incrementer = float(updown/10.0);//0.01 steps
       mySettings.envelopeFollowerAttackToFilterLFOFrequenzy = getFloatValuesValide(my_F_incrementer, 0.0, 10.0, mySettings.envelopeFollowerAttackToFilterLFOFrequenzy);
           
@@ -1418,7 +1481,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;           
     
-     case 88:// Attack envelop to Filter LFO Depth
+     case 4 + 88:// Attack envelop to Filter LFO Depth
       my_F_incrementer = float(updown/100.0);//0.01 steps
       mySettings.envelopeFollowerAttackToFilterLFODepth = getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.envelopeFollowerAttackToFilterLFODepth);
           
@@ -1431,7 +1494,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
 
       // ############################## Midi Envelope
-     case 89: // attack
+     case 4 + 89: // attack
       my_I_incrementer = updown;
       if(mySettings.midi_attack>30) my_I_incrementer = updown*5;
       if(mySettings.midi_attack>80) my_I_incrementer = updown*10;
@@ -1445,7 +1508,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print("ms");
       menuExtrButton = false;  break;
       
-     case 90: // hold
+     case 4 + 90: // hold
       my_I_incrementer = updown;
       if(mySettings.midi_hold>30) my_I_incrementer = updown*5;
       if(mySettings.midi_hold>80) my_I_incrementer = updown*10;
@@ -1459,7 +1522,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print("ms");
       menuExtrButton = false;  break;
      
-     case 91: // decay
+     case 4 + 91: // decay
       my_I_incrementer = updown;
       if(mySettings.midi_decay>30) my_I_incrementer = updown*5;
       if(mySettings.midi_decay>80) my_I_incrementer = updown*10;
@@ -1473,7 +1536,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print("ms");
       menuExtrButton = false;  break;
 
-     case 92: // sustain
+     case 4 + 92: // sustain
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 100, mySettings.midi_sustain + my_I_incrementer))
         mySettings.midi_sustain += my_I_incrementer;
@@ -1484,7 +1547,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" %");
       menuExtrButton = false;  break;
 
-     case 93: // release
+     case 4 + 93: // release
       my_I_incrementer = updown;
       if(mySettings.midi_release>30) my_I_incrementer = updown*5;
       if(mySettings.midi_release>80) my_I_incrementer = updown*10;
@@ -1500,7 +1563,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
       // ############################## Filter Adsr Envelope
  
-     case 94: // delay
+     case 4 + 94: // delay
       my_I_incrementer = updown;
       if(mySettings.filter_delay>30) my_I_incrementer = updown*5;
       if(mySettings.filter_delay>80) my_I_incrementer = updown*10;
@@ -1514,7 +1577,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print("ms");
       menuExtrButton = false;  break;
            
-     case 95: // attack
+     case 4 + 95: // attack
       my_I_incrementer = updown;
       if(mySettings.filter_attack>30) my_I_incrementer = updown*5;
       if(mySettings.filter_attack>80) my_I_incrementer = updown*10;
@@ -1528,7 +1591,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print("ms");
       menuExtrButton = false;  break;
       
-     case 96: // hold
+     case 4 + 96: // hold
       my_I_incrementer = updown;
       if(mySettings.filter_hold>30) my_I_incrementer = updown*5;
       if(mySettings.filter_hold>80) my_I_incrementer = updown*10;
@@ -1542,7 +1605,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print("ms");
       menuExtrButton = false;  break;
      
-     case 97: // decay
+     case 4 + 97: // decay
       my_I_incrementer = updown;
       if(mySettings.filter_decay>30) my_I_incrementer = updown*5;
       if(mySettings.filter_decay>80) my_I_incrementer = updown*10;
@@ -1556,7 +1619,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print("ms");
       menuExtrButton = false;  break;
 
-     case 98: // sustain
+     case 4 + 98: // sustain
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 100, mySettings.filter_sustain + my_I_incrementer))
         mySettings.filter_sustain += my_I_incrementer;
@@ -1567,7 +1630,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.print(" %");
       menuExtrButton = false;  break;
 
-     case 99: // release
+     case 4 + 99: // release
       my_I_incrementer = updown;
       if(mySettings.filter_release>30) my_I_incrementer = updown*5;
       if(mySettings.filter_release>80) my_I_incrementer = updown*10;
@@ -1583,7 +1646,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       // ############# ende filter adsr
 
      // Attack envelop to Filter1
-     case 100:
+     case 4 + 100:
       my_F_incrementer = float(updown/100.0);//0.1 steps
       mySettings.filter1envelopeIntensity =getFloatValuesValide(my_F_incrementer, -1.0, 1.0, mySettings.filter1envelopeIntensity);
       
@@ -1596,7 +1659,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;  break; 
 
      // gittare use filteradsr
-     case 101: 
+     case 4 + 101: 
       lcd.print("Git. Filter Env");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1613,7 +1676,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
      
      // gittare filteradsr static velocity
-     case 102: 
+     case 4 + 102: 
       lcd.print("Git u.Static Vel");
       lcd.setCursor(0, 1);
       my_F_incrementer = float(updown/100.0);//0.1 steps
@@ -1627,7 +1690,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
         
      // gittare use envelop adsr
-     case 103: 
+     case 4 + 103: 
       lcd.print("Git use Env ADSR");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1643,7 +1706,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
       
-     case 104: // Midi Pitchband range
+     case 4 + 104: // Midi Pitchband range
       my_I_incrementer = updown;
       
       if(checkIntValuesValide(my_I_incrementer, 1, 24, mySettings.midi_pichbandrange + my_I_incrementer))
@@ -1657,7 +1720,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
 
       // ######################### masterclock sync
-     case 105: // sync all together
+     case 4 + 105: // sync all together
       lcd.print("Syc A-LFOS CLOCK");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1674,7 +1737,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
 
-     case 106:
+     case 4 + 106:
       lcd.print("CLOCK Syc M-LFO");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1691,7 +1754,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
 
-     case 107:
+     case 4 + 107:
       lcd.print("CLOCK Syc V-LFO");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1708,7 +1771,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
       
-     case 108:
+     case 4 + 108:
       lcd.print("CLOCK Syc F-LFO");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1726,7 +1789,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       break;
          
       // ############################## OSC MAster Volumen
-     case 109: // OSC Master Volumen
+     case 4 + 109: // OSC Master Volumen
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1747,7 +1810,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
       break;
 
-     case 110:
+     case 4 + 110:
       lcd.print("Peak OSC Master");
       lcd.setCursor(0, 1);
       if(updown > 0){
@@ -1764,7 +1827,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
 
       // ############################## MIXER SECTION ############################################
-     case 111: // Mixer Instrument Input To Synth Frequency - and Envelope - tracking, Volumen
+     case 4 + 111: // Mixer Instrument Input To Synth Frequency - and Envelope - tracking, Volumen
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1781,7 +1844,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
  
-     case 112: // Mixer Usb Input 1 To Synth Frequency - and Envelope - tracking, Volumen
+     case 4 + 112: // Mixer Usb Input 1 To Synth Frequency - and Envelope - tracking, Volumen
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1798,7 +1861,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
 
-     case 113: // Synth to output 1
+     case 4 + 113: // Synth to output 1
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1815,7 +1878,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
  
-     case 114: // Synth to output 2
+     case 4 + 114: // Synth to output 2
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1832,7 +1895,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
 
-     case 115: // Synth to Usb output 1
+     case 4 + 115: // Synth to Usb output 1
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1849,7 +1912,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
  
-     case 116: // Synth to Usb output 2
+     case 4 + 116: // Synth to Usb output 2
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1867,7 +1930,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
 
 
-     case 117: // Instrument to Usb output 1
+     case 4 + 117: // Instrument to Usb output 1
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1884,7 +1947,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
  
-     case 118: // Instrument to Usb output 2
+     case 4 + 118: // Instrument to Usb output 2
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1904,7 +1967,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      // ############## Usb Input Output Matrix #######################################
 
 
-     case 119: // Usb Input 1 to output 1
+     case 4 + 119: // Usb Input 1 to output 1
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1921,7 +1984,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
  
-     case 120: // Usb Input 1 to output 2
+     case 4 + 120: // Usb Input 1 to output 2
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1939,7 +2002,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
 
 
-     case 121: // Usb Input 2 to output 1
+     case 4 + 121: // Usb Input 2 to output 1
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1956,7 +2019,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;
      break;
  
-     case 122: // Usb Input 2 to output 2
+     case 4 + 122: // Usb Input 2 to output 2
       
       my_F_incrementer = float(updown)/100.0;//0.1 steps
       
@@ -1975,7 +2038,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 
 
      // ################### Misk ########################################
-     case 123: // Filter1 Dynamic Frequency
+     case 4 + 123: // Filter1 Dynamic Frequency
       my_I_incrementer = updown;
       
       if(checkIntValuesValide(my_I_incrementer, 0, 4, mySettings.Filter1_Active_Frequenz_Tracking_Target + my_I_incrementer))
@@ -2001,7 +2064,7 @@ void selectMenuItemAndPrintLcd(int updown) {
          
      break;
      
-     case 124: // Filter2 Dynamic Frequency
+     case 4 + 124: // Filter2 Dynamic Frequency
       my_I_incrementer = updown;
       
       if(checkIntValuesValide(my_I_incrementer, 0, 4, mySettings.Filter2_Active_Frequenz_Tracking_Target + my_I_incrementer))
@@ -2026,7 +2089,7 @@ void selectMenuItemAndPrintLcd(int updown) {
         using_Filter2_Active_Frequenz_Tracking = false;       
      break;
             
-     case 125: // Midi channel
+     case 4 + 125: // Midi channel
       my_I_incrementer = updown;
       
       if(checkIntValuesValide(my_I_incrementer, 1, 16, mySettings.midiChannel + my_I_incrementer))
@@ -2039,7 +2102,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       break;
 
 
-     case 126: // Function Btn Function
+     case 4 + 126: // Function Btn Function
      
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 3, mySettings.functionBtnFunction + my_I_incrementer))
@@ -2063,7 +2126,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       }
      break;
 
-     case 127: // Expression Pedal Function
+     case 4 + 127: // Expression Pedal Function
      
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 22, mySettings.expressionPedalFunction + my_I_incrementer))
@@ -2075,7 +2138,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;   
      break;
 
-     case 128: // EXp  Pedal Min
+     case 4 + 128: // EXp  Pedal Min
        my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 127, mySettings.freeDataInt3 + my_I_incrementer))
         mySettings.freeDataInt3 += my_I_incrementer;
@@ -2086,7 +2149,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;      
      break;
 
-     case 129: // EXp  Pedal Max
+     case 4 + 129: // EXp  Pedal Max
         my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, -127, 0, mySettings.freeDataInt4 + my_I_incrementer))
         mySettings.freeDataInt4 += my_I_incrementer;
@@ -2097,7 +2160,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;     
      break;
 
-     case 130: // Poti Function
+     case 4 + 130: // Poti Function
      
       my_I_incrementer = updown;
       if(checkIntValuesValide(my_I_incrementer, 0, 22, mySettings.freeDataInt2 + my_I_incrementer))
@@ -2109,7 +2172,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;   
      break;
      
-//     case 127: // Bypass Mix da das mcp42xx scheiße arbeitet erst mal nicht hier
+//     case 4 + 127: // Bypass Mix da das mcp42xx scheiße arbeitet erst mal nicht hier
 //     
 //      my_I_incrementer = updown;
 //      if (checkIntValuesValide(my_I_incrementer, 0, 255, (int)mySettings.instrumentBypassMix + my_I_incrementer)){
@@ -2130,7 +2193,7 @@ void selectMenuItemAndPrintLcd(int updown) {
 //      menuExtrButton = false;   
 //     break;
 
-     case 131: // input gain
+     case 4 + 131: // input gain
      
       my_I_incrementer = updown;
       if (checkIntValuesValide(my_I_incrementer, 0, 15, mySettings.freeDataInt1 + my_I_incrementer)){
@@ -2148,7 +2211,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;   
      break;  
       
-     case 132: // edit preset name
+     case 4 + 132: // edit preset name
       menuExtrButton = true;
       menuExtra_I_Pos += updown;
       if(menuExtra_I_Pos > 71) menuExtra_I_Pos = 0;
@@ -2173,7 +2236,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       
      break;
 
-     case 133: // System EXP Pedal Min
+     case 4 + 133: // System EXP Pedal Min
      
       my_I_incrementer = updown;
       if (checkIntValuesValide(my_I_incrementer, 0, 1000, mySystemSettings.Expression_Min + my_I_incrementer)){
@@ -2190,7 +2253,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       menuExtrButton = false;   
      break; 
      
-     case 134: // System EXP Pedal Max
+     case 4 + 134: // System EXP Pedal Max
      
       my_I_incrementer = updown;
       if (checkIntValuesValide(my_I_incrementer, 0, 1000, mySystemSettings.Expression_Max + my_I_incrementer)){
