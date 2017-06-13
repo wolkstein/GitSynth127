@@ -29,7 +29,13 @@ void selectMenuItemAndPrintLcd(int updown) {
 
    switch(myMenuWindow) {
     case 0:
-      lcd.print("Presets");
+      if( mySystemSettings.switchLivePresets){
+        lcd.printf("Live-%d",live_preset_position+1);
+      }
+      else
+      {
+        lcd.print("Presets"); 
+      }
       lcd.setCursor(0, 1);
 
       current_preset += updown;
@@ -45,7 +51,10 @@ void selectMenuItemAndPrintLcd(int updown) {
       lcd.setCursor(0, 1);
       lcd.printf("%d %s",mySettings.preset, mySettings.presetName ); 
       
-      menuExtrButton = false;  break;
+      menuExtrButton = false;
+      myMidiNote.midiPitch = 0;
+
+     break;
 
 
      case 1: // highcut filter freq
@@ -2212,6 +2221,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;  
       
      case 4 + 132: // edit preset name
+      menuExtrButtonLenght = 8;
       menuExtrButton = true;
       menuExtra_I_Pos += updown;
       if(menuExtra_I_Pos > 71) menuExtra_I_Pos = 0;
@@ -2271,18 +2281,51 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
 
      case 4 + 135: // System Use Live-Presets
-      lcd.print("SYSTEM U Live Pr.");
+      lcd.print("SYS Live-Preset");
       lcd.setCursor(0, 1);
- 
-      if( mySystemSettings.switchLivePresets) lcd.printf("ON");
-      else lcd.printf("OFF");
+      
+      if(updown > 0){
+        for(int i = 0;i<30;i++){
+          if( mySystemSettings.LivePresets[i] >0){
+            mySystemSettings.switchLivePresets = true;
+            break;
+          }
+        }
+      }
+      
+      if(updown < 0) mySystemSettings.switchLivePresets = false;
+      
+      
+      if( mySystemSettings.switchLivePresets){
+        lcd.printf("ON");
+      }
+      else {
+        lcd.printf("OFF");
+      }
       menuExtrButton = false;    
      break;
      
      case 4 + 136: // System edit Live-Presets
-      lcd.print("SYSTEM E Live Pr");
+      lcd.print("SYS Edit Live-Pr");
+
+      menuExtrButtonLenght = 29;
+      menuExtrButton = true;
+
+      my_I_incrementer = updown;
+      if (checkIntValuesValide(my_I_incrementer, 0, 127, mySystemSettings.LivePresets[menuExtrButtonPos] + my_I_incrementer)){
+        
+        mySystemSettings.LivePresets[menuExtrButtonPos] += my_I_incrementer;
+      }
+      //Serial.printf("Pos:, %d ,Value %d\n",menuExtrButtonPos, mySystemSettings.LivePresets[menuExtrButtonPos]);
+      
       lcd.setCursor(0, 1);
-      menuExtrButton = false;    
+      if(mySystemSettings.LivePresets[menuExtrButtonPos] == 0 ){
+        lcd.printf("Pos:%d, Pres:OFF", menuExtrButtonPos + 1); 
+      }
+      else
+      {
+        lcd.printf("Pos:%d, Pres:%d", menuExtrButtonPos + 1,  mySystemSettings.LivePresets[menuExtrButtonPos]);
+      }
      break;
      
      case 4 + 137: // expand System menue

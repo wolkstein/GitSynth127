@@ -14,11 +14,11 @@ struct MainSystemInfo
 };
 
 MainSystemInfo myMainSystemInfo = {
-  130617, // check this against eeprom revision change
+  140617, // check this against eeprom revision change
   7777 // if this is not in eeprom we will write all settings in the eeprom (first time)
 };
 
-uint32_t MainSystemRevision = 130617; // change this if SystemSettings are changed
+uint32_t MainSystemRevision = 140617; // change this if SystemSettings are changed
 
 struct SystemSettings
 {
@@ -26,7 +26,6 @@ struct SystemSettings
   uint16_t Expression_Min;
   bool switchLivePresets;
   int8_t LivePresets[30]; // 0 lookup table für die Live Presets
-  bool LivePresetInUse[30]; // 0 schaltet die lookups frei und weiter
   bool expandSystemSettings;
 };
 
@@ -34,8 +33,7 @@ SystemSettings mySystemSettings = {
         740, // Expression_Max
         50,  // Expression_Min
         false, // use livepresets order
-        {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29}, // int8_t LivePresets[30]; // 0 lookup table für die Live Presets
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, // int8_t LivePresets[30]; // 0 lookup table für die Live Presets
         true    
 };
 

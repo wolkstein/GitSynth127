@@ -262,6 +262,7 @@ unsigned long countAt3 = 0;         // when count changed
 bool taptempoOnGuitarOrKeyboard = false;
 
 bool menuExtrButton = false;
+uint8_t menuExtrButtonLenght = 8;
 uint8_t menuExtrButtonPos = 0;
 int8_t menuExtra_I_Pos = 0;
 
@@ -351,6 +352,7 @@ unsigned long shortestround = 1000000;
 unsigned long oldlongshortVal = 0;
 
 uint8_t current_preset = 1;
+int8_t live_preset_position = 1;
 const int myInputLineIn = AUDIO_INPUT_LINEIN;
 
 // midi clock vars use in midi and bottom of this file void checksystemonmidiclock()
@@ -467,8 +469,7 @@ void setup() {
       if(DEB_EEPROM) Serial.println(mySystemSettings.Expression_Max);
       for(int i = 0; i < 30; i++){
         if(DEB_EEPROM) Serial.printf("LivePresets pre: %d\n",mySystemSettings.LivePresets[i]);
-        mySystemSettings.LivePresets[i] = i;
-        mySystemSettings.LivePresetInUse[i] = false;
+        mySystemSettings.LivePresets[i] = 0;
         if(DEB_EEPROM) Serial.printf("LivePresets post: %d\n",mySystemSettings.LivePresets[i]);   
       }
       mySystemSettings.switchLivePresets = false;
@@ -484,11 +485,7 @@ void setup() {
     if(DEB_EEPROM){
       Serial.printf("EEprom revision: %d\n", myMainSystemInfo.revision);
       Serial.printf("System Settings ExpMax: %d\n", mySystemSettings.Expression_Max);
-      Serial.printf("System Settings ExpMin: %d\n", mySystemSettings.Expression_Min);
-
-      Serial.println(   hidingSettings[138]);
-      //hidingSettings[137] = false; 
-      //hidingSettings[138] = false; 
+      Serial.printf("System Settings ExpMin: %d\n", mySystemSettings.Expression_Min); 
     }
   
 
@@ -504,8 +501,16 @@ void setup() {
   //clear and create new table
   //edb_deleteAll();  // only one time for an new sd card or changing data structure
   //edb_createRecords(127); // only one time for an new sd card
-
-  edb_selectPreset(1);
+  
+  int first_live_preset = 0;
+  for(int i = 0;i<=29;i++){
+    if( mySystemSettings.LivePresets[i] >0){
+      first_live_preset = i;
+      break;
+    }
+  }  
+  if( mySystemSettings.switchLivePresets) edb_selectPreset(mySystemSettings.LivePresets[first_live_preset]);
+  else edb_selectPreset(1);
 
   setSettings(true);
   calculateFilterMixer();
@@ -1299,10 +1304,14 @@ void loop() {
 
       if (menuExtrButton) {
         menuExtrButtonPos += 1;
-        if (menuExtrButtonPos > 8) menuExtrButtonPos = 0;
+        if (menuExtrButtonPos > menuExtrButtonLenght) menuExtrButtonPos = 0;
 
-        //Serial.printf("Menu Extrafunktion, Poiter at: %d\n",menuExtrButtonPos);
+        Serial.printf("Menu Extrafunktion, Poiter at: %d,menuExtrButtonLenght: %d \n",menuExtrButtonPos,menuExtrButtonLenght);
         selectMenuItemAndPrintLcd(0);
+      }
+      else
+      {
+        menuExtrButtonPos = 0;
       }
 
 
@@ -1386,13 +1395,42 @@ void loop() {
   
   if (PresetUpBtn.update()) {
     if (PresetUpBtn.fallingEdge()) {
-      Serial.printf("Preset Button Up: %d\n",current_preset + 1); 
-      current_preset +=1;
-      if(current_preset > 127)current_preset = 1; // 127 im fertig zustand zum testen 5
-      if(current_preset < 1)current_preset = 127;
+      if( mySystemSettings.switchLivePresets){
+        //Serial.printf("On Live Presets- Preset Button Up: %d\n",live_preset_position);
+        bool foundafterposition = false;
+        for(int i = live_preset_position+1;i<30;i++){
+          if( mySystemSettings.LivePresets[i] >0){
+            live_preset_position = i;
+            foundafterposition = true;
+            break;
+          }
+        }
+        if(!foundafterposition){ // check table befor last entry
+         for(int i = 0;i<=live_preset_position;i++){
+            if( mySystemSettings.LivePresets[i] >0){
+              live_preset_position = i;
+              break;
+            }
+          }      
+        }
+        if(live_preset_position > 29) live_preset_position = 0;
+        if(live_preset_position < 0) live_preset_position = 29;
+        current_preset = mySystemSettings.LivePresets[live_preset_position];
+        //Serial.printf("found next preset on position: %d, preset nr.: %d\n", live_preset_position,current_preset);
+      }
+      else
+      {
+        //Serial.printf("Preset Button Up: %d\n",current_preset + 1);
+        current_preset +=1;
+        if(current_preset > 127)current_preset = 1; // 127 im fertig zustand zum testen 5
+        if(current_preset < 1)current_preset = 127;
+      }
+
     
       AudioNoInterrupts();
       edb_selectPreset(current_preset);
+      //Serial.printf("EDB load preset Nr.: %d\n",current_preset);
+      myMidiNote.midiPitch = 0;
       AudioInterrupts();
       setSettings(false);
       calculateFilterMixer();
@@ -1404,14 +1442,41 @@ void loop() {
 
   if (PresetDownBtn.update()) {
     if (PresetDownBtn.fallingEdge()) {
+
+      if( mySystemSettings.switchLivePresets){
+        //Serial.printf("On Live Presets- Preset Button Down: %d\n",live_preset_position);
+        bool foundafterposition = false;
+        for(int i = live_preset_position-1;i>=0;i--){
+          if( mySystemSettings.LivePresets[i] >0){
+            live_preset_position = i;
+            foundafterposition = true;
+            break;
+          }
+        }
+        if(!foundafterposition){ // check table befor last entry
+         for(int i = 29;i>=live_preset_position;i--){
+            if( mySystemSettings.LivePresets[i] >0){
+              live_preset_position = i;
+              break;
+            }
+          }         
+        }
+        if(live_preset_position > 29) live_preset_position = 0;
+        if(live_preset_position < 0) live_preset_position = 29;
+        current_preset = mySystemSettings.LivePresets[live_preset_position];
+        //Serial.printf("found next preset on position: %d, preset nr.: %d\n", live_preset_position,current_preset); 
+      }
+      else
+      {
+        //Serial.printf("Preset Button Down: %d\n",current_preset - 1); 
+        current_preset -=1;
+        if(current_preset > 127)current_preset = 1; // 127 im fertig zustand zum testen 5
+        if(current_preset < 1)current_preset = 127;
+      }
       
-      Serial.printf("Preset Button Down: %d\n",current_preset - 1); 
-      current_preset -=1;
-      if(current_preset > 127)current_preset = 1; // 127 im fertig zustand zum testen 5
-      if(current_preset < 1)current_preset = 127;
-    
       AudioNoInterrupts();
       edb_selectPreset(current_preset);
+      myMidiNote.midiPitch = 0;
       AudioInterrupts();
       setSettings(false);
       calculateFilterMixer();

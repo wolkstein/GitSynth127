@@ -20,6 +20,7 @@ void OnProgramChange(byte channel, byte program){
 
   AudioNoInterrupts();
   edb_selectPreset(current_preset);
+  myMidiNote.midiPitch = 0;
   AudioInterrupts();
   setSettings(false);
   calculateFilterMixer();
