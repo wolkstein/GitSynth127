@@ -720,7 +720,7 @@ void OnControlChange(byte channel, byte control, byte value){
 
     case 36: // OSC1 WaveForm
     
-        if(value >15){ // OSC 1 + 10 abetarys
+        if(value >22){ // OSC 1 + 10 abetarys
           if(DEBUG_MIDI_INPUT) Serial.printf("OSC1 WaveForm to high value: %d\n",value);
         }
         else

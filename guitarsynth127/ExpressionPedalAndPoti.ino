@@ -753,7 +753,7 @@ void mapExpressionPedal( byte control, int value, int16_t raw, int16_t floorvalu
 
     case 36: // OSC1 WaveForm
     
-        if(value >15){ // OSC 1 + 10 abetarys
+        if(value >22){ // OSC 1 + 10 abetarys
           if(DEBUG_EXPRESSION_PEDAL) Serial.printf("OSC1 WaveForm to high value: %d\n",value);
         }
         else

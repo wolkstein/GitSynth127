@@ -14,30 +14,35 @@ struct MainSystemInfo
 };
 
 MainSystemInfo myMainSystemInfo = {
-  250517, // check this against eeprom revision change
+  130617, // check this against eeprom revision change
   7777 // if this is not in eeprom we will write all settings in the eeprom (first time)
 };
 
-uint32_t MainSystemRevision = 250517; // change this if SystemSettings are changed
+uint32_t MainSystemRevision = 130617; // change this if SystemSettings are changed
 
 struct SystemSettings
 {
   uint16_t Expression_Max;
   uint16_t Expression_Min;
-//  bool switchLivePresets;
-//  int8_t LivePresets[30]; // 0 lookup table für die Live Presets
-//  bool LivePresetInUse[30]; // 0 schaltet die lookups frei und weiter  
+  bool switchLivePresets;
+  int8_t LivePresets[30]; // 0 lookup table für die Live Presets
+  bool LivePresetInUse[30]; // 0 schaltet die lookups frei und weiter
+  bool expandSystemSettings;
 };
 
 SystemSettings mySystemSettings = {
         740, // Expression_Max
         50,  // Expression_Min
+        false, // use livepresets order
+        {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29}, // int8_t LivePresets[30]; // 0 lookup table für die Live Presets
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        true    
 };
 
 
 
 int myMenuWindow = 0; //presets
-int menuWindowSize = 138; // count of entrys -1 in "allSettings" 
+int menuWindowSize = 141; // count of entrys -1 in "allSettings" 
 
 float osc1hz = 0.0f; 
 float osc2hz = 0.0f;
@@ -426,7 +431,7 @@ allSettings mySettings = {
                            false, // bool MasterClockToVOLLfo; // 0 sync Vol Lfo
                            false, // bool MasterclockToFreqLFO; // 0 sync Freq Lfo
 
-                           false, // bool switchLivePresets; // 0 auswählen ob die presetreihenvolge der Liveauswahl volgt
+                           false, // bool switchLivePresets; // 0 auswählen ob die presetreihenvolge der Liveauswahl folgt
                            {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29}, // int8_t LivePresets[30]; // 0 lookup table für die Live Presets
                            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}, //bool LivePresetInUse[30]; // 0 schaltet die lookups frei und weiter
                           
@@ -465,7 +470,7 @@ allSettings mySettings = {
                           };
                           
 //             10 sektion 1, 29 synths,crusher, control matrix,midi envelope, osc mastervolumen, presetname
-bool hidingSettings[20+29+3+40+12+3+1+23+3+7+2] = {
+bool hidingSettings[143] = {
                              true,
                              true,
                              true,
@@ -614,13 +619,13 @@ bool hidingSettings[20+29+3+40+12+3+1+23+3+7+2] = {
                              true,
                              true,
                              true,
-                             true,
-                             true,
-                             false,
-                             false,
-                             false,                        
-                             // preset name
-                            false // store the presetname not used in menu                                                      
+                             // system
+                             true, // EXP- Min            (hidingSettings[137])
+                             true, // Exp- Max            (hidingSettings[138])
+                             true, // Use Live-Presets    (hidingSettings[139])
+                             true, // edit Live-Presets        (hidingSettings[140])
+                             true, // expand System menue
+                             false // last unused value                                         
                            };
                            
 bool hideSettings = true;// einstellen ob unbenutzte gezeigt werden sollen

@@ -1,3 +1,4 @@
+
 /*
    GitSynth by Michael Wolkstein copyright 2017
 
@@ -76,7 +77,7 @@
 #define DEB_FUNCTION_BTN false
 #define DEB_TOGGLE_SWITCH false
 #define DEB_EXTRA_PITCH false
-#define DEB_EEPROM false
+#define DEB_EEPROM true
 
 #include <SerialFlash.h>
 #include <Audio.h>
@@ -128,7 +129,7 @@ struct myOSCWaveTable {
   int16_t const* table;
 };
 
-#define OSC_TABLE_NUM 10 // 
+#define OSC_TABLE_NUM 17 // 
 
 myOSCWaveTable akwfOSCWaveTables[OSC_TABLE_NUM] {
   AKWF_bitreduced_0001,
@@ -140,7 +141,15 @@ myOSCWaveTable akwfOSCWaveTables[OSC_TABLE_NUM] {
   AKWF_theremin_0007,
   AKWF_theremin_0008,
   AKWF_eorgan_0001,
-  AKWF_eorgan_0021
+  AKWF_eorgan_0021,
+  
+  AKWF_blended_0076,
+  AKWF_blended_0077,
+  AKWF_distorted_0043,
+  AKWF_piano_0001,
+  AKWF_clarinett_0001,
+  AKWF_pluckalgo_0005,
+  AKWF_0054
 };
 
 
@@ -447,9 +456,27 @@ void setup() {
       EEPROM.put(EEPROM_MAIN_SYSTEM_INFO_START, myMainSystemInfo);
       EEPROM.put(EEPROM_MAIN_SYSTEM_SETTINGS_START, mySystemSettings);
     }
+    
     if(myMainSystemInfo.revision != MainSystemRevision){
       if(DEB_EEPROM) Serial.println("need eeprom update, eeprom rev has changed");
       // here code to migrate the System settings if needed
+      
+      /// begin of 130617 migration code
+      EEPROM.get( EEPROM_MAIN_SYSTEM_SETTINGS_START, mySystemSettings); // get old values
+      if(DEB_EEPROM) Serial.println(mySystemSettings.Expression_Min); // check if it is valid
+      if(DEB_EEPROM) Serial.println(mySystemSettings.Expression_Max);
+      for(int i = 0; i < 30; i++){
+        if(DEB_EEPROM) Serial.printf("LivePresets pre: %d\n",mySystemSettings.LivePresets[i]);
+        mySystemSettings.LivePresets[i] = i;
+        mySystemSettings.LivePresetInUse[i] = false;
+        if(DEB_EEPROM) Serial.printf("LivePresets post: %d\n",mySystemSettings.LivePresets[i]);   
+      }
+      mySystemSettings.switchLivePresets = false;
+      mySystemSettings.expandSystemSettings = true;
+      myMainSystemInfo.revision = MainSystemRevision;
+      EEPROM.put(EEPROM_MAIN_SYSTEM_INFO_START, myMainSystemInfo);
+      EEPROM.put(EEPROM_MAIN_SYSTEM_SETTINGS_START, mySystemSettings);
+      /// end of 130617 migration code
       
     }
     
@@ -458,6 +485,10 @@ void setup() {
       Serial.printf("EEprom revision: %d\n", myMainSystemInfo.revision);
       Serial.printf("System Settings ExpMax: %d\n", mySystemSettings.Expression_Max);
       Serial.printf("System Settings ExpMin: %d\n", mySystemSettings.Expression_Min);
+
+      Serial.println(   hidingSettings[138]);
+      //hidingSettings[137] = false; 
+      //hidingSettings[138] = false; 
     }
   
 
@@ -1285,11 +1316,11 @@ void loop() {
         //Serial.println(myMidiNote.adsrState);
         // erst nach 8 sekunden betriebszeit erlaubt
         if (milli > 8000) {
-          if(myMenuWindow == 137 || myMenuWindow == 138){
+          if(/*myMenuWindow == 137 || myMenuWindow == 138 || */myMenuWindow == 141 ){
             if(DEB_EEPROM) Serial.println("write eeprom settings");
             EEPROM.put(EEPROM_MAIN_SYSTEM_SETTINGS_START, mySystemSettings);
             lcd.setCursor(0, 1);
-            lcd.printf("Save System");          
+            lcd.printf("Save System: OK");          
           }
           else{
             if (myMidiNote.adsrState == 0) StartStopMidiNote( true, milli, 100, 50, 0);
@@ -1355,7 +1386,7 @@ void loop() {
   
   if (PresetUpBtn.update()) {
     if (PresetUpBtn.fallingEdge()) {
-      Serial.printf("Preset Button Up: %d, Program: %S ",current_preset + 1); 
+      Serial.printf("Preset Button Up: %d\n",current_preset + 1); 
       current_preset +=1;
       if(current_preset > 127)current_preset = 1; // 127 im fertig zustand zum testen 5
       if(current_preset < 1)current_preset = 127;
@@ -1374,7 +1405,7 @@ void loop() {
   if (PresetDownBtn.update()) {
     if (PresetDownBtn.fallingEdge()) {
       
-      Serial.printf("Preset Button Down: %d, Program: %S ",current_preset - 1); 
+      Serial.printf("Preset Button Down: %d\n",current_preset - 1); 
       current_preset -=1;
       if(current_preset > 127)current_preset = 1; // 127 im fertig zustand zum testen 5
       if(current_preset < 1)current_preset = 127;

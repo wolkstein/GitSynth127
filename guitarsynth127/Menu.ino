@@ -386,7 +386,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       
      case 4 + 18: // OSC1 waveform
       my_I_incrementer = updown; // 10 steps
-      if(checkIntValuesValide(my_I_incrementer, 0, 15, mySettings.osc1_waveform + my_I_incrementer))
+      if(checkIntValuesValide(my_I_incrementer, 0, 22, mySettings.osc1_waveform + my_I_incrementer))
         mySettings.osc1_waveform += my_I_incrementer;
         
       if(updown!=0 && mySettings.osc1_waveform > 5) selectABTWaveTableOSC1( mySettings.osc1_waveform -6);
@@ -2268,8 +2268,47 @@ void selectMenuItemAndPrintLcd(int updown) {
          
       lcd.printf("%d ", mySystemSettings.Expression_Max);
       menuExtrButton = false;   
-     break; 
+     break;
+
+     case 4 + 135: // System Use Live-Presets
+      lcd.print("SYSTEM U Live Pr.");
+      lcd.setCursor(0, 1);
+ 
+      if( mySystemSettings.switchLivePresets) lcd.printf("ON");
+      else lcd.printf("OFF");
+      menuExtrButton = false;    
+     break;
      
+     case 4 + 136: // System edit Live-Presets
+      lcd.print("SYSTEM E Live Pr");
+      lcd.setCursor(0, 1);
+      menuExtrButton = false;    
+     break;
+     
+     case 4 + 137: // expand System menue
+      lcd.print("SYS Menu: ");
+      if(updown > 0) mySystemSettings.expandSystemSettings = true;
+      if(updown < 0) mySystemSettings.expandSystemSettings = false;
+      //lcd.setCursor(0, 1);
+      
+      if(mySystemSettings.expandSystemSettings){
+        hidingSettings[137] = true; 
+        hidingSettings[138] = true;
+        hidingSettings[139] = true; 
+        hidingSettings[140] = true;  
+        lcd.printf("ON");
+      }
+      else{
+        hidingSettings[137] = false; 
+        hidingSettings[138] = false;
+        hidingSettings[139] = false; 
+        hidingSettings[140] = false; 
+        lcd.printf("OFF");
+      }
+      lcd.setCursor(0, 1);
+      lcd.printf("Or save System");
+      menuExtrButton = false;
+     break;     
    }
   return;
 }
