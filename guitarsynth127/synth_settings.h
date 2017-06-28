@@ -262,6 +262,29 @@ struct allSettings
   int32_t     freeDataInt2; // Poti Function
   int32_t     freeDataInt3; // Exp Pedal Min-Mapping
   int32_t     freeDataInt4; // Exp pedal Max-Mapping // Da dies in den default settings auf 0 steht rechnen wir über all +127
+
+  uint16_t  delay1_0Time;
+  uint16_t  delay1_1Time;
+  uint16_t  delay1_2Time;
+  uint16_t  delay1_3Time;
+
+  float delay1_EffectDryMixer;
+  float delay1_EffectWetMixer;
+  float delay1_FeedbackMixInput;
+  float delay1_FeedbackMixOutput;
+
+  float chorus1_EffectDryMixer;
+  float chorus1_EffectWetMixer;
+  int16_t chorus1_length;
+  int16_t chorus1_n_chorus;
+
+     // short *delayline,int d_length,int delay_offset,int d_depth,float delay_rate)
+  float flange1_EffectDryMixer;
+  float flange1_EffectWetMixer;
+  int16_t flange1_d_length;
+  int16_t flange1_delay_offset;
+  int16_t flange1_d_depth;
+  float flange1_delay_rate;
 } ;
 
 // Init Defaults
@@ -463,10 +486,35 @@ allSettings mySettings = {
                               5, //  int32_t     freeDataInt1;
                               0, // int32_t     freeDataInt2; poti function
                               0, // int32_t     freeDataInt3;
-                              0  // int32_t     freeDataInt4;
-                             
+                              0,  // int32_t     freeDataInt4;
+
+
+                              0, //   uint16_t  delay1_0Time;
+                              0, //   uint16_t  delay1_1Time;
+                              0, //   uint16_t  delay1_2Time;
+                              0, //   uint16_t  delay1_3Time;
+                              
+                           1.0f, //  float delay1_EffectDryMixer;
+                           0.0f, //  float delay1_EffectWetMixer;
+                           0.0f, //  float delay1_FeedbackMixInput;
+                           0.0f, //  float delay1_FeedbackMixOutput;
+                              
+                           1.0f, //  float chorus1_EffectDryMixer;
+                           0.0f, //  float chorus1_EffectWetMixer;
+                              0, //  int16_t chorus1_length;
+                              0, //  int16_t chorus1_n_chorus;
+                              
+                           1.0f, //  float flange1_EffectDryMixer;
+                           0.0f, //  float flange1_EffectWetMixer;
+                              0, //  int16_t flange1_d_length;
+                              0, //  int16_t flange1_delay_offset;
+                              0, //  int16_t flange1_d_depth;
+                           0.0f //  float flange1_delay_rate;                           
                           };
-                          
+
+
+allSettings mySettings_DataMigration = mySettings;
+                         
 //             10 sektion 1, 29 synths,crusher, control matrix,midi envelope, osc mastervolumen, presetname
 bool hidingSettings[143] = {
                              true,

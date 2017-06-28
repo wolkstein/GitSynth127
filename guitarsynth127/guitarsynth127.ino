@@ -1,4 +1,3 @@
-
 /*
    GitSynth by Michael Wolkstein copyright 2017
 
@@ -67,7 +66,7 @@
 #define DEB_MIDI_NOTE_ENVELOPE false
 #define DEB_MIDIGUITAR_NOTE_ENVELOPE false
 #define DEB_FILTER_NOTE_ENVELOPE false
-#define DEB_SD false
+#define DEB_SD true
 #define DEB_LFO false
 #define DEB_TAPTEMPO false
 #define DEBUG_EXPRESSION_PEDAL false
@@ -208,6 +207,7 @@ void selectABTWaveTableModLFO(float hz, uint16_t table) {
 //-----------------------SD EDB--------------------------------------------------------------
 const int chipSelect = BUILTIN_SDCARD;
 const char* db_name = "/PRESETS/preset.db"; // preset.db
+const char* db_name_migrate = "/PRESETS/old.db";
 File dbFile;
 
 void mywriter (unsigned long address, byte data) {
@@ -228,6 +228,27 @@ byte myreader (unsigned long address) {
 
 EDB db(&mywriter, &myreader);
 
+
+// EDB datamigration
+File dbFileMigrate;
+
+void mywriterMigrate (unsigned long address, byte data) {
+  //digitalWrite(13, HIGH);
+  dbFileMigrate.seek(address);
+  dbFileMigrate.write(data);
+  dbFileMigrate.flush();
+  //digitalWrite(13, LOW);
+}
+
+byte myreaderMigrate (unsigned long address) {
+  //digitalWrite(13, HIGH);
+  dbFileMigrate.seek(address);
+  byte b = dbFileMigrate.read();
+  //digitalWrite(13, LOW);
+  return b;
+}
+
+EDB dbMigrate(&mywriterMigrate, &myreaderMigrate);
 // -------------------------- Buttond
 
 Bounce incrementButton = Bounce(1, 50);  // increment valu
@@ -413,7 +434,7 @@ void setup() {
   digitalWrite(TRACKINGLEDPIN, LOW);
 
   //############# Audio Settings #############
-  AudioMemory(200);
+  AudioMemory(500);
   sgtl5000_1.enable();
   sgtl5000_1.inputSelect(myInputLineIn);
 
@@ -496,6 +517,21 @@ void setup() {
   // end ###### MIDI Receiving Messages
 
   // ####### set all "mySettings" audio settings
+  init_sd_edb_first();
+
+  // database migration, if mySettings get an different structure
+  // we have to migrate the database.
+  // 
+  // 1. Backup stdcard file "/PRESETS/preset.db"
+  // 2. rename  "/PRESETS/preset.db" to  "/PRESETS/old.db"
+  // 3. to enter migration mode uncomment line migrate_old_sd_edb() and comment init_sd_edb()
+  // 4. compile, upload and run in teensy migration mode and wait for data migration
+  // 5. comment migrate_old_sd_edb() and uncomment init_sd_edb()
+  
+  // SD.remove(db_name);
+  
+  // migrate_old_sd_edb();// max 8 
+  
   init_sd_edb();
 
   //clear and create new table
@@ -524,6 +560,9 @@ void setup() {
   
   delay(100);
   askForPresetmillis = millis(); // werden zu anfang in Midi_Request_settings gesetzt
+
+  //Serial.printf("lowpass: %f, databasetest: %f\n", mySettings.freeDataFloat1, mySettings.delay1_EffectDryMixer);
+  delay(5000);
   
 }
 
@@ -1861,6 +1900,24 @@ void showSystemBpmOnLCD(unsigned long milli) {
 void setSettings(bool fromsetup) {
 
   AudioNoInterrupts();
+
+  // delay test
+  //delay1.delay(0, 400);
+  delay1.disable(0);
+  delay1.disable(1);
+  delay1.disable(2);
+  delay1.disable(3);
+  delay1.disable(4);
+  delay1.disable(5);
+  delay1.disable(6);
+  delay1.disable(7);
+     
+  delaymixer.gain(0,1.0);// drymix
+  delaymixer.gain(1,0.0);// delay ammount(return)
+  delayfeed.gain(0,0.0);// delay input
+  delayfeed.gain(1,0.0);// delay feedback
+
+  
   setMCP42Value(byte(mySettings.instrumentBypassMix));
   // D-F-F INit
   G_Filter1_Active_Frequenz_Tracking = calculateDynamicFilterFrequency(mySettings.int_Filter1_Active_Frequenz_Tracking);
