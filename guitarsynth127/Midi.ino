@@ -52,6 +52,7 @@ void HandleRealtimeMessage(uint8_t realtimebyte){
           mySystemBpm = MidiBpm;
           mysystemFreqMicrosTime = MidiCool * 1000;
           sequencerSpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.sequenceTimeSignature]);
+          delay1SpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.delay1_TimeSignature]);
           systemOnMidiClock = true;
         }
         MidioldTimeClockMilli = MiditimeClockTime;

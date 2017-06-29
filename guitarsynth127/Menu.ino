@@ -89,7 +89,7 @@ void selectMenuItemAndPrintLcd(int updown) {
      break;
 
 
-     case 3: // highcut filter freq
+     case 3: // lowcut filter freq
 
       my_I_incrementer = updown * 50; // 50 steps
       if(mySettings.freeDataFloat3 < 250) my_I_incrementer =  updown *10;
@@ -119,6 +119,20 @@ void selectMenuItemAndPrintLcd(int updown) {
       //lcd.print("");
       menuExtrButton = false;
      break;
+
+
+     // delay
+
+     /*
+      * case 5 = Delay Dry Mix hold by "mySettings.delay1_EffectDryMixer"
+      * case 6 = Delay Wet Mix hold by "mySettings.delay1_EffectWetMixer"
+      * case 7 = Delay Time ms 0 -700 "mySettings.delay1_0Time" as ms or master clock timing delay1_useMasterclock
+      * case 8 = Delay Time Signature if on Masterclock hold by "mySettings.delay1_TimeSignature"
+      * case 8 = Delay Gain hold by "mySettings.delay1_FeedbackMixInput"
+      * case 9 = Delay Feedback Loop hold by "mySettings.delay1_FeedbackMixOutput"
+      */
+      
+     // delay end
 
      case 4 + 1: // filter1 freq
       if(mySettings.Filter1_Active_Frequenz_Tracking_Target>0){

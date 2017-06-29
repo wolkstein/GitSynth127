@@ -528,11 +528,11 @@ void setup() {
   // 4. compile, upload and run in teensy migration mode and wait for data migration
   // 5. comment migrate_old_sd_edb() and uncomment init_sd_edb()
   
-  // SD.remove(db_name);
+   //SD.remove(db_name);
   
-  // migrate_old_sd_edb();// max 8 
+   //migrate_old_sd_edb();// max 8 
   
-  init_sd_edb();
+   init_sd_edb();
 
   //clear and create new table
   //edb_deleteAll();  // only one time for an new sd card or changing data structure
@@ -619,6 +619,7 @@ double mySystemBpm = 90.0;
 float mySystemFrequenzy = mySystemBpm / 60.0;
 unsigned long mysystemFreqMicrosTime = 666667;
 unsigned long sequencerSpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.sequenceTimeSignature]);
+unsigned long delay1SpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.delay1_TimeSignature]);
 unsigned long masterclockLEDBlinkerOldTime = 0;
 unsigned long expressionpedaloldtime = 0;
 unsigned long potioldtime = 0;
@@ -1807,7 +1808,8 @@ void checkTapTempo(unsigned long micro) {
     mySystemBpm = 60000000.0 / double(taptempoIncrement / (myTapCounter - 2));
     mysystemFreqMicrosTime = double(taptempoIncrement / (myTapCounter - 2));
     sequencerSpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.sequenceTimeSignature]);
-
+    delay1SpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.delay1_TimeSignature]);
+    
     if (myTapCounter == 2 || myTapCounter % 4 == 0) {
       masterclockLEDBlinker(micro / 1000, true);
     }
@@ -1902,8 +1904,8 @@ void setSettings(bool fromsetup) {
   AudioNoInterrupts();
 
   // delay test
-  //delay1.delay(0, 400);
-  delay1.disable(0);
+  delay1.delay(0, mySettings.delay1_0Time);
+  //delay1.disable(0);
   delay1.disable(1);
   delay1.disable(2);
   delay1.disable(3);
@@ -1912,10 +1914,10 @@ void setSettings(bool fromsetup) {
   delay1.disable(6);
   delay1.disable(7);
      
-  delaymixer.gain(0,1.0);// drymix
-  delaymixer.gain(1,0.0);// delay ammount(return)
-  delayfeed.gain(0,0.0);// delay input
-  delayfeed.gain(1,0.0);// delay feedback
+  delaymixer.gain(0,mySettings.delay1_EffectDryMixer);// drymix
+  delaymixer.gain(1,mySettings.delay1_EffectWetMixer);// delay ammount(wet)
+  delayfeed.gain(0,mySettings.delay1_FeedbackMixInput);// delay input
+  delayfeed.gain(1,mySettings.delay1_FeedbackMixOutput);// delay feedback
 
   
   setMCP42Value(byte(mySettings.instrumentBypassMix));

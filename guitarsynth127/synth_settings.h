@@ -267,7 +267,7 @@ struct allSettings
   uint16_t  delay1_1Time;
   uint16_t  delay1_2Time;
   uint16_t  delay1_3Time;
-
+  
   float delay1_EffectDryMixer;
   float delay1_EffectWetMixer;
   float delay1_FeedbackMixInput;
@@ -285,6 +285,15 @@ struct allSettings
   int16_t flange1_delay_offset;
   int16_t flange1_d_depth;
   float flange1_delay_rate;
+
+  uint8_t delay1_TimeSignature;
+  bool delay1_useMasterclock;
+  
+  uint8_t chorus1_TimeSignature;
+  bool chorus1_useMasterclock;
+  
+  uint8_t flange1_TimeSignature;
+  bool flange1_useMasterclock;
 } ;
 
 // Init Defaults
@@ -509,7 +518,16 @@ allSettings mySettings = {
                               0, //  int16_t flange1_d_length;
                               0, //  int16_t flange1_delay_offset;
                               0, //  int16_t flange1_d_depth;
-                           0.0f //  float flange1_delay_rate;                           
+                           0.0f, //  float flange1_delay_rate; 
+
+                              7, // uint8_t delay1_TimeSignature;
+                          false, // bool delay1_useMasterclock;
+                              
+                              7, // uint8_t chorus1_TimeSignature;
+                          false, // bool chorus1_useMasterclock;
+                              
+                              7, // uint8_t flange1_TimeSignature;
+                          false // bool flange1_useMasterclock;                        
                           };
 
 
