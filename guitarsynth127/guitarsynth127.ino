@@ -396,7 +396,7 @@ unsigned long getSequencerSequenceMillis = 0;
 uint16_t ExPedalValueFiltered =0;
 uint16_t PotiValueFiltered =0;
 
-
+bool save_Settings_Active = false;
 
 void setup() {
 
@@ -434,7 +434,7 @@ void setup() {
   digitalWrite(TRACKINGLEDPIN, LOW);
 
   //############# Audio Settings #############
-  AudioMemory(500);
+  AudioMemory(700);
   sgtl5000_1.enable();
   sgtl5000_1.inputSelect(myInputLineIn);
 
@@ -560,9 +560,6 @@ void setup() {
   
   delay(100);
   askForPresetmillis = millis(); // werden zu anfang in Midi_Request_settings gesetzt
-
-  //Serial.printf("lowpass: %f, databasetest: %f\n", mySettings.freeDataFloat1, mySettings.delay1_EffectDryMixer);
-  delay(5000);
   
 }
 
@@ -659,7 +656,7 @@ void loop() {
     
     PotiValueFiltered = (float(PotiValue) * (1.0 - 0.8)) + (float(PotiValueFiltered) *  0.8);
     
-    if(myMenuWindow == 130){
+    if(myMenuWindow == 136){
       if(PotiValueFiltered != oldPotiValue){
         if(DEB_ANALOG_READ) Serial.printf("Poti: %d, filter: %d\n", PotiValue, PotiValueFiltered);
         if(ToggleSwitchIsToggled) setAnalogPoti(PotiValue);
@@ -683,7 +680,7 @@ void loop() {
     ExPedalValueFiltered = (float(ExPedalValue) * (1.0 - 0.8)) + (float(ExPedalValueFiltered) *  0.8);
 
     
-    if(myMenuWindow == 127){
+    if(myMenuWindow == 133){
       if(ExPedalValueFiltered != oldExPedalValue){
         if(DEB_ANALOG_READ) Serial.printf("EXP-PEDAL: %d, filter: %d\n", ExPedalValue, ExPedalValueFiltered);
         if(ToggleSwitchIsToggled) setExpressionPedal(ExPedalValue);
@@ -1365,7 +1362,7 @@ void loop() {
         //Serial.println(myMidiNote.adsrState);
         // erst nach 8 sekunden betriebszeit erlaubt
         if (milli > 8000) {
-          if(/*myMenuWindow == 137 || myMenuWindow == 138 || */myMenuWindow == 141 ){
+          if(/*myMenuWindow == 137 || myMenuWindow == 138 || */myMenuWindow == 147 ){
             if(DEB_EEPROM) Serial.println("write eeprom settings");
             EEPROM.put(EEPROM_MAIN_SYSTEM_SETTINGS_START, mySystemSettings);
             lcd.setCursor(0, 1);
@@ -1388,17 +1385,34 @@ void loop() {
       //Serial.printf("Longpress save Preset\n");
       previousState2 = HIGH;
       longPressFinishedBtn2 = true;
+      save_Settings_Active = true;
       lcd.clear();
       lcd.blink();
       lcd.setCursor(0, 0);
       lcd.printf(" Save Preset:%d", mySettings.preset);
       lcd.setCursor(0, 0);
+      // sutdown delay memory
+      delay1.delay(0, 0.0);
+      delay1.disable(0);
+      delay(100);
       edb_updateOneRecord(current_preset);
       lcd.noBlink();
       selectMenuItemAndPrintLcd(0); // zurück ins menu
+      // delay back to settings
+      delay(100);
+      if(mySettings.delay1_useMasterclock){
+        float localdelaytime = float(delay1SpeedTime) / 1000.0f;
+        if(localdelaytime >= 1800.0) localdelaytime = 1800.0;
+        delay1.delay(0, localdelaytime);
+      }
+      else
+      {
+        delay1.delay(0, mySettings.delay1_0Time);
+      }
+        
       if (myMidiNote.adsrState == 0) StartStopMidiNote( true, milli, 0, 50, 0);
 
-
+      save_Settings_Active = false;
     }
   }
 
@@ -1809,6 +1823,13 @@ void checkTapTempo(unsigned long micro) {
     mysystemFreqMicrosTime = double(taptempoIncrement / (myTapCounter - 2));
     sequencerSpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.sequenceTimeSignature]);
     delay1SpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.delay1_TimeSignature]);
+
+    // set fx delay speed
+    if(mySettings.delay1_useMasterclock){
+      float localdelaytime = float(delay1SpeedTime) / 1000.0f;
+      if(localdelaytime >= 1800.0) localdelaytime = 1800.0;
+      delay1.delay(0, localdelaytime);
+    }
     
     if (myTapCounter == 2 || myTapCounter % 4 == 0) {
       masterclockLEDBlinker(micro / 1000, true);
@@ -1886,7 +1907,7 @@ void showSystemBpmOnLCD(unsigned long milli) {
         lcd.printf(" | %4.1f ", mySystemBpm);
       }
     }
-    if(myMenuWindow == 137 || myMenuWindow == 138){
+    if(myMenuWindow == 143 || myMenuWindow == 144){
       lcd.setCursor(5, 1);
       lcd.printf(" | %d ", analogRead(ExPedalRead));
     }
@@ -1904,7 +1925,16 @@ void setSettings(bool fromsetup) {
   AudioNoInterrupts();
 
   // delay test
-  delay1.delay(0, mySettings.delay1_0Time);
+  if(mySettings.delay1_useMasterclock){
+    float localdelaytime = float(delay1SpeedTime) / 1000.0f;
+    if(localdelaytime >= 1800.0) localdelaytime = 1800.0;
+    delay1.delay(0, localdelaytime);
+  }
+  else
+  {
+    delay1.delay(0, mySettings.delay1_0Time);
+  }
+  //delay1.delay(0, mySettings.delay1_0Time);
   //delay1.disable(0);
   delay1.disable(1);
   delay1.disable(2);
@@ -1916,6 +1946,7 @@ void setSettings(bool fromsetup) {
      
   delaymixer.gain(0,mySettings.delay1_EffectDryMixer);// drymix
   delaymixer.gain(1,mySettings.delay1_EffectWetMixer);// delay ammount(wet)
+  delaymixer.gain(2,mySettings.delay1_EffectWetMixer);
   delayfeed.gain(0,mySettings.delay1_FeedbackMixInput);// delay input
   delayfeed.gain(1,mySettings.delay1_FeedbackMixOutput);// delay feedback
 

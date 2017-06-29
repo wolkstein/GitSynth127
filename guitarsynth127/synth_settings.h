@@ -40,7 +40,7 @@ SystemSettings mySystemSettings = {
 
 
 int myMenuWindow = 0; //presets
-int menuWindowSize = 141; // count of entrys -1 in "allSettings" 
+int menuWindowSize = 147; // count of entrys -1 in "allSettings" 
 
 float osc1hz = 0.0f; 
 float osc2hz = 0.0f;
@@ -534,7 +534,7 @@ allSettings mySettings = {
 allSettings mySettings_DataMigration = mySettings;
                          
 //             10 sektion 1, 29 synths,crusher, control matrix,midi envelope, osc mastervolumen, presetname
-bool hidingSettings[143] = {
+bool hidingSettings[149] = {
                              true,
                              true,
                              true,
@@ -543,6 +543,12 @@ bool hidingSettings[143] = {
                              true, // Filter1 Freq         | on
                              true, // Filter1 Reso         | on
                              true, // Filter1 Octave       | on
+                             true,
+                             true,
+                             true,
+                             true,
+                             true,
+                             true,
                              true,
                              true,
                              true,
@@ -684,10 +690,10 @@ bool hidingSettings[143] = {
                              true,
                              true,
                              // system
-                             true, // EXP- Min            (hidingSettings[137])
-                             true, // Exp- Max            (hidingSettings[138])
-                             true, // Use Live-Presets    (hidingSettings[139])
-                             true, // edit Live-Presets        (hidingSettings[140])
+                             true, // EXP- Min            (hidingSettings[143])
+                             true, // Exp- Max            (hidingSettings[144])
+                             true, // Use Live-Presets    (hidingSettings[145])
+                             true, // edit Live-Presets        (hidingSettings[146])
                              true, // expand System menue
                              false // last unused value                                         
                            };

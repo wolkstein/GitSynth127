@@ -54,6 +54,14 @@ void HandleRealtimeMessage(uint8_t realtimebyte){
           sequencerSpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.sequenceTimeSignature]);
           delay1SpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.delay1_TimeSignature]);
           systemOnMidiClock = true;
+          if(!save_Settings_Active){
+             // set fx delay speed
+            if(mySettings.delay1_useMasterclock){
+              float localdelaytime = float(delay1SpeedTime) / 1000.0f;
+              if(localdelaytime >= 1800.0) localdelaytime = 1800.0;
+              delay1.delay(0, localdelaytime);
+            }
+          }
         }
         MidioldTimeClockMilli = MiditimeClockTime;
       }
