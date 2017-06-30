@@ -708,7 +708,7 @@ const char* FunctionBtnLookup[4] =
     "Mute Synth T-D"
 };
 
-const char* expPedalFunctionLookup[23] =
+const char* expPedalFunctionLookup[27] =
 {
     "OFF           ",
     "F1 CutOff     ",
@@ -732,7 +732,11 @@ const char* expPedalFunctionLookup[23] =
     "F-ADSR Release",
     "Input Gain    ",
     "Pitch Up      ",
-    "Pitch down    "
+    "Pitch down    ",
+    "F-HighCut Freq",
+    "F-HighCut Reso",
+    "F-LowCut Freq ",
+    "F-LowCut Reso "
 };
 
 const int waveIntsLook[6] =

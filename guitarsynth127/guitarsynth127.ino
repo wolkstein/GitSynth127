@@ -72,7 +72,7 @@
 #define DEBUG_EXPRESSION_PEDAL false
 #define DEBUG_EXPRESSION_PEDAL_RAW false
 #define DEB_SEQUENZER false
-#define DEB_ANALOG_READ false
+#define DEB_ANALOG_READ true
 #define DEB_FUNCTION_BTN false
 #define DEB_TOGGLE_SWITCH false
 #define DEB_EXTRA_PITCH false
@@ -656,7 +656,7 @@ void loop() {
     
     PotiValueFiltered = (float(PotiValue) * (1.0 - 0.8)) + (float(PotiValueFiltered) *  0.8);
     
-    if(myMenuWindow == 136){
+    if(myMenuWindow == 140){
       if(PotiValueFiltered != oldPotiValue){
         if(DEB_ANALOG_READ) Serial.printf("Poti: %d, filter: %d\n", PotiValue, PotiValueFiltered);
         if(ToggleSwitchIsToggled) setAnalogPoti(PotiValue);
@@ -680,7 +680,7 @@ void loop() {
     ExPedalValueFiltered = (float(ExPedalValue) * (1.0 - 0.8)) + (float(ExPedalValueFiltered) *  0.8);
 
     
-    if(myMenuWindow == 133){
+    if(myMenuWindow == 137){
       if(ExPedalValueFiltered != oldExPedalValue){
         if(DEB_ANALOG_READ) Serial.printf("EXP-PEDAL: %d, filter: %d\n", ExPedalValue, ExPedalValueFiltered);
         if(ToggleSwitchIsToggled) setExpressionPedal(ExPedalValue);

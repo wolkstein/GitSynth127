@@ -151,16 +151,20 @@
     "F-ADSR Decay  ", 87
     "F-ADSR Sustain", 88
     "F-ADSR Release"  89
-    "Pitch Up      ",
-    "Pitch down    "                    
+    "Pitch Up      ", 1
+    "Pitch down    ", 1
+    "F-HighCut Freq", 128
+    "F-HighCut Reso", 129
+    "F-LowCut Freq ", 130
+    "F-LowCut Reso "  131              
 };
  */
  
-const byte expressionFunctionsLookUp[23] = // first element hold 0 -> expression pedal disabled.
+const byte expressionFunctionsLookUp[27] = // first element hold 0 -> expression pedal disabled.
 {
    0, 21, 22, 23, 24, 25, 26, 28, 76, 79,
   80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
-  3, 1, 2
+  3, 1, 2, 128, 129, 130, 131
 };
 
 
@@ -169,7 +173,7 @@ void setExpressionPedal(uint16_t value){// analog read value 0 - 1024
   if(value < mySystemSettings.Expression_Min) value = mySystemSettings.Expression_Min;
   if(value > mySystemSettings.Expression_Max) value = mySystemSettings.Expression_Max;
   
-  if(mySettings.expressionPedalFunction > 22 ) mySettings.expressionPedalFunction = 22; // später anpassen
+  if(mySettings.expressionPedalFunction > 26 ) mySettings.expressionPedalFunction = 26; // später anpassen
   byte expressionFunction = expressionFunctionsLookUp[mySettings.expressionPedalFunction];
   int expressionValue = map(value, mySystemSettings.Expression_Max, mySystemSettings.Expression_Min, mySettings.freeDataInt3, mySettings.freeDataInt4 + 127);// freeDataInt4 + 127 wegen der default 0 einstellung.
   if(mySettings.freeDataInt3 <= mySettings.freeDataInt4 + 127){
@@ -195,7 +199,7 @@ void setExpressionPedal(uint16_t value){// analog read value 0 - 1024
 }
 
 void setAnalogPoti(uint16_t value){// analog read value 0 - 1024
-  if(mySettings.freeDataInt2 > 20 ) mySettings.freeDataInt2 = 20; // später anpassen
+  if(mySettings.freeDataInt2 > 26 ) mySettings.freeDataInt2 = 26; // später anpassen
   byte potiFunction = expressionFunctionsLookUp[mySettings.freeDataInt2];
   int potiValue = map(value, 0,1023, 0,127);
   mapExpressionPedal(potiFunction, potiValue, value, 0,1023);
@@ -2097,6 +2101,65 @@ void mapExpressionPedal( byte control, int value, int16_t raw, int16_t floorvalu
             if(DEBUG_EXPRESSION_PEDAL) Serial.printf("Master Clock To FREQ. LFO is set to: %d\n",mySettings.MasterclockToFreqLFO);
           }
      break;
+
+
+    case 128: // set highCut filter freq
+        
+        loghelperValInt=map(int(value),0,127,0,1000);
+        loghelperValFloat=float(loghelperValInt)/1000.0;
+        
+        loghelperValFloat= (pow(loghelperValFloat,5)*20000)+10.0;
+        
+        mySettings.freeDataFloat1 =int(loghelperValFloat);  
+          
+        lowpass.frequency(mySettings.freeDataFloat1);
+        if(DEBUG_EXPRESSION_PEDAL){
+          Serial.printf("HighCut Filter Cutoff Frequency changing now to %fHz | raw %f \n", mySettings.freeDataFloat1,loghelperValFloat);
+        }
+           
+    break;
+    
+    case 129: // highcut filter resonance
+        
+        loghelperValFloat=float(value)*100.0;
+        loghelperValInt=map(int(loghelperValFloat),0,12700,710,25000);       
+        mySettings.freeDataFloat2 =  float(loghelperValInt/1000.0);
+        lowpass.resonance(mySettings.freeDataFloat2);
+        if(DEBUG_EXPRESSION_PEDAL){
+          Serial.printf("HighCut Filter Resonance changing now to %f | and back to midi:%d \n",mySettings.freeDataFloat2, map(int(mySettings.freeDataFloat2 * 1000.0)+5,710,25000,0,127));
+        }
+            
+    break;
+    
+    case 130: // set lowcut filter freq
+        
+        loghelperValInt=map(int(value),0,127,0,1000);
+        loghelperValFloat=float(loghelperValInt)/1000.0;
+        
+        loghelperValFloat= (pow(loghelperValFloat,5)*20000)+10.0;
+        
+        mySettings.freeDataFloat3 =int(loghelperValFloat);  
+          
+        highpass.frequency(mySettings.freeDataFloat3);
+        if(DEBUG_EXPRESSION_PEDAL){
+          Serial.printf("LowCut Filter Cutoff Frequency changing now to %fHz | raw %f \n", mySettings.freeDataFloat3,loghelperValFloat);
+        }
+           
+    break;
+    
+    case 131: // lowcut filter resonance
+        
+        loghelperValFloat=float(value)*100.0;
+        loghelperValInt=map(int(loghelperValFloat),0,12700,710,25000);       
+        mySettings.freeDataFloat4 =  float(loghelperValInt/1000.0);
+        highpass.resonance(mySettings.freeDataFloat4);
+        if(DEBUG_EXPRESSION_PEDAL){
+          Serial.printf("LowCut Filter Resonance changing now to %f | and back to midi:%d \n",mySettings.freeDataFloat4, map(int(mySettings.freeDataFloat4 * 1000.0)+5,710,25000,0,127));
+        }
+            
+    break;
+      
+
 
 
         
