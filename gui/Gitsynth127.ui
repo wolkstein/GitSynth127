@@ -6668,6 +6668,26 @@
         <string>Pitch Down</string>
        </property>
       </item>
+      <item>
+       <property name="text">
+        <string>Filter HighCut Freq</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Filter HighCut Resonance</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Filter LowCut Freq</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Filter LowCut Resonance</string>
+       </property>
+      </item>
      </widget>
      <widget class="QLabel" name="label_64">
       <property name="geometry">
@@ -6866,6 +6886,26 @@
       <item>
        <property name="text">
         <string>Pitch Down</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Filter HighCut Freq</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Filter HighCut Resonance</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Filter LowCut Freq</string>
+       </property>
+      </item>
+      <item>
+       <property name="text">
+        <string>Filter LowCut Resonance</string>
        </property>
       </item>
      </widget>
