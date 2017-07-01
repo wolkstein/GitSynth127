@@ -614,6 +614,31 @@ void Midi_Request_Settings(byte note){
     midiValueLocal = map(int(mySettings.freeDataFloat4 * 1000.0)+5,710,25000,0,127); // frequency conversation
     usbMIDI.sendControlChange(4, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1); 
 
+    // delay
+    // 5: Delay Dry Mix 
+    midiValueLocal =  map( int(powf(mySettings.delay1_EffectDryMixer, 0.2)*1000)+5 ,0 , 1000, 0, 127);
+    usbMIDI.sendControlChange(5, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1);
+    
+    // 6: Delay wet Mix
+    midiValueLocal = map( int(powf(mySettings.delay1_EffectWetMixer, 0.2)*1000)+5 ,0 , 1000, 0, 127);
+    usbMIDI.sendControlChange(6, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1);
+
+    // 7: Delay time ms
+    midiValueLocal = map(mySettings.delay1_0Time + 1,0,MAX_DELAY_TIME,0,127);
+    usbMIDI.sendControlChange(7, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1);
+    
+    // 8: Delay Time Signature
+    midiValueLocal = mySettings.delay1_TimeSignature;
+    usbMIDI.sendControlChange(8, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1); 
+ 
+    // 9: Delay Input Gain
+    midiValueLocal = map( int(powf(mySettings.delay1_FeedbackMixInput, 0.2)*1000)+5 ,0 , 1000, 0, 127);
+    usbMIDI.sendControlChange(9, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1);
+    
+    // 10: Delay Feedback Loop 
+    midiValueLocal = map( int(powf(mySettings.delay1_FeedbackMixOutput, 0.2)*1000)+5 ,0 , 1200, 0, 127);
+    usbMIDI.sendControlChange(10, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1);    
+
     
     for(int i = 0; i<32;i++){
       usbMIDI.sendNoteOn(125, 1, mySettings.midiChannel);

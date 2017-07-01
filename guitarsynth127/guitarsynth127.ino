@@ -61,7 +61,7 @@
 #define DEB_MENUE false
 #define DEB_PEAKS false
 #define DEB_ENVELOPE_FOLLOWER false
-#define DEBUG_MIDI_INPUT false
+#define DEBUG_MIDI_INPUT true
 #define DEBUG_MIDI_REQUEST_SETTINGS false
 #define DEB_MIDI_NOTE_ENVELOPE false
 #define DEB_MIDIGUITAR_NOTE_ENVELOPE false

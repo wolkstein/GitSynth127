@@ -2092,6 +2092,7 @@ void CCmidiHandlerTwo(byte control, byte value){
    if(DEBUG_MIDI_INPUT) Serial.printf("CC MIDI HANDLER TWO Receive Midi CC: %d | VAL: %d || ",control, value );
    
    int loghelperValInt=0;
+   int helperTwo=0;
    float loghelperValFloat=0.0f;  
    
    switch(control){
@@ -2151,6 +2152,130 @@ void CCmidiHandlerTwo(byte control, byte value){
         }
             
     break;
+
+
+    case 5: // Delay Dry Mix hold by "mySettings.delay1_EffectDryMixer"
+ 
+      loghelperValInt=map(int(value),0,127,0,1000);
+      loghelperValFloat=float(loghelperValInt)/1000.0;
+      loghelperValFloat= pow(loghelperValFloat,5);
+      
+      mySettings.delay1_EffectDryMixer = loghelperValFloat;
+
+      delaymixer.gain(0,mySettings.delay1_EffectDryMixer);
+      
+      if(DEBUG_MIDI_INPUT){
+        Serial.printf("Delay Dry Mixer changing now to %f| and back to lin: %d\n",mySettings.delay1_EffectDryMixer, map( int(powf(mySettings.delay1_EffectDryMixer, 0.2)*1000)+5 ,0 , 1000, 0, 127) );
+      }
+      
+     break;
+     
+     case 6: // Delay Wet Mix hold by "mySettings.delay1_EffectWetMixer"
+ 
+      loghelperValInt=map(int(value),0,127,0,1000);
+      loghelperValFloat=float(loghelperValInt)/1000.0;
+      loghelperValFloat= pow(loghelperValFloat,5);
+      
+      mySettings.delay1_EffectWetMixer = loghelperValFloat;
+      
+      delaymixer.gain(1,mySettings.delay1_EffectWetMixer);
+      delaymixer.gain(2,mySettings.delay1_EffectWetMixer);
+      
+      if(DEBUG_MIDI_INPUT){
+        Serial.printf("Delay WET Mixer changing now to %f| and back to lin: %d\n",mySettings.delay1_EffectWetMixer, map( int(powf(mySettings.delay1_EffectWetMixer, 0.2)*1000)+5 ,0 , 1000, 0, 127) );
+      }
+      
+     break;
+
+
+     case 7: // Delay Time ms 0 -700 "mySettings.delay1_0Time" as ms
+
+      if(mySettings.delay1_useMasterclock){
+        if(DEBUG_MIDI_INPUT) Serial.printf("Delay on Clock, return\n");
+        return;      
+      }
+      else
+      {
+        loghelperValInt = map(int(value),0,127,0,MAX_DELAY_TIME);
+        mySettings.delay1_0Time = loghelperValInt;  
+        
+        delay1.delay(0, float(mySettings.delay1_0Time));
+        if(DEBUG_MIDI_INPUT) Serial.printf("Delay Time is: %dms| midi remapping correct? %d\n",mySettings.delay1_0Time, map(mySettings.delay1_0Time + 1,0,MAX_DELAY_TIME,0,127));  
+
+      }
+     break;
+     
+     case 8: // Delay Time Signature if on Masterclock hold by "mySettings.delay1_TimeSignature" using master clock timing delay1_useMasterclock
+
+      if(value >21){
+        if(DEBUG_MIDI_INPUT) Serial.printf("Delay Time Signatur at to high value: %d\n",value);
+        return;
+      }
+      else
+      {
+        
+         mySettings.delay1_TimeSignature = value;
+         
+         if(mySettings.delay1_TimeSignature == 0){
+           mySettings.delay1_useMasterclock = false;
+           delay1.delay(0, mySettings.delay1_0Time);
+         }
+         else if( mySettings.delay1_TimeSignature > 0){
+           mySettings.delay1_useMasterclock = true;
+           delay1SpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.delay1_TimeSignature - 1]);
+           loghelperValFloat = float(delay1SpeedTime) / 1000.0f;
+           if(loghelperValFloat >= MAX_DELAY_TIME) loghelperValFloat = MAX_DELAY_TIME;
+           delay1.delay(0, loghelperValFloat);
+           
+         }
+         
+      }
+      
+      if(DEBUG_MIDI_INPUT){
+        if(mySettings.delay1_TimeSignature == 0)
+          Serial.println("Delay Time Signatur is OFF");
+        else if( mySettings.delay1_TimeSignature > 0)
+          Serial.printf("Delay Time Signatur is: %s| midi val %d\n",beatMultiNamesLookup[mySettings.delay1_TimeSignature - 1], mySettings.delay1_TimeSignature);
+      }
+      
+     break;
+     
+     case 9: // Delay Gain hold by "mySettings.delay1_FeedbackMixInput"
+     
+      loghelperValInt=map(int(value),0,127,0,1000);
+      loghelperValFloat=float(loghelperValInt)/1000.0;
+      loghelperValFloat= pow(loghelperValFloat,5);
+      
+      mySettings.delay1_FeedbackMixInput = loghelperValFloat;
+      
+      delayfeed.gain(0,mySettings.delay1_FeedbackMixInput);
+      
+      if(DEBUG_MIDI_INPUT){
+        Serial.printf("Delay FeedBack Mixer Gain changing now to %f| and back to lin: %d\n",mySettings.delay1_FeedbackMixInput, map( int(powf(mySettings.delay1_FeedbackMixInput, 0.2)*1000)+5 ,0 , 1000, 0, 127) );
+      }
+
+     break;
+     
+     case 10: // Delay Feedback Loop hold by "mySettings.delay1_FeedbackMixOutput"
+      loghelperValInt=map(int(value),0,127,0,1200);
+      loghelperValFloat=float(loghelperValInt)/1000.0;
+      loghelperValFloat= pow(loghelperValFloat,5);
+      
+      mySettings.delay1_FeedbackMixOutput = loghelperValFloat;
+      
+      delayfeed.gain(1,mySettings.delay1_FeedbackMixOutput);
+      if(DEBUG_MIDI_INPUT){
+        Serial.printf("Delay FeedBack-Loop Mixer Ammount changing now to %f| and back to lin: %d\n",mySettings.delay1_FeedbackMixOutput, map( int(powf(mySettings.delay1_FeedbackMixOutput, 0.2)*1000)+5 ,0 , 1200, 0, 127) );
+      }
+     break;
+      
+     // delay end
+
+
+
+
+
+    
     
        // ###############################  DEFAULT #################################
     default:
