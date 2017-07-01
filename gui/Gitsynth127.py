@@ -27,6 +27,9 @@ class midiInputThread(QtCore.QThread):
         QtCore.QThread.__init__(self)
         self.main_app = main_app
 
+    def treadMapValInt(self, x, in_min, in_max, out_min, out_max):
+        return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min
+
     def run(self):
         #print("In Thread")
         global gMyMidiOutputPort
@@ -182,6 +185,27 @@ class midiInputThread(QtCore.QThread):
 
                     if message[1] == 4: # lowpass reso
                         self.main_app.dial_lcq.setValue(message[2])
+
+                    ############# delay ###########
+                    if message[1] == 5: # delay dry
+                        self.main_app.Delay_Dry_Dail.setValue(message[2])
+
+                    if message[1] == 6: # delay wet
+                        self.main_app.Delay_Wet_Dail.setValue(message[2])
+
+                    if message[1] == 7: # delay time ms
+                        self.main_app.Delay_TimeMs_SpinBox.setValue(self.treadMapValInt(message[2],0,127,0,1800))
+
+                    if message[1] == 8: # delay time signature
+                        self.main_app.comboBox_Delay_Time_Signature.setCurrentIndex(message[2])
+
+                    if message[1] == 9: # Delay Gain
+                        self.main_app.Delay_Gain_Dail.setValue(message[2])
+
+                    if message[1] == 10: # Delay Reso
+                        self.main_app.Delay_FeedBack_Dail.setValue(message[2])
+                    ############## delay end ######
+
 
                 ############ CC channel 1 ########################
                 if message[0] == 176: # message is cc on channel 1, 176 = ch 1 - 191 = cc on ch 16
