@@ -624,7 +624,7 @@ void Midi_Request_Settings(byte note){
     usbMIDI.sendControlChange(6, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1);
 
     // 7: Delay time ms
-    midiValueLocal = map(mySettings.delay1_0Time + 1,0,MAX_DELAY_TIME,0,127);
+    midiValueLocal = map(mySettings.delay1_0Time + 1,0,DELAY1_MAX_DELAY_TIME,0,127);
     usbMIDI.sendControlChange(7, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1);
     
     // 8: Delay Time Signature

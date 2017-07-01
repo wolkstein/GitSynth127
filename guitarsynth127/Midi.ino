@@ -58,7 +58,7 @@ void HandleRealtimeMessage(uint8_t realtimebyte){
              // set fx delay speed
             if(mySettings.delay1_useMasterclock){
               float localdelaytime = float(delay1SpeedTime) / 1000.0f;
-              if(localdelaytime >= 1800.0) localdelaytime = 1800.0;
+              if(localdelaytime >= DELAY1_MAX_DELAY_TIME) localdelaytime = DELAY1_MAX_DELAY_TIME;
               delay1.delay(0, localdelaytime);
             }
           }
@@ -2092,7 +2092,7 @@ void CCmidiHandlerTwo(byte control, byte value){
    if(DEBUG_MIDI_INPUT) Serial.printf("CC MIDI HANDLER TWO Receive Midi CC: %d | VAL: %d || ",control, value );
    
    int loghelperValInt=0;
-   int helperTwo=0;
+   //int helperTwo=0;
    float loghelperValFloat=0.0f;  
    
    switch(control){
@@ -2196,11 +2196,11 @@ void CCmidiHandlerTwo(byte control, byte value){
       }
       else
       {
-        loghelperValInt = map(int(value),0,127,0,MAX_DELAY_TIME);
+        loghelperValInt = map(int(value),0,127,0,DELAY1_MAX_DELAY_TIME);
         mySettings.delay1_0Time = loghelperValInt;  
         
         delay1.delay(0, float(mySettings.delay1_0Time));
-        if(DEBUG_MIDI_INPUT) Serial.printf("Delay Time is: %dms| midi remapping correct? %d\n",mySettings.delay1_0Time, map(mySettings.delay1_0Time + 1,0,MAX_DELAY_TIME,0,127));  
+        if(DEBUG_MIDI_INPUT) Serial.printf("Delay Time is: %dms| midi remapping correct? %d\n",mySettings.delay1_0Time, map(mySettings.delay1_0Time + 1,0,DELAY1_MAX_DELAY_TIME,0,127));  
 
       }
      break;
@@ -2224,7 +2224,7 @@ void CCmidiHandlerTwo(byte control, byte value){
            mySettings.delay1_useMasterclock = true;
            delay1SpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.delay1_TimeSignature - 1]);
            loghelperValFloat = float(delay1SpeedTime) / 1000.0f;
-           if(loghelperValFloat >= MAX_DELAY_TIME) loghelperValFloat = MAX_DELAY_TIME;
+           if(loghelperValFloat >= DELAY1_MAX_DELAY_TIME) loghelperValFloat = DELAY1_MAX_DELAY_TIME;
            delay1.delay(0, loghelperValFloat);
            
          }

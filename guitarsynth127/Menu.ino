@@ -164,7 +164,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       {
         my_I_incrementer = updown *10;
         //if(mySettings.delay1_0Time < 250) my_I_incrementer =  updown *10;
-        if(checkIntValuesValide(my_I_incrementer, 0, 1800, mySettings.delay1_0Time + my_I_incrementer))
+        if(checkIntValuesValide(my_I_incrementer, 0, int(DELAY1_MAX_DELAY_TIME), mySettings.delay1_0Time + my_I_incrementer))
            mySettings.delay1_0Time += my_I_incrementer;
             
           if(updown!=0) delay1.delay(0, mySettings.delay1_0Time);
@@ -194,7 +194,7 @@ void selectMenuItemAndPrintLcd(int updown) {
         mySettings.delay1_useMasterclock = true;
         delay1SpeedTime = int(mysystemFreqMicrosTime / beatMultiLookup[mySettings.delay1_TimeSignature - 1]);
         percentval = float(delay1SpeedTime) / 1000.0f;
-        if(percentval >= 1800.0) percentval = 1800.0;
+        if(percentval >= DELAY1_MAX_DELAY_TIME) percentval = DELAY1_MAX_DELAY_TIME;
         if(updown!=0) delay1.delay(0, percentval);
         lcd.setCursor(0, 1);
         lcd.printf("%4.0fms %s",float(delay1SpeedTime) / 1000.0f, beatMultiNamesLookup[mySettings.delay1_TimeSignature - 1]);

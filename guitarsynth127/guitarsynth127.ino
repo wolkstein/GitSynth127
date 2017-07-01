@@ -1402,7 +1402,7 @@ void loop() {
       delay(100);
       if(mySettings.delay1_useMasterclock){
         float localdelaytime = float(delay1SpeedTime) / 1000.0f;
-        if(localdelaytime >= 1800.0) localdelaytime = 1800.0;
+        if(localdelaytime >= DELAY1_MAX_DELAY_TIME) localdelaytime = DELAY1_MAX_DELAY_TIME;
         delay1.delay(0, localdelaytime);
       }
       else
@@ -1827,7 +1827,7 @@ void checkTapTempo(unsigned long micro) {
     // set fx delay speed
     if(mySettings.delay1_useMasterclock){
       float localdelaytime = float(delay1SpeedTime) / 1000.0f;
-      if(localdelaytime >= 1800.0) localdelaytime = 1800.0;
+      if(localdelaytime >= DELAY1_MAX_DELAY_TIME) localdelaytime = DELAY1_MAX_DELAY_TIME;
       delay1.delay(0, localdelaytime);
     }
     
@@ -1927,7 +1927,7 @@ void setSettings(bool fromsetup) {
   // delay test
   if(mySettings.delay1_useMasterclock){
     float localdelaytime = float(delay1SpeedTime) / 1000.0f;
-    if(localdelaytime >= 1800.0) localdelaytime = 1800.0;
+    if(localdelaytime >= DELAY1_MAX_DELAY_TIME) localdelaytime = DELAY1_MAX_DELAY_TIME;
     delay1.delay(0, localdelaytime);
   }
   else

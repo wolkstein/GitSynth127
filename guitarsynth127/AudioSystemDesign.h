@@ -22,7 +22,7 @@
 #define G_P_D_TRESHOLD_MAX 25000
 #define G_P_D_QUALITY_MIN 0.0f
 #define G_P_D_QUALITY_MAX 0.99f
-#define MAX_DELAY_TIME 1800.0f
+#define DELAY1_MAX_DELAY_TIME 1800.0f
 
 /*
 // GUItool: begin automatically generated code
