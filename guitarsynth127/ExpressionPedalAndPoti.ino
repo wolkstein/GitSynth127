@@ -151,8 +151,9 @@
     "F-ADSR Decay  ", 87
     "F-ADSR Sustain", 88
     "F-ADSR Release"  89
+    "Input Gain    ", 3
     "Pitch Up      ", 1
-    "Pitch down    ", 1
+    "Pitch down    ", 2
     "F-HighCut Freq", 128
     "F-HighCut Reso", 129
     "F-LowCut Freq ", 130
