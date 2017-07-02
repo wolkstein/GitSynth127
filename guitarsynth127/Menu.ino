@@ -226,7 +226,7 @@ void selectMenuItemAndPrintLcd(int updown) {
       if(updown!=0) delayfeed.gain(1,mySettings.delay1_FeedbackMixOutput);
        
       lcd.setCursor(0, 1);
-      lcd.print(int(powf(mySettings.delay1_FeedbackMixOutput, 0.2)*100));
+      lcd.printf("%d",int(mySettings.delay1_FeedbackMixOutput * 100));
       lcd.print("%");
       
       menuExtrButton = false;

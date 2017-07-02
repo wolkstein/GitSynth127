@@ -636,7 +636,7 @@ void Midi_Request_Settings(byte note){
     usbMIDI.sendControlChange(9, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1);
     
     // 10: Delay Feedback Loop 
-    midiValueLocal = map( int(powf(mySettings.delay1_FeedbackMixOutput, 0.2)*1000)+5 ,0 , 1200, 0, 127);
+    midiValueLocal = map(int(mySettings.delay1_FeedbackMixOutput*1000) + 1,0,1200,0,127);
     usbMIDI.sendControlChange(10, checkmidiValueLocal(midiValueLocal), mySettings.midiChannel + 1);    
 
     

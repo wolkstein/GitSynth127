@@ -743,6 +743,15 @@ class MyForm(QtGui.QMainWindow):
         self.ui.dial_lowcutfilter.valueChanged.connect(self.dailLowCutFreqEvent)
         self.ui.dial_lcq.valueChanged.connect(self.dailLcqEvent)
 
+        # delay
+        self.ui.Delay_Dry_Dail.valueChanged.connect(self.DelayDryMixEvent)
+        self.ui.Delay_Wet_Dail.valueChanged.connect(self.DelayWetMixEvent)
+        self.ui.Delay_TimeMs_SpinBox.valueChanged.connect(self.DelayTimeMsEvent)
+        self.ui.comboBox_Delay_Time_Signature.currentIndexChanged.connect(self.DelayTimeSigEvent)
+        self.ui.Delay_Gain_Dail.valueChanged.connect(self.DelayGainEvent)
+        self.ui.Delay_FeedBack_Dail.valueChanged.connect(self.DelayFeedbackEvent)
+
+        ############## delay end ######
         #Guitar Sensing
         self.ui.verticalSliderGitarSensingAttack.valueChanged.connect(self.setGuitarSensattack)
         self.ui.dial_23GitSensRelease.valueChanged.connect(self.setGuitarSensRelease)
@@ -1110,6 +1119,57 @@ class MyForm(QtGui.QMainWindow):
         loghelperValFloat = loghelperValInt/1000.0
 
         self.ui.label_value_lcq.setText("%.2f" % loghelperValFloat)
+
+
+        ############ Delay ############################
+
+        #def DelayDryMixEvent(self):
+        myVal = self.ui.Delay_Dry_Dail.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 5, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt(myVal,0,127,0,100)
+
+        self.ui.Delay1_Dry_Lable.setText("%d" % loghelperValInt)
+
+        #def DelayWetMixEvent(self):
+        myVal = self.ui.Delay_Wet_Dail.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 6, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt(myVal,0,127,0,100)
+
+        self.ui.Delay1_Wet_Lable.setText("%d" % loghelperValInt)
+
+        #def DelayTimeMsEvent(self):
+        myVal = self.ui.Delay_TimeMs_SpinBox.value()
+        loghelperValInt = self.mapValInt(myVal,0,1800,0,127)
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 7, loghelperValInt]
+        midiOut.send_message(control)
+
+        #def DelayTimeSigEvent(self):
+        myVal = self.ui.comboBox_Delay_Time_Signature.currentIndex()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 8, myVal]
+        midiOut.send_message(control)
+
+        #def DelayGainEvent(self):
+        myVal = self.ui.Delay_Gain_Dail.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 9, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt(myVal,0,127,0,100)
+
+        self.ui.Delay1_Gain_Lable.setText("%d" % loghelperValInt)
+
+        #def DelayFeedbackEvent(self):
+        myVal = self.ui.Delay_FeedBack_Dail.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 10, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt(myVal,0,127,0,120)
+
+        self.ui.Delay1_Feetback_Lable.setText("%d" % loghelperValInt)
+
 
 
         ################ FILTER 1 #################
@@ -2311,6 +2371,60 @@ class MyForm(QtGui.QMainWindow):
         loghelperValFloat = loghelperValInt/1000.0
 
         self.ui.label_value_lcq.setText("%.2f" % loghelperValFloat)
+
+
+
+
+    ################## Delay #####################
+
+    def DelayDryMixEvent(self):
+        myVal = self.ui.Delay_Dry_Dail.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 5, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt(myVal,0,127,0,100)
+
+        self.ui.Delay1_Dry_Lable.setText("%d" % loghelperValInt)
+
+    def DelayWetMixEvent(self):
+        myVal = self.ui.Delay_Wet_Dail.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 6, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt(myVal,0,127,0,100)
+
+        self.ui.Delay1_Wet_Lable.setText("%d" % loghelperValInt)
+
+    def DelayTimeMsEvent(self):
+        myVal = self.ui.Delay_TimeMs_SpinBox.value()
+        loghelperValInt = self.mapValInt(myVal,0,1800,0,127)
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 7, loghelperValInt]
+        midiOut.send_message(control)
+
+    def DelayTimeSigEvent(self):
+        myVal = self.ui.comboBox_Delay_Time_Signature.currentIndex()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 8, myVal]
+        midiOut.send_message(control)
+
+    def DelayGainEvent(self):
+        myVal = self.ui.Delay_Gain_Dail.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 9, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt(myVal,0,127,0,100)
+
+        self.ui.Delay1_Gain_Lable.setText("%d" % loghelperValInt)
+
+    def DelayFeedbackEvent(self):
+        myVal = self.ui.Delay_FeedBack_Dail.value()
+        control = [(CONTROLLER_CHANGE & 0xf0) | ((2) - 1 & 0xf), 10, myVal]
+        midiOut.send_message(control)
+
+        loghelperValInt = self.mapValInt(myVal,0,127,0,120)
+
+        self.ui.Delay1_Feetback_Lable.setText("%d" % loghelperValInt)
+
+
 
     ################ FILTER 1 #################
     # Filter 1 Frequency (CC 21)

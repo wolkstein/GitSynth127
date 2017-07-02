@@ -2259,13 +2259,12 @@ void CCmidiHandlerTwo(byte control, byte value){
      case 10: // Delay Feedback Loop hold by "mySettings.delay1_FeedbackMixOutput"
       loghelperValInt=map(int(value),0,127,0,1200);
       loghelperValFloat=float(loghelperValInt)/1000.0;
-      loghelperValFloat= pow(loghelperValFloat,5);
       
       mySettings.delay1_FeedbackMixOutput = loghelperValFloat;
       
       delayfeed.gain(1,mySettings.delay1_FeedbackMixOutput);
       if(DEBUG_MIDI_INPUT){
-        Serial.printf("Delay FeedBack-Loop Mixer Ammount changing now to %f| and back to lin: %d\n",mySettings.delay1_FeedbackMixOutput, map( int(powf(mySettings.delay1_FeedbackMixOutput, 0.2)*1000)+5 ,0 , 1200, 0, 127) );
+        Serial.printf("Delay FeedBack-Loop Mixer Ammount changing now to %f| and back to lin: %d\n",mySettings.delay1_FeedbackMixOutput, map(int(mySettings.delay1_FeedbackMixOutput*1000) + 1,0,1200,0,127) );
       }
      break;
       
