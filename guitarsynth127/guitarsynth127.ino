@@ -61,7 +61,7 @@
 #define DEB_MENUE false
 #define DEB_PEAKS false
 #define DEB_ENVELOPE_FOLLOWER false
-#define DEBUG_MIDI_INPUT true
+#define DEBUG_MIDI_INPUT false
 #define DEBUG_MIDI_REQUEST_SETTINGS false
 #define DEB_MIDI_NOTE_ENVELOPE false
 #define DEB_MIDIGUITAR_NOTE_ENVELOPE false
@@ -72,7 +72,7 @@
 #define DEBUG_EXPRESSION_PEDAL false
 #define DEBUG_EXPRESSION_PEDAL_RAW false
 #define DEB_SEQUENZER false
-#define DEB_ANALOG_READ true
+#define DEB_ANALOG_READ false
 #define DEB_FUNCTION_BTN false
 #define DEB_TOGGLE_SWITCH false
 #define DEB_EXTRA_PITCH false
