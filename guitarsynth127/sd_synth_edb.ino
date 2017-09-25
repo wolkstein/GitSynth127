@@ -226,6 +226,7 @@ void edb_updateOneRecord(int recno)
     if(DEB_SD) Serial.print(recno);
     if(DEB_SD) Serial.print("... ");
     //mySettings.preset = 1234;
+    mySettings.preset = recno;
     EDB_Status result = db.updateRec(recno, EDB_REC mySettings);
     if (result != EDB_OK) edb_printError(result);
     if(DEB_SD) Serial.println("DONE");

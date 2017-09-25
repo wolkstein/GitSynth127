@@ -1,6 +1,11 @@
 /*
    GitSynth by Michael Wolkstein copyright 2017
 
+   Settings:
+   teensy: 3.6
+   usb-type: serial + midi + audio
+   speed: 96 mhz
+   optimice: faster
 
    noten 1*1 http://www.sengpielaudio.com/Rechner-notennamen.htm
 
@@ -66,7 +71,7 @@
 #define DEB_MIDI_NOTE_ENVELOPE false
 #define DEB_MIDIGUITAR_NOTE_ENVELOPE false
 #define DEB_FILTER_NOTE_ENVELOPE false
-#define DEB_SD true
+#define DEB_SD false
 #define DEB_LFO false
 #define DEB_TAPTEMPO false
 #define DEBUG_EXPRESSION_PEDAL false
