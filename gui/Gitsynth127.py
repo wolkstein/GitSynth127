@@ -50,7 +50,7 @@ class midiInputThread(QtCore.QThread):
             if time.time() > lastTimecheckedForMidiconnections + 2.0: # all this seconds check for midi conection
                 lastTimecheckedForMidiconnections = time.time()
                 for i, port in enumerate(midiOut.get_ports()):
-                    if "GITSynth127" in str(port):
+                    if "GITSynth127" or "QmidiNet" in str(port):
                         GitSynth127OutPort = i
                         if gMyMidiOutputPort == False:
                             midiOut.open_port(GitSynth127OutPort)
@@ -67,7 +67,7 @@ class midiInputThread(QtCore.QThread):
 
 
                 for i, port in enumerate(midiIn.get_ports()):
-                    if "GITSynth127" in str(port):
+                    if "GITSynth127" or "QmidiNet" in str(port):
                         GitSynth127InPort = i
                         if gMyMidiInputPort == False:
                             midiIn.open_port(GitSynth127InPort)

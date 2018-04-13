@@ -157,15 +157,16 @@
     "F-HighCut Freq", 128
     "F-HighCut Reso", 129
     "F-LowCut Freq ", 130
-    "F-LowCut Reso "  131              
+    "F-LowCut Reso ", 131
+    "Set BPM       " 255           
 };
  */
  
-const byte expressionFunctionsLookUp[27] = // first element hold 0 -> expression pedal disabled.
+const byte expressionFunctionsLookUp[28] = // first element hold 0 -> expression pedal disabled.
 {
    0, 21, 22, 23, 24, 25, 26, 28, 76, 79,
   80, 81, 82, 83, 84, 85, 86, 87, 88, 89,
-  3, 1, 2, 128, 129, 130, 131
+  3, 1, 2, 128, 129, 130, 131, 255
 };
 
 
@@ -174,7 +175,7 @@ void setExpressionPedal(uint16_t value){// analog read value 0 - 1024
   if(value < mySystemSettings.Expression_Min) value = mySystemSettings.Expression_Min;
   if(value > mySystemSettings.Expression_Max) value = mySystemSettings.Expression_Max;
   
-  if(mySettings.expressionPedalFunction > 26 ) mySettings.expressionPedalFunction = 26; // später anpassen
+  if(mySettings.expressionPedalFunction > 27 ) mySettings.expressionPedalFunction = 27; // später anpassen
   byte expressionFunction = expressionFunctionsLookUp[mySettings.expressionPedalFunction];
   int expressionValue = map(value, mySystemSettings.Expression_Max, mySystemSettings.Expression_Min, mySettings.freeDataInt3, mySettings.freeDataInt4 + 127);// freeDataInt4 + 127 wegen der default 0 einstellung.
   if(mySettings.freeDataInt3 <= mySettings.freeDataInt4 + 127){
@@ -200,7 +201,8 @@ void setExpressionPedal(uint16_t value){// analog read value 0 - 1024
 }
 
 void setAnalogPoti(uint16_t value){// analog read value 0 - 1024
-  if(mySettings.freeDataInt2 > 26 ) mySettings.freeDataInt2 = 26; // später anpassen
+  //Serial.printf("hey: %d \n",value);
+  if(mySettings.freeDataInt2 > 27 ) mySettings.freeDataInt2 = 27; // später anpassen
   byte potiFunction = expressionFunctionsLookUp[mySettings.freeDataInt2];
   int potiValue = map(value, 0,1023, 0,127);
   mapExpressionPedal(potiFunction, potiValue, value, 0,1023);
@@ -2159,9 +2161,15 @@ void mapExpressionPedal( byte control, int value, int16_t raw, int16_t floorvalu
         }
             
     break;
+
+    case 255: // set Bpm
+        loghelperValInt=map(int(raw),1,1023,30,250);
+        setInternalBPM(float(loghelperValInt));  
+        if(DEBUG_EXPRESSION_PEDAL){
+          Serial.printf("BPM changing now to %f, raw %d, value %d , the bpm = %d \n", mySystemBpm,raw,value,loghelperValInt);
+        }    
+    break;
       
-
-
 
         
     // ###############################  DEFAULT #################################
