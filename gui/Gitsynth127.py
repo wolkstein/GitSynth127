@@ -8,9 +8,9 @@ import math
 from rtmidi.midiconstants import * ##BANK_SELECT_LSB, BANK_SELECT_MSB, CHANNEL_PRESSURE, CONTROLLER_CHANGE, NOTE_ON, NOTE_OFF, PROGRAM_CHANGE
 from rtmidi.midiutil import *
 
-from PyQt4.QtGui import *
-from PyQt4 import QtCore, QtGui
-from PyQt4.QtCore import QSize, SIGNAL, QEvent
+from PyQt5.QtGui import *
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QSize, QEvent
 
 from Gitsynth_ui import Ui_GitSynthV127
 
@@ -649,9 +649,9 @@ class midiInputThread(QtCore.QThread):
 
 
 ############################ MainWindow Class, SIMPLE as possible!! ##################
-class MyForm(QtGui.QMainWindow):
+class MyForm(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
-        QtGui.QWidget.__init__(self, parent)
+        QtWidgets.QWidget.__init__(self, parent)
         self.ui = Ui_GitSynthV127()
         self.ui.setupUi(self)
 
@@ -3879,10 +3879,10 @@ if __name__ == "__main__":
         gMyMidiInputPort = True
 
  #----- Main ------
-    app = QtGui.QApplication(sys.argv)
+    app = QtWidgets.QApplication(sys.argv)
     myapp = MyForm()
-    for key in QtGui.QStyleFactory.keys():
-        st = QtGui.QStyleFactory.create(key)
+    for key in QtWidgets.QStyleFactory.keys():
+        st = QtWidgets.QStyleFactory.create(key)
         print(key, st.metaObject().className(), type(app.style()))
 
     print(myapp.style().objectName())
