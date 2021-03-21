@@ -7,6 +7,8 @@
    speed: 96 mhz
    optimice: faster
 
+   zuletzt mit /home/wolke/arduino/teensy(1.40)17.11.2017/arduino-1.8.5/ sicher kompiliert
+
    noten 1*1 http://www.sengpielaudio.com/Rechner-notennamen.htm
 
    Temperierte Stimmung                              32 bit float 6-8 digits

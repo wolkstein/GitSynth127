@@ -3878,9 +3878,17 @@ if __name__ == "__main__":
         gInIsConnected = midiIn.get_ports()[myInDeviceId]
         gMyMidiInputPort = True
 
-
-
+ #----- Main ------
     app = QtGui.QApplication(sys.argv)
     myapp = MyForm()
+    for key in QtGui.QStyleFactory.keys():
+        st = QtGui.QStyleFactory.create(key)
+        print(key, st.metaObject().className(), type(app.style()))
+
+    print(myapp.style().objectName())
+    #Style Fusion active as I create the gui design. Others QtCurve
+    #myapp.setStyle(QtGui.QStyleFactory.create("QtCurve"))
+    print(myapp.style().objectName())
     myapp.show()
     sys.exit(app.exec_())
+#------ Main end
